@@ -3,12 +3,21 @@ cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 project(OutlawsX LANGUAGES CXX)
 
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-set(ANTLR4CPP_JAR_LOCATION ${CMAKE_SOURCE_DIR}/../Antlr4/antlr-4.7.2-complete.jar)
+set(ANTLR4CPP_JAR_LOCATION )
 
 # compiler must be 11 or 14
 SET(CMAKE_CXX_STANDARD 14)
+# using /MD flag for antlr4_runtime (for Visual C++ compilers only)
+set(ANTLR4_WITH_STATIC_CRT OFF)
 # add external build for antlrcpp
+set(ANTLR4_TAG be58ebf)
 include(ExternalAntlr4Cpp)
+
+# set variable pointing to the antlr tool that supports C++
+# this is not required if the jar file can be found under PATH environment
+set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/../Antlr4/antlr-4.7.2-complete.jar)
+# add macros to generate ANTLR Cpp code from grammar
+find_package(ANTLR REQUIRED)
 
 function(SetCompilerOptions targetName)
     # Recommended warnings mostly taken from https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
@@ -32,14 +41,14 @@ function(SetCompilerOptions targetName)
             /w14547 # 'operator': operator before comma has no effect; expected operator with side-effect
             /w14549 # 'operator': operator before comma has no effect; did you intend 'operator'?
             /w14555 # expression has no effect; expected expression with side-effect
-            /w14619 # pragma warning: there is no warning number 'number'
+            #/w14619 # pragma warning: there is no warning number 'number'
             /w14640 # Enable warning on thread un-safe static member initialization
             /w14826 # Conversion from 'type1' to 'type_2' is sign-extended. This may cause unexpected runtime behavior.
             /w14905 # wide string literal cast to 'LPSTR'
             /w14906 # string literal cast to 'LPWSTR'
             /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
 
-            /wd4251 # ANTLR4 generates those. class '...' needs to have dll-interface to be used by clients of class 'antlr4::...'
+            #/wd4251 # ANTLR4 generates those. class '...' needs to have dll-interface to be used by clients of class 'antlr4::...'
             /wd4263 # ANTLR4 generates those. member function does not override any base class virtual member function
             /wd4619 # pragma warning: there is no warning number 'xxxx'
         )

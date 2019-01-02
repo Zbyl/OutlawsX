@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     try {
         //lab = lab_fuse::loadLabFile(labFilePath);
 
-        lab_fuse::loadLvt(R"(F:\VSProjects\LabFuse\trash\CANYON.LVT)");
+        lab_fuse::loadLvt(R"(F:\VSProjects\LabFuse\trash\S.LVT)");
     }
     catch (...) {
         std::cerr << boost::current_exception_diagnostic_information() << std::endl;
