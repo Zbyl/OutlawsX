@@ -1,0 +1,69 @@
+LVT 1.1
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# This file has been converted from AutoCAD file 'D:\OUTLAWS\data\LEVELS\Story\canyon\CANYON.LVT'.
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LEVELNAME D:\OUTLAWS\data\LEVELS\Story\canyon\CANYON
+VERSION 1902.030397
+PALETTES 2
+   PALETTE: simms
+   PALETTE: uwsimms
+CMAPS 2
+   CMAP: simms
+   CMAP: uwsimms
+MUSIC CANYON.MSC
+PARALLAX 1024.0000 1024.0000
+LIGHT SOURCE 0.0 0.0 0.0 0.0
+SHADES 13
+   SHADE:  1 200	200 200 10 L
+   SHADE:  2 200	200 200 25 L
+
+#
+#`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~
+#   Lowercase textures are from the 'Extra' list.
+TEXTURES 26
+  TEXTURE: DEFAULT.PCX           #  0
+  TEXTURE: GAWATER1.PCX          #  1
+
+
+
+NUMSECTORS 191
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#               S e c t o r   D e f i n i t i o n s
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SECTOR 9CB2055E      # ORD: 0
+  NAME     SPINSECRET
+  AMBIENT  7
+  PALETTE  0
+  CMAP  0
+  FRICTION 1
+  GRAVITY -60
+  ELASTICITY 0.3
+  VELOCITY 0 0 0
+  VADJOIN -1
+  FLOOR SOUND NULL
+  FLOOR Y    -64.00   7    0.00    0.00 0
+  CEILING Y  -63.88   8    0.00    0.00 0
+  F_OVERLAY  -1    0.00    0.00 0
+  C_OVERLAY  -1    0.00    0.00 0
+  FLOOR OFFSETS 0
+  FLAGS 0 -2147483648
+  LAYER 1
+
+
+  VERTICES 00004
+    X: 123.00     Z: 721.88      #  0
+    X: 123.50     Z: 721.88      #  1
+    X: 123.50     Z: 714.13      #  2
+    X: 123.00     Z: 714.13      #  3
+
+
+
+  WALLS 4
+    WALL: 9CB20560 V1:   0  V2:   1  MID:  17   0.00   0.00 TOP:  17  27.13  38.88 BOT:  17   0.00   0.00 OVERLAY:  -1   0.00   0.00  ADJOIN: 109  MIRROR:   3  DADJOIN:  -1  DMIRROR:  -1  FLAGS: 64 0   LIGHT: 0
+    WALL: 9CB20561 V1:   1  V2:   2  MID:  17   0.00   0.00 TOP:  17  19.38  38.88 BOT:  17   0.00   0.00 OVERLAY:  -1   0.00   0.00  ADJOIN: 109  MIRROR:   2  DADJOIN:  -1  DMIRROR:  -1  FLAGS: 64 0   LIGHT: 0
+    WALL: 9CB20562 V1:   2  V2:   3  MID:  17   0.00   0.00 TOP:  17  35.38  38.88 BOT:  17   0.00   0.00 OVERLAY:  -1   0.00   0.00  ADJOIN: 109  MIRROR:   1  DADJOIN:  -1  DMIRROR:  -1  FLAGS: 64 0   LIGHT: 0
+    WALL: 9CB20563 V1:   3  V2:   0  MID:   0   0.00   0.00 TOP:  17  27.63  38.88 BOT:   0   0.00   0.00 OVERLAY:  -1   0.00   0.00  ADJOIN: 109  MIRROR:   0  DADJOIN:  -1  DMIRROR:  -1  FLAGS: 64 0   LIGHT: 0
+

@@ -20,9 +20,8 @@ class LvtVisitor : public lvtgrammar::LvtParserBaseVisitor {
 public:
     virtual antlrcpp::Any visitVertex(lvtgrammar::LvtParser::VertexContext *ctx) override {
         float x = boost::lexical_cast<float>(ctx->x->getText());
-        float y = boost::lexical_cast<float>(ctx->y->getText());
         float z = boost::lexical_cast<float>(ctx->z->getText());
-        return Vector3 { x, y, z };
+        return Vector3 { x, 0, z };
     }
 
     virtual antlrcpp::Any visitSector(lvtgrammar::LvtParser::SectorContext *ctx) override {
@@ -52,7 +51,7 @@ int loadLvt(const std::string& filePath) {
     lvtgrammar::LvtParser::Lvt_fileContext* tree = parser.lvt_file();
 
     LvtVisitor visitor;
-    std::vector<int> scene = visitor.visitLvt_file(tree);
+    visitor.visitLvt_file(tree);
 
     return 0;
 }

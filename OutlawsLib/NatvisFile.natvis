@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="antlr4::CommonToken">
+    <DisplayString>line: {_line}, chars:  {_charPositionInLine + 1}-{_charPositionInLine + 1 + _stop - _start}</DisplayString>
+  </Type>
+
+<!-- 
+  <Type Name="antlr4::Token">
+    <DisplayString>t</DisplayString>
+  </Type>
+  <Type Name="antlr4::CommonToken">
+    <DisplayString>text={(_source.second + _start),[_stop - _start]}</DisplayString>
+    <Expand>
+      <Item Name="[tx]">(_source.second + _start),[_stop - _start]</Item>
+    </Expand>
+  </Type>
+  <Type Name="antlr4::WritableToken">
+    <DisplayString>ty</DisplayString>
+    <Expand>
+      <Item Name="[tx]">(_source.second + _start),[_stop - _start]</Item>
+    </Expand>
+  </Type>
+-->
+</AutoVisualizer>

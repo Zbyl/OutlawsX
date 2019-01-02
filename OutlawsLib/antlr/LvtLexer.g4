@@ -32,6 +32,9 @@ VERSION : 'VERSION' ;
 X : 'X' ;
 Y : 'Y' ;
 Z : 'Z' ;
+L : 'L' ;
+G : 'G' ;
+T : 'T' ;
 VERTICES : 'VERTICES' ;
 WALLS : 'WALLS' ;
 V1 : 'V1' ;
@@ -44,25 +47,22 @@ ADJOIN: 'ADJOIN' ;
 MIRROR : 'MIRROR' ;
 DADJOIN: 'DADJOIN' ;
 DMIRROR : 'DMIRROR' ;
+SLOPEDFLOOR : 'SLOPEDFLOOR' ;
+SLOPEDCEILING : 'SLOPEDCEILING' ;
 
 LEVELNAME   : 'LEVELNAME' -> pushMode(str_mode);
 SECTOR      : 'SECTOR' -> pushMode(id_mode);
-NAME        : 'NAME' -> pushMode(id_mode);
+NAME        : 'NAME' -> pushMode(idend_mode);
 SOUND       : 'SOUND' -> pushMode(id_mode);
-MUSIC       : 'MUSIC' ':' -> pushMode(id_mode);
+MUSIC       : 'MUSIC' -> pushMode(id_mode);
 WALL_COLON    : 'WALL' ':' -> pushMode(id_mode);
 TEXTURE_COLON : 'TEXTURE' ':' -> pushMode(id_mode);
 PALETTE_COLON : 'PALETTE' ':' -> pushMode(id_mode);
 CMAP_COLON    : 'CMAP' ':' -> pushMode(id_mode);
 
-STRING      : '"' .*? '"' ;
 INT         : [+-]?[0-9]+ ;
 FLOAT       : [+-]?[0-9]+ ( '.' [0-9]+ )? ;
-UPPERCASE_LETTER : [A-Z] ;
 
-//NEWLINE     : ('\r'? '\n' | '\r')+ ;
-TAB         : ('\t' | '        ' | '    ' ) ;
-// WHITESPACE  : ' ' -> skip ;
 WHITESPACE   : [ \t\r\n]+ -> channel(HIDDEN) ;
 LINE_COMMENT : '#' ~[\r\n]* -> skip ;
 
@@ -70,4 +70,10 @@ mode str_mode;
   STR: ~[\r\n]+ -> popMode;
 
 mode id_mode;
-  ID: [a-zA-Z0-9\-_]+ -> popMode;
+  ID: [a-zA-Z0-9\-_.]+ -> popMode;
+  WHITESPACE2   : [ \t\r\n]+ -> channel(HIDDEN) ;
+
+mode idend_mode;
+  IDEND: [a-zA-Z0-9\-_.]+;
+  WHITESPACE3   : [ \t]+ -> channel(HIDDEN) ;
+  WHITESPACEEND   : [\r\n]+ -> skip, popMode ;

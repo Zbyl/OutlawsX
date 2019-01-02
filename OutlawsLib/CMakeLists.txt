@@ -8,8 +8,9 @@
 
 # Call macro to add lexer and grammar to your build dependencies.
 # NOTE: Here, we define "lvtgrammar" as our project's namespace
-antlr_target(LvtLexer "${CMAKE_CURRENT_SOURCE_DIR}/antlr/LvtLexer.g4" LEXER PACKAGE lvtgrammar)
-antlr_target(LvtParser "${CMAKE_CURRENT_SOURCE_DIR}/antlr/LvtParser.g4" PARSER PACKAGE lvtgrammar DEPENDS_ANTLR LvtLexer VISITOR)
+# We need to put all output files together, so that ANTLR will find Lexer from inside the Parser.
+antlr_target(LvtLexer antlr/LvtLexer.g4 LEXER PACKAGE lvtgrammar OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
+antlr_target(LvtParser antlr/LvtParser.g4 PARSER PACKAGE lvtgrammar DEPENDS_ANTLR LvtLexer VISITOR OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
              
 
 set(TARGET_NAME OutlawsLib)
@@ -17,10 +18,14 @@ set(TARGET_NAME OutlawsLib)
 set(TARGET_SOURCES
     antlr/LvtLexer.g4
     antlr/LvtParser.g4
+
     Lvt.h
     Lvt.cpp
+
     ${ANTLR_LvtLexer_CXX_OUTPUTS}
     ${ANTLR_LvtParser_CXX_OUTPUTS}
+
+    NatvisFile.natvis
     )
 
 # Required Boost components: exception, endian, range

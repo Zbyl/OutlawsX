@@ -1,28 +1,34 @@
 parser grammar LvtParser;
 
-lvt_file   : LVT lvt_version=FLOAT
+options { tokenVocab = LvtLexer; }
+
+
+lvt_file   : LVT lvt_version=float_
              LEVELNAME level_name=STR
-             VERSION level_version=FLOAT
-             lvt_file_elements
+             VERSION level_version=float_
+             lvt_file_element*
+             EOF
            ;
 
-lvt_file_elements :
-             (music)
-             (paralax)
-             (light_source)
-             (cmaps)
-             (palettes)
-             (shades)
-             (textures)
-             (sectors)
+lvt_file_element
+           : music
+           | paralax
+           | light_source
+           | cmaps
+           | palettes
+           | shades
+           | textures
+           | sectors
            ;
+
+float_ : INT | FLOAT ;
 
 music        : MUSIC musicName=ID;
-paralax      : PARALLAX FLOAT FLOAT;
-light_source : LIGHT SOURCE FLOAT FLOAT FLOAT FLOAT;
+paralax      : PARALLAX float_ float_;
+light_source : LIGHT SOURCE float_ float_ float_ float_;
 
 shades    : SHADES numShades=INT (shade)* ;
-shade     : SHADE COLON INT INT INT INT INT UPPERCASE_LETTER;
+shade     : SHADE COLON INT INT INT INT INT (L|G|T);
 
 cmaps    : CMAPS numCMaps=INT (cmap)* ;
 cmap     : CMAP_COLON cMapName=ID ;
@@ -34,7 +40,7 @@ textures    : TEXTURES numTextures=INT (texture)* ;
 texture     : TEXTURE_COLON textureName=ID ;
 
 vertices    : VERTICES numVertices=INT (vertex)* ;
-vertex      : X COLON x=FLOAT Y COLON y=FLOAT Z COLON z=FLOAT;
+vertex      : X COLON x=float_ Z COLON z=float_;
 
 walls       : WALLS numWalls=INT (wall)* ;
 wall        : WALL_COLON wallId=ID
@@ -54,35 +60,37 @@ wall        : WALL_COLON wallId=ID
 
 sectors     : NUMSECTORS numSectors=INT
               (sector)*;
-textureParamsSmall : textureId=INT offsX=FLOAT offsY=FLOAT;
-textureParams : textureId=INT offsX=FLOAT offsY=FLOAT unused=INT;
+textureParamsSmall : textureId=INT offsX=float_ offsY=float_;
+textureParams : textureId=INT offsX=float_ offsY=float_ unused=float_;
 sector      : SECTOR id=ID
-              NAME name=ID
+              NAME (name=IDEND)?
               AMBIENT ambient=INT
               PALETTE paletteId=INT
               CMAP cmapId=INT
-              FRICTION friction=INT
+              FRICTION friction=float_
               GRAVITY gravity=INT
-              ELASTICITY elasticity=FLOAT
+              ELASTICITY elasticity=float_
               VELOCITY velocityX=INT velocityY=INT velocityZ=INT
               VADJOIN vadjoin=INT
               FLOOR SOUND floorSound=ID
               (
                 FLOOR TEXTURE floorTexture=textureParams
-                FLOOR ALTITUDE altitude=INT
+                FLOOR ALTITUDE altitude=float_
                 |
-                FLOOR Y  altitude=INT floorTexture=textureParams
+                FLOOR Y  altitude=float_ floorTexture=textureParams
               )
               (
                 CEILING TEXTURE ceilingTexture=textureParams
-                CEILING ALTITUDE altitude=INT
+                CEILING ALTITUDE altitude=float_
                 |
-                CEILING Y  altitude=INT ceilingTexture=textureParams
+                CEILING Y  altitude=float_ ceilingTexture=textureParams
               )
               F_OVERLAY floorOverlayTexture=textureParams
               C_OVERLAY ceilingOverlayTexture=textureParams
               FLOOR OFFSETS floorOffsets=INT
               FLAGS flag0=INT flag1=INT (flag2=INT)?
+              (SLOPEDFLOOR floorSlopeX=INT floorSlopeY=INT floorSlopeZ=INT)?
+              (SLOPEDCEILING floorSlopeX=INT floorSlopeY=INT floorSlopeZ=INT)?
               LAYER INT
               vertices
               walls
