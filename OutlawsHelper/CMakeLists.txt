@@ -5,7 +5,7 @@ set(TARGET_SOURCES
     helper_main.cpp
     )
 
-# Required Boost components: exception, endian, range
+# Required Boost components: exception, endian, range, lexical_cast, math
 find_package(Boost 1.68 REQUIRED COMPONENTS exception)
 
 add_executable(${TARGET_NAME} ${TARGET_SOURCES})

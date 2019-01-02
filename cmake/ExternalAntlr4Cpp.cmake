@@ -99,10 +99,11 @@ ExternalProject_Add(
   LOG_DOWNLOAD       ON
   #--Update step----------
   # UPDATE_COMMAND     ${GIT_EXECUTABLE} pull
+  UPDATE_DISCONNECTED YES
   #--Patch step----------
   # PATCH_COMMAND sh -c "cp <SOURCE_DIR>/scripts/CMakeLists.txt <SOURCE_DIR>"
   #--Configure step-------------
-  CONFIGURE_COMMAND  ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DANTLR4CPP_JAR_LOCATION=${ANTLR4CPP_JAR_LOCATION} -DBUILD_SHARED_LIBS=ON -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> -DCMAKE_SOURCE_DIR:PATH=<SOURCE_DIR>/runtime/Cpp <SOURCE_DIR>/runtime/Cpp
+  CONFIGURE_COMMAND  ${CMAKE_COMMAND}  -G "${CMAKE_GENERATOR}" -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DANTLR4CPP_JAR_LOCATION=${ANTLR4CPP_JAR_LOCATION} -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> -DCMAKE_SOURCE_DIR:PATH=<SOURCE_DIR>/runtime/Cpp <SOURCE_DIR>/runtime/Cpp
   LOG_CONFIGURE ON
   #--Build step-----------------
   # BUILD_COMMAND ${CMAKE_MAKE_PROGRAM}
@@ -143,6 +144,7 @@ set(ANTLR4CPP_LIBS "${INSTALL_DIR}/lib")
 macro(antlr4cpp_process_grammar
     antlr4cpp_project
     antlr4cpp_project_namespace
+	antlr4cpp_grammar_lexer
     antlr4cpp_grammar_parser)
 
   if(EXISTS "${ANTLR4CPP_JAR_LOCATION}")
@@ -151,19 +153,19 @@ macro(antlr4cpp_process_grammar
     message(FATAL_ERROR "Unable to find antlr tool. ANTLR4CPP_JAR_LOCATION:${ANTLR4CPP_JAR_LOCATION}")
   endif()
 
-  message(STATUS "\"${Java_JAVA_EXECUTABLE}\" -jar \"${ANTLR4CPP_JAR_LOCATION}\" -Werror -Dlanguage=Cpp -listener -visitor -o \"${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}\" -package ${antlr4cpp_project_namespace} \"${antlr4cpp_grammar_parser}\"")
+  message(STATUS "\"${Java_JAVA_EXECUTABLE}\" -jar \"${ANTLR4CPP_JAR_LOCATION}\" -Werror -Dlanguage=Cpp -listener -visitor -o \"${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}\" -package ${antlr4cpp_project_namespace} \"${antlr4cpp_grammar_lexer}\" \"${antlr4cpp_grammar_parser}\"")
   add_custom_target("antlr4cpp_generation_${antlr4cpp_project_namespace}"
     COMMAND
     ${CMAKE_COMMAND} -E make_directory ${ANTLR4CPP_GENERATED_SRC_DIR}
     COMMAND
-    "${Java_JAVA_EXECUTABLE}" -jar "${ANTLR4CPP_JAR_LOCATION}" -Werror -Dlanguage=Cpp -listener -visitor -o "${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}" -package ${antlr4cpp_project_namespace} "${antlr4cpp_grammar_parser}"
+    "${Java_JAVA_EXECUTABLE}" -jar "${ANTLR4CPP_JAR_LOCATION}" -Dlanguage=Cpp -listener -visitor -o "${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}" -package ${antlr4cpp_project_namespace} "${antlr4cpp_grammar_lexer}" "${antlr4cpp_grammar_parser}"
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-    DEPENDS "${antlr4cpp_grammar_parser}"
+    DEPENDS "${antlr4cpp_grammar_lexer}" "${antlr4cpp_grammar_parser}"
     )
 
   # Find all the input files
-  FILE(GLOB generated_files ${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}/*.cpp)
-  FILE(GLOB generated_headers ${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}/*.h)
+  FILE(GLOB generated_files CONFIGURE_DEPENDS ${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}/*.cpp)
+  FILE(GLOB generated_headers CONFIGURE_DEPENDS ${ANTLR4CPP_GENERATED_SRC_DIR}/${antlr4cpp_project_namespace}/*.h)
 
   set(antlr4cpp_src_files_${antlr4cpp_project_namespace} ${generated_headers})
   

@@ -41,6 +41,7 @@ function(SetCompilerOptions targetName)
 
             /wd4251 # ANTLR4 generates those. class '...' needs to have dll-interface to be used by clients of class 'antlr4::...'
             /wd4263 # ANTLR4 generates those. member function does not override any base class virtual member function
+            /wd4619 # pragma warning: there is no warning number 'xxxx'
         )
 
         set(linkerOptionsList
@@ -94,7 +95,10 @@ function(SetCompilerOptions targetName)
         target_compile_definitions(${targetName} PUBLIC NOMINMAX)
         target_compile_definitions(${targetName} PUBLIC WIN32_LEAN_AND_MEAN)
         target_compile_definitions(${targetName} PUBLIC VC_EXTRALEAN)
+
     endif()
+
+    target_compile_definitions(${targetName} PUBLIC ANTLR4CPP_STATIC)
 endfunction()
 
 add_subdirectory(OutlawsLib)

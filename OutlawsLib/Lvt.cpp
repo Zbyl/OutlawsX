@@ -1,60 +1,58 @@
 #include "lvt.h"
 
-#include "lvtLexer.h"
-#include "lvtParser.h"
-#include "lvtVisitor.h"
+#include "LvtLexer.h"
+#include "LvtParser.h"
+#include "LvtParserBaseVisitor.h"
 
 #include <antlr4-runtime.h>
 
 #include <iostream>
 #include <vector>
+#include <boost/lexical_cast.hpp>
 
 namespace lab_fuse {
 
-class LvtVisitor : public lvtgrammar::lvtVisitor {
-public:
-    antlrcpp::Any visitFile(lvtgrammar::lvtParser::FileContext *context) override;
-
-    antlrcpp::Any visitName(lvtgrammar::lvtParser::NameContext *context) override { return 0; }
-
-    antlrcpp::Any visitAction(lvtgrammar::lvtParser::ActionContext *context) override { return 0; }
-
-    antlrcpp::Any visitSize(lvtgrammar::lvtParser::SizeContext *context) override { return 0; }
-
-    antlrcpp::Any visitShape(lvtgrammar::lvtParser::ShapeContext *context) override { return 0; }
-
-    antlrcpp::Any visitColor(lvtgrammar::lvtParser::ColorContext *context) override { return 0; }
-
-    antlrcpp::Any visitPosition(lvtgrammar::lvtParser::PositionContext *context) override { return 0; }
+struct Vector3 {
+    float x, y, z;
 };
 
-antlrcpp::Any LvtVisitor::visitFile(lvtgrammar::lvtParser::FileContext *ctx) {
-    std::vector<int> elements;
+class LvtVisitor : public lvtgrammar::LvtParserBaseVisitor {
+public:
+    virtual antlrcpp::Any visitVertex(lvtgrammar::LvtParser::VertexContext *ctx) override {
+        float x = boost::lexical_cast<float>(ctx->x->getText());
+        float y = boost::lexical_cast<float>(ctx->y->getText());
+        float z = boost::lexical_cast<float>(ctx->z->getText());
+        return Vector3 { x, y, z };
+    }
 
-    for (auto element : ctx->elements) {                
-        antlrcpp::Any el = visitAction(element);
+    virtual antlrcpp::Any visitSector(lvtgrammar::LvtParser::SectorContext *ctx) override {
+        std::vector<Vector3> vertices;
 
-        elements.push_back(el); 
-    }    
+        for (auto element : ctx->vertices()->vertex()) {                
+            antlrcpp::Any el = visitVertex(element);
 
-    //antlrcpp::Any result = Scene(ctx->name()->NAME()->getText(), elements);
+            vertices.push_back(el); 
+        }    
 
-    return elements;
-}
+        //antlrcpp::Any result = Scene(ctx->name()->NAME()->getText(), elements);
+
+        return visitChildren(ctx);
+    }
+};
 
 int loadLvt(const std::string& filePath) {
     std::ifstream stream;
     stream.open(filePath);
 
     antlr4::ANTLRInputStream input(stream);
-    lvtgrammar::lvtLexer lexer(&input);
+    lvtgrammar::LvtLexer lexer(&input);
     antlr4::CommonTokenStream tokens(&lexer);
-    lvtgrammar::lvtParser parser(&tokens);    
+    lvtgrammar::LvtParser parser(&tokens);    
 
-    lvtgrammar::lvtParser::FileContext* tree = parser.file();
+    lvtgrammar::LvtParser::Lvt_fileContext* tree = parser.lvt_file();
 
     LvtVisitor visitor;
-    std::vector<int> scene = visitor.visitFile(tree);
+    std::vector<int> scene = visitor.visitLvt_file(tree);
 
     return 0;
 }

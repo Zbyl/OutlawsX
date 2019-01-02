@@ -8,12 +8,13 @@
 
 # Call macro to add lexer and grammar to your build dependencies.
 # NOTE: Here, we define "lvtgrammar" as our project's namespace
-antlr4cpp_process_grammar(XXX lvtgrammar "${CMAKE_CURRENT_SOURCE_DIR}/antlr/lvt.g")
+antlr4cpp_process_grammar(XXX lvtgrammar "${CMAKE_CURRENT_SOURCE_DIR}/antlr/LvtLexer.g4" "${CMAKE_CURRENT_SOURCE_DIR}/antlr/LvtParser.g4")
 
 set(TARGET_NAME OutlawsLib)
 
 set(TARGET_SOURCES
-    antlr/lvt.g
+    antlr/LvtLexer.g4
+    antlr/LvtParser.g4
     Lvt.h
     Lvt.cpp
     ${antlr4cpp_src_files_lvtgrammar}
@@ -39,4 +40,4 @@ message(STATUS "Found antlr4cpp libs: ${ANTLR4CPP_LIBS} and includes: ${ANTLR4CP
 target_include_directories(${TARGET_NAME} PRIVATE ${antlr4cpp_include_dirs_lvtgrammar})
 
 add_dependencies(${TARGET_NAME} antlr4cpp antlr4cpp_generation_lvtgrammar)
-target_link_libraries(${TARGET_NAME} PUBLIC antlr4-runtime)
+target_link_libraries(${TARGET_NAME} PUBLIC antlr4-runtime-static)
