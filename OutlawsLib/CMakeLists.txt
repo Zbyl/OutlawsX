@@ -22,6 +22,9 @@ set(TARGET_SOURCES
     Lvt.h
     Lvt.cpp
 
+    # Hack. Remove it from here.
+    file_utilities.cpp
+
     ${ANTLR_LvtLexer_CXX_OUTPUTS}
     ${ANTLR_LvtParser_CXX_OUTPUTS}
 
@@ -35,10 +38,12 @@ add_library(${TARGET_NAME} ${TARGET_SOURCES})
 SetCompilerOptions(${TARGET_NAME})
 
 target_link_libraries(${TARGET_NAME} PRIVATE OutlawsLabLib)
+target_link_libraries(${TARGET_NAME} PRIVATE GluTesselator)
 
 target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(${TARGET_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/../ArbitraryFormatSerializer")
 target_include_directories(${TARGET_NAME} PRIVATE "${Boost_INCLUDE_DIRS}")
+target_include_directories(${TARGET_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/third_party/nlohmann-json-3.4.0")
 
 target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIRS})
 message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIRS} ")

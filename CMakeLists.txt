@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-project(OutlawsX LANGUAGES CXX)
+project(OutlawsX LANGUAGES C CXX)
 
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(ANTLR4CPP_JAR_LOCATION )
@@ -19,13 +19,27 @@ set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/../Antlr4/antlr-4.7.2-complete.jar)
 # add macros to generate ANTLR Cpp code from grammar
 find_package(ANTLR REQUIRED)
 
-function(SetCompilerOptions targetName)
-    # Recommended warnings mostly taken from https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
+function(SetCompilerOptionsMinimal targetName)
+
+    # As this is a public compile feature anything that links to target will also build with -std=c++14
+    target_compile_features(${targetName} PUBLIC cxx_std_14)
+
     if(MSVC)
         set(optionsList
             /permissive-    # Enforces standards conformance.
             /Zc:__cplusplus # Set proper value of __cplusplus macro.
+        )
+    else()
+    endif()
+    target_compile_options(${targetName} PRIVATE ${optionsList})
 
+endfunction()
+
+function(SetCompilerOptions targetName)
+    SetCompilerOptionsMinimal(${targetName})
+    # Recommended warnings mostly taken from https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
+    if(MSVC)
+        set(optionsList
             #/Wx     # Treat warnings as errors
             /W4     # All reasonable warnings
             /w14242 # 'identfier': conversion from 'type1' to 'type1', possible loss of data
@@ -93,9 +107,6 @@ function(SetCompilerOptions targetName)
     target_compile_options(${targetName} PRIVATE ${optionsList})
     target_link_options(${targetName} PRIVATE ${linkerOptionsList})
 
-    # As this is a public compile feature anything that links to target will also build with -std=c++14
-    target_compile_features(${targetName} PUBLIC cxx_std_14)
-
     if(MSVC)
         # Get rid of annoying compiler warnings.
         target_compile_definitions(${targetName} PUBLIC _CRT_SECURE_NO_WARNINGS)
@@ -108,6 +119,8 @@ function(SetCompilerOptions targetName)
     endif()
 
     target_compile_definitions(${targetName} PUBLIC ANTLR4CPP_STATIC)
+
+    target_include_directories(${targetName} PUBLIC "${CMAKE_SOURCE_DIR}/third_party/terminal-editor-utilities")
 endfunction()
 
 add_subdirectory(OutlawsLib)
@@ -115,6 +128,7 @@ add_subdirectory(OutlawsLabLib)
 add_subdirectory(OutlawsPlugin)
 add_subdirectory(LabFuse)
 add_subdirectory(OutlawsHelper)
+add_subdirectory(GluTesselator)
 
 if(WIN32)
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT lab-fuse)

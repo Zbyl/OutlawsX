@@ -15,7 +15,15 @@ int main(int argc, char *argv[])
     try {
         //lab = lab_fuse::loadLabFile(labFilePath);
 
-        lab_fuse::loadLvt(R"(F:\VSProjects\LabFuse\trash\CANYON.LVT)");
+        auto level = lvt::loadLvt(R"(F:\VSProjects\LabFuse\trash\HIDEOUT.LVT)");
+        auto texInfos = lvt::loadTexInfos(R"(F:\VSProjects\LabFuse\UnityProj0\UnityProj0\Assets\Textures\pack.json)");
+
+        std::vector<lvt::Vector3> verts;
+        std::vector<lvt::Uv> uvs;
+        std::vector<int> tris;
+
+        lvt::computeLevel(level, texInfos, verts, uvs, tris);
+        //lvt::computeSector(level, texInfos, 402, verts, uvs, tris);
     }
     catch (...) {
         std::cerr << boost::current_exception_diagnostic_information() << std::endl;
