@@ -11,7 +11,10 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <string> 
+#include <numeric>
+#include <string>
+#include <array>
+#include <cmath>
 
 #include <boost/lexical_cast.hpp>
 
@@ -23,91 +26,229 @@ extern "C" {
 
 namespace lvt {
 
+const Vector3 Vector3::zero     = { 0.0f, 0.0f, 0.0f };
+const Vector3 Vector3::right    = { 1.0f, 0.0f, 0.0f };
+const Vector3 Vector3::up       = { 0.0f, 1.0f, 0.0f };
+const Vector3 Vector3::forward  = { 0.0f, 0.0f, 1.0f };
+
+float clamp(float value, float min, float max) {
+    return std::max(min, std::min(value, max));
+}
+
+/// Computes height of vertex on given slope.
+/// Floor/ceiling height should be added also.
+Plane computeSlopePlane(const LvtLevel& level, SlopeParams slopeParams) {
+    if (slopeParams.angle == 0)
+        return { Vector3::up, 0 };
+
+    const Sector& referenceSector = level.sectors.at(slopeParams.sector);
+    const Wall& wall = referenceSector.walls.at(slopeParams.wall);
+    auto v1 = referenceSector.vertices[wall.v1];
+    auto v2 = referenceSector.vertices[wall.v2];
+
+    auto wallDir = (v2 - v1).normalized();
+    auto perpDir = wallDir.perpendicularClockwise();
+
+    auto angleInDeg = slopeParams.angle * 45.0f / 2048.0f;
+    const float pi = 3.14159265358979323846f;
+    auto angleInRad = angleInDeg * pi / 180.0f;
+    auto tan = std::tan(angleInRad);
+
+    Vector3 wallDir3 { wallDir.x, 0, wallDir.z };
+    Vector3 perpDir3 { perpDir.x, tan, perpDir.z };
+    perpDir3.normalize();
+
+    auto normal = wallDir3.cross(perpDir3);
+    auto dist = Vector3 { v1.x, 0, v1.z } .dot(normal);
+
+    return { normal, dist };
+}
+
+/// Computes height of vertex on given slope (height of a point on given plane, that has x and z the same as vertex).
+/// Floor/ceiling height should be added also.
+/// @param plane        Plane of the slope. Must not be vertical.
+float computeVertexHeight(const Plane& plane, Vertex2 vertex) {
+    // ax + by + cz = d
+    // y = (d - ax - cz) / b
+
+    auto height = (plane.dist - plane.normal.x * vertex.x - plane.normal.z * vertex.z) / plane.normal.y;
+    return height;
+}
+
+TextureUvs getTextureUvs(const LvtLevel& level, const TexInfos& texInfos, int textureId) {
+    if (textureId == -1)
+        return TextureUvs { 0 };
+
+    auto texName = level.textures.at(textureId);
+    auto canonicalTexName = canonicalTextureName(texName);
+    if (texInfos.count(canonicalTexName) > 0)   // @todo This is to skip animated textures for now (ATX format).
+        return texInfos.at(canonicalTexName);
+
+    return texInfos.at("default");
+}
+
 void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, int iwall, std::vector<Vector3>& vertices, std::vector<Uv>& uvs, std::vector<int>& triangles) {
     const Sector& sector = level.sectors.at(isector);
     const Wall& wall = sector.walls.at(iwall);
 
-    // There are 8 vertices for each vertex: floor, bottom wall end, top wall end, ceiling, and each wall has it's own vertices.
-    // @todo What about DADJOIN? Do we need more vertices?
-
-    auto firstIdx = static_cast<int>(vertices.size());
-
-    auto v1 = sector.vertices[wall.v1];
-    auto v2 = sector.vertices[wall.v2];
+    // Structure of a wall:
+    // @note Dadjoin might be also above adjoin, I guess.
+    //
+    // ceiling         ----------------
+    // TOP wall        |              |
+    // adjoin ceiling  |--------------|   \
+    // MID TOP wall    |              |    |
+    // adjoin floor    |--------------|    |
+    // MID MID wall    |              |    > MID and OVERLAY
+    // dadjoin ceiling |--------------|    |
+    // MID BOT wall    |              |    |
+    // dadjoin floor   |--------------|   /
+    // BOT wall        |              |
+    // floor           ----------------
+    //
+    // TOP: min(max(dadjoin ceiling, adjoin ceiling), ceiling) -> ceiling
+    // MID TOP: X -> min(max(dadjoin ceiling, adjoin ceiling), ceiling)
+    // MID MID: Y -> X
+    // MID BOT: max(min(dadjoin floor, adjoin floor), floor) -> max(min(dadjoin ceiling, adjoin ceiling), floor)
+    // BOT: floor -> max(min(dadjoin floor, adjoin floor), floor)
 
     enum WallKind {
-        MID = 0,
-        TOP = 1,
-        BOT = 2,
-        OVERLAY = 3,
+        TOP,
+        MID_TOP,
+        MID_MID,
+        MID_BOT,
+        BOT,
     };
 
-    bool drawWall[4] = { true, false, false, true };
+    std::array<bool, 5> drawWall = { false, false, false, false, false };    ///< Flags that say if given wall should be drawn.
 
-    float upperFloorY = sector.floorY;
-    float lowerCeilingY = sector.ceilingY;
+    const Sector* adjoinedSector;
+    const Sector* dadjoinedSector;
+
+    Plane floorPlane { Vector3::up, 0 };
+    Plane ceilingPlane { Vector3::up, 0 };
+    Plane adjoinedFloorPlane { Vector3::up, 0 };
+    Plane adjoinedCeilingPlane { Vector3::up, 0 };
+    Plane dadjoinedFloorPlane { Vector3::up, 0 };
+    Plane dadjoinedCeilingPlane { Vector3::up, 0 };
+
+    if (hasFlag(sector, SectorFlag1::SLOPED_FLOOR))
+        floorPlane = computeSlopePlane(level, sector.floorSlope);
+    if (hasFlag(sector, SectorFlag1::SLOPED_CEILING))
+        ceilingPlane = computeSlopePlane(level, sector.ceilingSlope);
+
     if (wall.adjoin != -1) {
-        if (!(wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX))) {
-            drawWall[MID] = false;
-            drawWall[OVERLAY] = false;
-        }
-
-        // Reposition vertices.
-        const Sector& otherSector = level.sectors.at(wall.adjoin);
-        const Wall& otherWall = otherSector.walls.at(wall.mirror);
-
-        upperFloorY = std::max(sector.floorY, otherSector.floorY);
-        lowerCeilingY = std::min(sector.ceilingY, otherSector.ceilingY);
+        adjoinedSector = &level.sectors.at(wall.adjoin);
+        if (hasFlag(*adjoinedSector, SectorFlag1::SLOPED_FLOOR))
+            adjoinedFloorPlane = computeSlopePlane(level, adjoinedSector->floorSlope);
+        if (hasFlag(*adjoinedSector, SectorFlag1::SLOPED_CEILING))
+            adjoinedCeilingPlane = computeSlopePlane(level, adjoinedSector->ceilingSlope);
     }
 
-    float lowAndHighAltitudesForWalls[4 * 2] = {
-        upperFloorY, lowerCeilingY,     // MID
-        lowerCeilingY, sector.ceilingY, // TOP
-        sector.floorY, upperFloorY,     // BOT
-        upperFloorY, lowerCeilingY,     // OVERLAY
+    if (wall.dadjoin != -1) {
+        dadjoinedSector = &level.sectors.at(wall.dadjoin);
+        if (hasFlag(*dadjoinedSector, SectorFlag1::SLOPED_FLOOR))
+            dadjoinedFloorPlane = computeSlopePlane(level, dadjoinedSector->floorSlope);
+        if (hasFlag(*dadjoinedSector, SectorFlag1::SLOPED_CEILING))
+            dadjoinedCeilingPlane = computeSlopePlane(level, dadjoinedSector->ceilingSlope);
+    }
+
+    struct VertexHeights {
+        float ceilingAltitude;
+        float upJoinedCeilingAltitude;
+        float upJoinedFloorAltitude;
+        float downJoinedCeilingAltitude;
+        float downJoinedFloorAltitude;
+        float floorAltitude;
     };
 
-    // For each possible texture on the wall prepare 4 vertices with uvs.
-    auto addWallVertices = [&](WallKind wallKind, int textureId) {
-        auto highAltitude = lowAndHighAltitudesForWalls[wallKind * 2 + 1];
-        auto lowAltitude = lowAndHighAltitudesForWalls[wallKind * 2 + 0];
+    auto computeVertexHeights = [&](Vertex2 v) {
+        VertexHeights vertexHeights;
 
-        if (highAltitude <= lowAltitude) {
-            drawWall[wallKind] = false;
+        float ceilingAltitude;
+        float floorAltitude;
+        float adjoinedCeilingAltitude;
+        float adjoinedFloorAltitude;
+        float dadjoinedCeilingAltitude;
+        float dadjoinedFloorAltitude;
+
+        ceilingAltitude = computeVertexHeight(ceilingPlane, v) + sector.ceilingY;
+        floorAltitude = computeVertexHeight(floorPlane, v) + sector.floorY;
+
+        if (wall.adjoin != -1) {
+            adjoinedCeilingAltitude = computeVertexHeight(adjoinedCeilingPlane, v) + adjoinedSector->ceilingY;
+            adjoinedFloorAltitude = computeVertexHeight(adjoinedFloorPlane, v) + adjoinedSector->floorY;
         }
 
-        Vector3 v1h { v1.x, highAltitude, v1.z };
-        Vector3 v2h { v2.x, highAltitude, v2.z };
-        Vector3 v1l { v1.x, lowAltitude, v1.z };
-        Vector3 v2l { v2.x, lowAltitude, v2.z };
-        vertices.push_back(v1h);
-        vertices.push_back(v2h);
-        vertices.push_back(v1l);
-        vertices.push_back(v2l);
-
-        TextureUvs texUvs = { 0 };
-        if (textureId != -1) {
-            auto texName = level.textures.at(textureId);
-            auto canonicalTexName = canonicalTextureName(texName);
-            if (texInfos.count(canonicalTexName) > 0)   // @todo This is to skip animated textures for now (ATX format).
-                texUvs = texInfos.at(canonicalTexName);
-            else
-                texUvs = texInfos.at("default");
+        if (wall.dadjoin != -1) {
+            dadjoinedCeilingAltitude = computeVertexHeight(dadjoinedCeilingPlane, v) + dadjoinedSector->ceilingY;
+            dadjoinedFloorAltitude = computeVertexHeight(dadjoinedFloorPlane, v) + dadjoinedSector->floorY;
         }
 
-        uvs.push_back({ texUvs.start.u, texUvs.start.v });
-        uvs.push_back({ texUvs.end.u, texUvs.start.v });
-        uvs.push_back({ texUvs.start.u, texUvs.end.v });
-        uvs.push_back({ texUvs.end.u, texUvs.end.v });
+        if ((wall.adjoin == -1) && (wall.dadjoin == -1)) {
+            // No adjoins. Only MID_MID wall will be visible.
+            drawWall[MID_MID] = true;
+            vertexHeights.ceilingAltitude = ceilingAltitude;
+            vertexHeights.upJoinedCeilingAltitude = ceilingAltitude;
+            vertexHeights.upJoinedFloorAltitude = ceilingAltitude;
+            vertexHeights.downJoinedCeilingAltitude = floorAltitude;
+            vertexHeights.downJoinedFloorAltitude = floorAltitude;
+            vertexHeights.floorAltitude = floorAltitude;
+        }
+        else
+        if ((wall.adjoin != -1) && (wall.dadjoin == -1)) {
+            // Only adjoin. Only TOP, MID_TOP and BOT walls might be visible.
+            drawWall[TOP] = true;
+            drawWall[MID_TOP] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[BOT] = true;
+            vertexHeights.ceilingAltitude = ceilingAltitude;
+            vertexHeights.upJoinedCeilingAltitude = adjoinedCeilingAltitude;
+            vertexHeights.upJoinedFloorAltitude = adjoinedCeilingAltitude;
+            vertexHeights.downJoinedCeilingAltitude = adjoinedFloorAltitude;
+            vertexHeights.downJoinedFloorAltitude = adjoinedFloorAltitude;
+            vertexHeights.floorAltitude = floorAltitude;
+        }
+        else
+        if ((wall.adjoin == -1) && (wall.dadjoin != -1)) {
+            // Only dadjoin. Only TOP, MID_TOP and BOT walls might be visible.
+            drawWall[TOP] = true;
+            drawWall[MID_TOP] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[BOT] = true;
+            vertexHeights.ceilingAltitude = ceilingAltitude;
+            vertexHeights.upJoinedCeilingAltitude = dadjoinedCeilingAltitude;
+            vertexHeights.upJoinedFloorAltitude = dadjoinedCeilingAltitude;
+            vertexHeights.downJoinedCeilingAltitude = dadjoinedFloorAltitude;
+            vertexHeights.downJoinedFloorAltitude = dadjoinedFloorAltitude;
+            vertexHeights.floorAltitude = floorAltitude;
+        }
+        else
+        {
+            // Two adjoins. All walls might be visible.
+            drawWall[TOP] = true;
+            drawWall[MID_TOP] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[MID_MID] = true;
+            drawWall[MID_BOT] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[BOT] = true;
+            vertexHeights.ceilingAltitude = ceilingAltitude;
+            vertexHeights.upJoinedCeilingAltitude = std::max(adjoinedCeilingAltitude, dadjoinedCeilingAltitude);
+            vertexHeights.upJoinedFloorAltitude = std::max(adjoinedFloorAltitude, dadjoinedFloorAltitude);
+            vertexHeights.downJoinedCeilingAltitude = std::min(adjoinedCeilingAltitude, dadjoinedCeilingAltitude);
+            vertexHeights.downJoinedFloorAltitude = std::min(adjoinedFloorAltitude, dadjoinedFloorAltitude);
+            vertexHeights.floorAltitude = floorAltitude;
+        }
+
+        // Clamp all values to floor/ceiling window.
+        vertexHeights.upJoinedCeilingAltitude   = clamp(vertexHeights.upJoinedCeilingAltitude, floorAltitude, ceilingAltitude);
+        vertexHeights.upJoinedFloorAltitude     = clamp(vertexHeights.upJoinedFloorAltitude, floorAltitude, ceilingAltitude);
+        vertexHeights.downJoinedCeilingAltitude = clamp(vertexHeights.downJoinedCeilingAltitude, floorAltitude, ceilingAltitude);
+        vertexHeights.downJoinedFloorAltitude   = clamp(vertexHeights.downJoinedFloorAltitude, floorAltitude, ceilingAltitude);
+
+        return vertexHeights;
     };
-
-    addWallVertices(MID, wall.mid.textureId);
-    addWallVertices(TOP, wall.top.textureId);
-    addWallVertices(BOT, wall.bot.textureId);
-    addWallVertices(OVERLAY, wall.overlay.textureId);
 
     if (sector.flag1 & static_cast<uint32_t>(SectorFlag1::NO_WALL_DRAW)) {
-        // @note This might be ok, but might be not...
+        // @note This is probably not ok.
+        // @note Also EXTERIOR_ADJOIN and EXTERIOR_FLOOR_ADJOIN probably should play a part here.
         if (sector.flag1 & static_cast<uint32_t>(SectorFlag1::EXTERIOR_NO_CEIL)) {
             drawWall[TOP] = false;
         }
@@ -116,23 +257,86 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
         }
     }
 
-    drawWall[MID] &= (wall.mid.textureId != -1);
-    drawWall[TOP] &= (wall.mid.textureId != -1);
-    drawWall[BOT] &= (wall.mid.textureId != -1);
-    drawWall[OVERLAY] &= (wall.mid.textureId != -1);
+    auto firstIdx = static_cast<int>(vertices.size());
+    auto currentIdx = firstIdx;
 
-    for (int wallKind = MID; wallKind <= OVERLAY; ++wallKind) {
+    Vertex2 verts[2] = { sector.vertices[wall.v1], sector.vertices[wall.v2] };
+    VertexHeights vertexHeights[2] = { computeVertexHeights(verts[0]), computeVertexHeights(verts[1]) };
+
+    auto addWall = [&](WallKind wallKind, int textureId) {
         if (!drawWall[wallKind])
-            continue;
+            return;
+        if (textureId == -1)
+            return;
 
-        triangles.push_back(firstIdx + wallKind * 4 + 2);
-        triangles.push_back(firstIdx + wallKind * 4 + 0);
-        triangles.push_back(firstIdx + wallKind * 4 + 1);
+        for (int i = 0; i < 2; ++i) {
+            auto v = verts[i];
+            auto& vertexHeight = vertexHeights[i];
 
-        triangles.push_back(firstIdx + wallKind * 4 + 1);
-        triangles.push_back(firstIdx + wallKind * 4 + 3);
-        triangles.push_back(firstIdx + wallKind * 4 + 2);
-    }
+            float low, high;   ///< Low/high altitudes for vertex
+            switch (wallKind) {
+                case TOP: {
+                    high = vertexHeight.ceilingAltitude;
+                    low = vertexHeight.upJoinedCeilingAltitude;
+                }
+                break;
+                case MID_TOP: {
+                    high = vertexHeight.upJoinedCeilingAltitude;
+                    low = vertexHeight.upJoinedFloorAltitude;
+                }
+                break;
+                case MID_MID: {
+                    high = vertexHeight.upJoinedFloorAltitude;
+                    low = vertexHeight.downJoinedCeilingAltitude;
+                }
+                break;
+                case MID_BOT: {
+                    high = vertexHeight.downJoinedCeilingAltitude;
+                    low = vertexHeight.downJoinedFloorAltitude;
+                }
+                break;
+                case BOT: {
+                    high = vertexHeight.downJoinedFloorAltitude;
+                    low = vertexHeight.floorAltitude;
+                }
+                break;
+                default:
+                    ZASSERT(false);
+            };
+
+            Vector3 vh { v.x, high, v.z };
+            Vector3 vl { v.x, low, v.z };
+            vertices.push_back(vh);
+            vertices.push_back(vl);
+        }
+
+        TextureUvs texUvs = getTextureUvs(level, texInfos, textureId);
+
+        uvs.push_back({ texUvs.start.u, texUvs.start.v });
+        uvs.push_back({ texUvs.start.u, texUvs.end.v });
+
+        uvs.push_back({ texUvs.end.u, texUvs.start.v });
+        uvs.push_back({ texUvs.end.u, texUvs.end.v });
+
+        triangles.push_back(currentIdx + 1);
+        triangles.push_back(currentIdx + 0);
+        triangles.push_back(currentIdx + 2);
+
+        triangles.push_back(currentIdx + 2);
+        triangles.push_back(currentIdx + 3);
+        triangles.push_back(currentIdx + 1);
+
+        currentIdx += 4;
+    };
+
+    addWall(TOP, wall.top.textureId);
+    addWall(MID_TOP, wall.mid.textureId);
+    addWall(MID_MID, wall.mid.textureId);
+    addWall(MID_BOT, wall.mid.textureId);
+    addWall(MID_TOP, wall.overlay.textureId);
+    addWall(MID_MID, wall.overlay.textureId);
+    addWall(MID_BOT, wall.overlay.textureId);
+    addWall(BOT, wall.bot.textureId);
 }
 
 /// Tesselates given sector.
@@ -243,24 +447,8 @@ void computeSector(const LvtLevel& level, const TexInfos& texInfos, int isector,
     // Floor / Ceilling
     auto firstIdx = static_cast<int>(vertices.size());
 
-    TextureUvs floorUvs = { 0 };
-    TextureUvs ceillingUvs = { 0 };
-    if (sector.floorTexture.textureId != -1) {
-        auto texName = level.textures.at(sector.floorTexture.textureId);
-        auto canonicalTexName = canonicalTextureName(texName);
-        if (texInfos.count(canonicalTexName) > 0)   // @todo This is to skip animated textures for now (ATX format).
-            floorUvs = texInfos.at(canonicalTexName);
-        else
-            floorUvs = texInfos.at("default");
-    }
-    if (sector.ceilingTexture.textureId != -1) {
-        auto texName = level.textures.at(sector.ceilingTexture.textureId);
-        auto canonicalTexName = canonicalTextureName(texName);
-        if (texInfos.count(canonicalTexName) > 0)   // @todo This is to skip animated textures for now (ATX format).
-            ceillingUvs = texInfos.at(canonicalTexName);
-        else
-            ceillingUvs = texInfos.at("default");
-    }
+    TextureUvs floorUvs = getTextureUvs(level, texInfos, sector.floorTexture.textureId);
+    TextureUvs ceillingUvs = getTextureUvs(level, texInfos, sector.ceilingTexture.textureId);
 
     TextureUvs bounds = sectorBounds(level, isector);
     float minX = bounds.start.u;
@@ -271,9 +459,15 @@ void computeSector(const LvtLevel& level, const TexInfos& texInfos, int isector,
     auto rangeX = std::max(1.0f, maxX - minX);
     auto rangeZ = std::max(1.0f, maxZ - minZ);
 
+    Plane floorPlane = hasFlag(sector, SectorFlag1::SLOPED_FLOOR) ? computeSlopePlane(level, sector.floorSlope) : Plane { Vector3::up, 0 };
+    Plane ceilingPlane = hasFlag(sector, SectorFlag1::SLOPED_CEILING) ? computeSlopePlane(level, sector.ceilingSlope) : Plane { Vector3::up, 0 };
+
     for (auto wv : tesselatedVertices) {
-        Vector3 vf { wv.x, sector.floorY, wv.z };
-        Vector3 vc { wv.x, sector.ceilingY, wv.z };
+        auto floorAltitude = computeVertexHeight(floorPlane, wv) + sector.floorY;
+        auto ceilingAltitude = computeVertexHeight(ceilingPlane, wv) + sector.ceilingY;
+
+        Vector3 vf { wv.x, floorAltitude, wv.z };
+        Vector3 vc { wv.x, ceilingAltitude, wv.z };
         vertices.push_back(vf);
         vertices.push_back(vc);
 
@@ -341,6 +535,19 @@ lvt::TextureParams parseTextureParams(lvtgrammar::LvtParser::TextureParamsContex
     return textureParams;
 }
 
+/// Parses SlopeParams. If ctx is nullptr returns zero initialized SlopeParams.
+lvt::SlopeParams parseSlopeParams(lvtgrammar::LvtParser::SlopeParamsContext* ctx) {
+    lvt::SlopeParams slopeParams = { 0 };
+    if (ctx == nullptr)
+        return slopeParams;
+
+    slopeParams.sector = boost::lexical_cast<int>(ctx->sectorId->getText());
+    slopeParams.wall = boost::lexical_cast<int>(ctx->wallId->getText());
+    slopeParams.angle = boost::lexical_cast<int>(ctx->angle->getText());
+
+    return slopeParams;
+}
+
 class SectorVisitor : public lvtgrammar::LvtParserBaseVisitor {
 public:
     LvtLevel level;
@@ -398,6 +605,11 @@ public:
         sector.flag1 = boost::lexical_cast<int>(ctx->flag1->getText());
         sector.flag2 = boost::lexical_cast<int>(ctx->flag2->getText());
         sector.flag3 = ctx->flag3 ? boost::lexical_cast<int>(ctx->flag3->getText()) : 0;
+
+        sector.floorSlope = parseSlopeParams(ctx->floorSlope);
+        sector.ceilingSlope = parseSlopeParams(ctx->ceilingSlope);
+
+        sector.layer = boost::lexical_cast<int>(ctx->layer->getText());
 
         for (auto element : ctx->vertices()->vertex()) {
             antlrcpp::Any el = visitVertex(element);

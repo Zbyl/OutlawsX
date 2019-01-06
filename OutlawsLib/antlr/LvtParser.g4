@@ -65,6 +65,9 @@ sectors     : NUMSECTORS numSectors=INT
               (sector)*;
 textureParamsSmall : textureId=INT offsX=float_ offsY=float_;
 textureParams : textureParamsSmall unused=float_;
+
+slopeParams : sectorId=INT wallId=INT angle=INT ;
+
 sector      : SECTOR id=ID
               NAME (name=IDEND)?
               AMBIENT ambient=INT
@@ -92,9 +95,9 @@ sector      : SECTOR id=ID
               C_OVERLAY ceilingOverlayTexture=textureParams
               floorOffsets
               FLAGS flag1=INT flag2=INT (flag3=INT)?
-              (SLOPEDFLOOR floorSlopeX=INT floorSlopeY=INT floorSlopeZ=INT)?
-              (SLOPEDCEILING floorSlopeX=INT floorSlopeY=INT floorSlopeZ=INT)?
-              LAYER INT
+              (SLOPEDFLOOR floorSlope=slopeParams)?
+              (SLOPEDCEILING ceilingSlope=slopeParams)?
+              LAYER layer=INT
               vertices
               walls
             ;
