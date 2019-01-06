@@ -197,9 +197,9 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
         }
         else
         if ((wall.adjoin != -1) && (wall.dadjoin == -1)) {
-            // Only adjoin. Only TOP, MID_TOP and BOT walls might be visible.
+            // Only adjoin. Only TOP, MID_MID and BOT walls might be visible.
             drawWall[TOP] = true;
-            drawWall[MID_TOP] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[MID_MID] = hasFlag(wall, WallFlag1::ADJOINING_MID_TX);
             drawWall[BOT] = true;
             vertexHeights.ceilingAltitude = ceilingAltitude;
             vertexHeights.upJoinedCeilingAltitude = adjoinedCeilingAltitude;
@@ -210,9 +210,9 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
         }
         else
         if ((wall.adjoin == -1) && (wall.dadjoin != -1)) {
-            // Only dadjoin. Only TOP, MID_TOP and BOT walls might be visible.
+            // Only dadjoin. Only TOP, MID_MID and BOT walls might be visible.
             drawWall[TOP] = true;
-            drawWall[MID_TOP] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[MID_MID] = hasFlag(wall, WallFlag1::ADJOINING_MID_TX);
             drawWall[BOT] = true;
             vertexHeights.ceilingAltitude = ceilingAltitude;
             vertexHeights.upJoinedCeilingAltitude = dadjoinedCeilingAltitude;
@@ -225,9 +225,9 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
         {
             // Two adjoins. All walls might be visible.
             drawWall[TOP] = true;
-            drawWall[MID_TOP] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[MID_TOP] = hasFlag(wall, WallFlag1::ADJOINING_MID_TX);
             drawWall[MID_MID] = true;
-            drawWall[MID_BOT] = (wall.flag1 & static_cast<uint32_t>(WallFlag1::ADJOINING_MID_TX));
+            drawWall[MID_BOT] = hasFlag(wall, WallFlag1::ADJOINING_MID_TX);
             drawWall[BOT] = true;
             vertexHeights.ceilingAltitude = ceilingAltitude;
             vertexHeights.upJoinedCeilingAltitude = std::max(adjoinedCeilingAltitude, dadjoinedCeilingAltitude);
@@ -246,22 +246,22 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
         return vertexHeights;
     };
 
-    if (sector.flag1 & static_cast<uint32_t>(SectorFlag1::NO_WALL_DRAW)) {
+    Vertex2 verts[2] = { sector.vertices[wall.v1], sector.vertices[wall.v2] };
+    VertexHeights vertexHeights[2] = { computeVertexHeights(verts[0]), computeVertexHeights(verts[1]) };
+
+    if (hasFlag(sector, SectorFlag1::NO_WALL_DRAW)) {
         // @note This is probably not ok.
         // @note Also EXTERIOR_ADJOIN and EXTERIOR_FLOOR_ADJOIN probably should play a part here.
-        if (sector.flag1 & static_cast<uint32_t>(SectorFlag1::EXTERIOR_NO_CEIL)) {
+        if (hasFlag(sector, SectorFlag1::EXTERIOR_NO_CEIL)) {
             drawWall[TOP] = false;
         }
-        if (sector.flag1 & static_cast<uint32_t>(SectorFlag1::EXTERIOR_NO_FLOOR)) {
+        if (hasFlag(sector, SectorFlag1::EXTERIOR_NO_FLOOR)) {
             drawWall[BOT] = false;
         }
     }
 
     auto firstIdx = static_cast<int>(vertices.size());
     auto currentIdx = firstIdx;
-
-    Vertex2 verts[2] = { sector.vertices[wall.v1], sector.vertices[wall.v2] };
-    VertexHeights vertexHeights[2] = { computeVertexHeights(verts[0]), computeVertexHeights(verts[1]) };
 
     auto addWall = [&](WallKind wallKind, int textureId) {
         if (!drawWall[wallKind])
@@ -494,14 +494,14 @@ void computeSector(const LvtLevel& level, const TexInfos& texInfos, int isector,
         int t2 = tesselatedTriangles[i + 2];
 
         // Floor
-        if (!(sector.flag1 & static_cast<uint32_t>(SectorFlag1::EXTERIOR_NO_FLOOR))) {
+        if (!hasFlag(sector, SectorFlag1::EXTERIOR_NO_FLOOR)) {
             triangles.push_back(firstIdx + t0 * 2 + 0);
             triangles.push_back(firstIdx + t1 * 2 + 0);
             triangles.push_back(firstIdx + t2 * 2 + 0);
         }
 
         // Ceilling
-        if (!(sector.flag1 & static_cast<uint32_t>(SectorFlag1::EXTERIOR_NO_CEIL))) {
+        if (!hasFlag(sector, SectorFlag1::EXTERIOR_NO_CEIL)) {
             triangles.push_back(firstIdx + t0 * 2 + 1);
             triangles.push_back(firstIdx + t2 * 2 + 1);
             triangles.push_back(firstIdx + t1 * 2 + 1);
