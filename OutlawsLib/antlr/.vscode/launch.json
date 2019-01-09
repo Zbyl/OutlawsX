@@ -5,12 +5,32 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "antlr4-input",
+      "name": "antlr4-Lev",
       "type": "antlr-debug",
       "request": "launch",
-      "input": "input.txt",
+      "input": "LevInput.txt",
       "grammar": "LvtParser.g4",
       "startRule": "lvt_file",
+      "printParseTree": true,
+      "visualParseTree": true
+    },
+    {
+      "name": "antlr4-Atx",
+      "type": "antlr-debug",
+      "request": "launch",
+      "input": "AtxInput.txt",
+      "grammar": "AtxParser.g4",
+      "startRule": "atx_file",
+      "printParseTree": true,
+      "visualParseTree": true
+    },
+    {
+      "name": "antlr4-Inf",
+      "type": "antlr-debug",
+      "request": "launch",
+      "input": "InfInput.txt",
+      "grammar": "InfParser.g4",
+      "startRule": "inf_file",
       "printParseTree": true,
       "visualParseTree": true
     }

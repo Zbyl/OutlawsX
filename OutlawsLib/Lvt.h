@@ -47,7 +47,7 @@ enum class WallFlag1 : uint32_t {
     HIDE_ON_MAP = (1u << 10),
     SHOW_AS_NORMAL_ON_MAP = (1u << 11),
     SIGN_ANCHORED = (1u << 12),
-    WALL_DAMAGES_PLAYER = (1u << 13),
+    WALL_DAMAGES_PLAYER = (1u << 13), ///< I think this is actually PLAYER_DAMAGES_WALL. After player hits wall ATX texture is advanced to next stop.
     SHOW_AS_LEDGE_ON_MAP = (1u << 14),
     SHOW_AS_DOOR_ON_MAP = (1u << 15),
 };

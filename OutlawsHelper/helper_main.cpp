@@ -2,6 +2,7 @@
 
 #include "Lab.h"
 #include "Lvt.h"
+#include "Inf.h"
 
 #include <iostream>
 #include <boost/exception/all.hpp>
@@ -14,6 +15,9 @@ int main(int argc, char *argv[])
 {
     try {
         //lab = lab_fuse::loadLabFile(labFilePath);
+
+        inf::loadAtx(R"(F:\VSProjects\LabFuse\OutlawsX\OutlawsLib\antlr\AtxInput.txt)");
+        inf::loadInf(R"(F:\GOG Games\Outlaws\hideoutz.INF)");
 
         auto level = lvt::loadLvt(R"(F:\VSProjects\LabFuse\trash\HIDEOUT.LVT)");
         auto texInfos = lvt::loadTexInfos(R"(F:\VSProjects\LabFuse\UnityProj0\UnityProj0\Assets\Textures\pack.json)");
