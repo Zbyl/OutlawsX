@@ -20,11 +20,11 @@
 
 #else
 
-#define LOGHACK_        LogLevel::INFO
-#define LOGHACK_ERROR   LogLevel::ERROR
-#define LOGHACK_WARNING LogLevel::WARNING
-#define LOGHACK_INFO    LogLevel::INFO
-#define LOGHACK_DEBUG   LogLevel::DEBUG
+#define LOGHACK_        terminal_editor::LogLevel::INFO
+#define LOGHACK_ERROR   terminal_editor::LogLevel::ERROR
+#define LOGHACK_WARNING terminal_editor::LogLevel::WARNING
+#define LOGHACK_INFO    terminal_editor::LogLevel::INFO
+#define LOGHACK_DEBUG   terminal_editor::LogLevel::DEBUG
 
 #define LOG(...) (terminal_editor::LogHelper(LOGHACK_ ## __VA_ARGS__,  __FILE__ "(" ZTOKEN_STRINGIZE(__LINE__) "): ").message)
 
