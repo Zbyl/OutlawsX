@@ -33,6 +33,8 @@ set(TARGET_SOURCES
     Lvt.cpp
     Inf.h
     Inf.cpp
+    Atx.h
+    Atx.cpp
 
     # Hack. Remove it from here.
     file_utilities.cpp

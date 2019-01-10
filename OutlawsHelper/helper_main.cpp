@@ -3,6 +3,7 @@
 #include "Lab.h"
 #include "Lvt.h"
 #include "Inf.h"
+#include "Atx.h"
 
 #include <iostream>
 #include <boost/exception/all.hpp>
@@ -16,7 +17,16 @@ int main(int argc, char *argv[])
     try {
         //lab = lab_fuse::loadLabFile(labFilePath);
 
-        inf::loadAtx(R"(F:\VSProjects\LabFuse\OutlawsX\OutlawsLib\antlr\AtxInput.txt)");
+        auto instructions = inf::loadAtx(R"(F:\VSProjects\LabFuse\OutlawsX\OutlawsLib\antlr\AtxInput.txt)");
+        inf::AtxItem item(0, inf::AtxWallKind::MID, 0, instructions);
+        bool trigger = false;
+        lvt::LvtLevel dummyLevel;
+        while (true) {
+            item.update(dummyLevel, 0.1f);
+            if (trigger)
+                item.trigger(dummyLevel, 0);
+        }
+
         inf::loadInf(R"(F:\GOG Games\Outlaws\hideoutz.INF)");
 
         auto level = lvt::loadLvt(R"(F:\VSProjects\LabFuse\trash\HIDEOUT.LVT)");

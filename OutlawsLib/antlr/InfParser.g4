@@ -20,23 +20,51 @@ class_     : CLASS_COLON classType=(ELEVATOR | TRIGGER) className=ID
              classElement*
            ;
 
-classElement  : SOUND_COLON soundEvent=INT soundName=ID
-              | CENTER_COLON centerX=float_ centerZ=float_
-              | SPEED_COLON speed=float_
-              | ANGLE_COLON angle=float_
-              | SLAVE_COLON slaveName=ID
-              | STOP_COLON stopValue=float_ (hold=HOLD | stopTime=INT)?
-              | STOP_COLON AT stopValue=float_ (hold=HOLD | stopTime=INT)?
-              | STOP_COLON sectorName=ID stopValue=float_ (hold=HOLD | stopTime=INT)?
-              | EVENT_MASK_COLON eventMask=INT
-              | OBJECT_COLON obj0=INT obj1=INT AUTO?
-              | OBJECT_EXCLUDE_COLON obj0=INT AUTO?
-              | CLIENT_COLON client=client_
-              | MESSAGE_COLON message
-              | MESSAGE_COLON stopIdx=INT client=client_ message
+classElement  : sound_
+              | center_
+              | speed_
+              | angle_
+              | slave_
+              | stop_
+              | master_
+              | eventMask_
+              | event_
+              | entityMask_
+              | start_
+              | key_
+              | flags_
+              | objectMask_
+              | object_
+              | objectExclude_
+              | client_
+              | triggerMessage
+              | elevatorMessage
               ;
 
-client_       : ID
+sound_          : SOUND_COLON soundEvent=INT soundName=ID ;
+center_         : CENTER_COLON centerX=float_ centerZ=float_ ;
+speed_          : SPEED_COLON speed=float_ ;
+angle_          : ANGLE_COLON angle=float_ ;
+slave_          : SLAVE_COLON slaveName=ID ;
+stop_           : STOP_COLON stopValue=float_ (stopTime=INT | stopKind=(HOLD | TERMINATE | COMPLETE) )?
+                | STOP_COLON AT stopValue=float_ (stopTime=INT | stopKind=(HOLD | TERMINATE | COMPLETE) )?
+                | STOP_COLON sectorName=ID stopValue=float_ (hold=HOLD | stopTime=INT)?
+                ;
+master_         : MASTER_COLON masterSwitch=(ON | OFF) ;
+eventMask_      : EVENT_MASK_COLON eventMask=(INT | STAR) ;
+event_          : EVENT_COLON event=INT ;
+entityMask_     : ENTITY_MASK_COLON entityMask=(INT | STAR) ;
+start_          : START_COLON start=INT ;
+key_            : KEY_COLON key=(RED | BLUE | YELLOW) ;
+flags_          : FLAGS_COLON flags=INT ;
+objectMask_     : OBJECT_MASK_COLON objectMask=INT ;
+object_         : OBJECT_COLON obj0=INT obj1=INT AUTO? ;
+objectExclude_  : OBJECT_EXCLUDE_COLON obj0=INT AUTO? ;
+client_         : CLIENT_COLON client=clientId ;
+triggerMessage  : MESSAGE_COLON message ;
+elevatorMessage : MESSAGE_COLON stopIdx=INT client=clientId message ;
+
+clientId      : ID
               | ID OPEN_PAREN wallName=WALLID CLOSE_PAREN
               | SYSTEM
               ;
