@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Lvt.h"
+#include "LevelRuntime.h"
 #include "Inf.h"
 
 #include <string>
@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <cstdint>
 
-namespace inf {
+namespace outlaws {
 
 enum class AtxInstructionKind {
     RATE,       ///< `RATE [num]` - sets animation playback rate (presumably in FPS).
@@ -51,11 +51,11 @@ class AtxItem : public Item {
 public:
     AtxItem(int isector, AtxWallKind wallKind, int iwall, const AtxInstructions& instructions);
         
-    virtual void trigger(const lvt::LvtLevel& level, uint32_t eventMask) override;
+    virtual void trigger(const LvtLevel& level, uint32_t eventMask) override;
 
     /// Updates the item.
     /// @param deltaTime    Time in seconds since last update.
-    virtual void update(const lvt::LvtLevel& level, float deltaTime) override;
+    virtual void update(const LvtLevel& level, float deltaTime) override;
 
 private:
     /// Executes one fast instruction: RATE, GOTO or START_SOUND.
@@ -70,4 +70,4 @@ private:
 
 AtxInstructions loadAtx(const std::string& filePath);
 
-} // namespace inf
+} // namespace outlaws

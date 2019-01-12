@@ -22,7 +22,7 @@ find_package(ANTLR REQUIRED)
 function(SetCompilerOptionsMinimal targetName)
 
     # As this is a public compile feature anything that links to target will also build with -std=c++14
-    target_compile_features(${targetName} PUBLIC cxx_std_14)
+    target_compile_features(${targetName} PUBLIC cxx_std_17)
 
     if(MSVC)
         set(optionsList
@@ -111,6 +111,7 @@ function(SetCompilerOptions targetName)
         # Get rid of annoying compiler warnings.
         target_compile_definitions(${targetName} PUBLIC _CRT_SECURE_NO_WARNINGS)
         target_compile_definitions(${targetName} PUBLIC _SCL_SECURE_NO_WARNINGS)
+        target_compile_definitions(${targetName} PUBLIC _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
 
         target_compile_definitions(${targetName} PUBLIC NOMINMAX)
         target_compile_definitions(${targetName} PUBLIC WIN32_LEAN_AND_MEAN)

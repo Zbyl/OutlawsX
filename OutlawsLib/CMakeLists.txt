@@ -31,10 +31,16 @@ set(TARGET_SOURCES
 
     Lvt.h
     Lvt.cpp
+    LevelRuntime.h
+    LevelRuntime.cpp
+    TexInfos.h
+    TexInfos.cpp
     Inf.h
     Inf.cpp
     Atx.h
     Atx.cpp
+    geometry.h
+    geometry.cpp
 
     # Hack. Remove it from here.
     file_utilities.cpp

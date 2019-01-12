@@ -3,12 +3,12 @@
 
 #define OUTLAWSX_API __declspec(dllexport)
 
-#include "Lvt.h"
+#include "LevelRuntime.h"
 
 #include <algorithm>
 
-lvt::LvtLevel level;
-lvt::TexInfos texInfos;
+outlaws::LvtLevel level;
+outlaws::TexInfos texInfos;
 
 extern "C" {
 
@@ -20,8 +20,8 @@ OUTLAWSX_API int func(int a)
 OUTLAWSX_API int loadLevel()
 {
     try {
-        level = lvt::loadLvt(R"(F:\VSProjects\LabFuse\trash\HIDEOUT.LVT)");
-        texInfos = lvt::loadTexInfos(R"(F:\VSProjects\LabFuse\UnityProj0\UnityProj0\Assets\Textures\pack.json)");
+        level = outlaws::loadLvt(R"(F:\VSProjects\LabFuse\trash\HIDEOUT.LVT)");
+        texInfos = outlaws::loadTexInfos(R"(F:\VSProjects\LabFuse\UnityProj0\UnityProj0\Assets\Textures\pack.json)");
         return static_cast<int>(level.sectors.size());
     }
     catch (...) {
@@ -52,11 +52,11 @@ OUTLAWSX_API int overlappingSector(float x, float z)
     return -1;
 }
 
-OUTLAWSX_API void fetchData(lvt::Vector3* vertices, lvt::Uv* texCoords, int* numVertices, int* triangles, int* numTriangles, int sectorNum)
+OUTLAWSX_API void fetchData(outlaws::Vector3* vertices, outlaws::Uv* texCoords, int* numVertices, int* triangles, int* numTriangles, int sectorNum)
 {
     try {
-        std::vector<lvt::Vector3> verts;
-        std::vector<lvt::Uv> uvs;
+        std::vector<outlaws::Vector3> verts;
+        std::vector<outlaws::Uv> uvs;
         std::vector<int> tris;
 
     #if 0
@@ -75,9 +75,9 @@ OUTLAWSX_API void fetchData(lvt::Vector3* vertices, lvt::Uv* texCoords, int* num
     #endif
 
         if (sectorNum == -1)
-            lvt::computeLevel(level, texInfos, verts, uvs, tris);
+            outlaws::computeLevel(level, texInfos, verts, uvs, tris);
         else
-            lvt::computeSector(level, texInfos, sectorNum, verts, uvs, tris);
+            outlaws::computeSector(level, texInfos, sectorNum, verts, uvs, tris);
 
         if (*numVertices < static_cast<int>(verts.size())) {
             *numVertices = 0;

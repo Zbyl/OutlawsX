@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <cstdint>
 
-namespace inf {
+namespace outlaws {
 
 enum class EventMasks {
     CROSS_FRONT = 1,    ///<  Cross line from front side.
@@ -40,13 +40,13 @@ public:
 
     /// Updates the item.
     /// @param deltaTime    Time in seconds since last update.
-    virtual void update(const lvt::LvtLevel& level, float deltaTime) = 0;
+    virtual void update(const LvtLevel& level, float deltaTime) = 0;
 
     /// Triggers the item.
     /// @param eventMask    Object should be triggered only if it matches this event mask.
-    virtual void trigger(const lvt::LvtLevel& level, uint32_t eventMask) = 0;
+    virtual void trigger(const LvtLevel& level, uint32_t eventMask) = 0;
 };
 
 void loadInf(const std::string& filePath);
 
-} // namespace inf
+} // namespace outlaws

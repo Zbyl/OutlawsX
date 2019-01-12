@@ -25,7 +25,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-namespace inf {
+namespace outlaws {
 
 class ItemVisitor : public infgrammar::InfParserBaseVisitor {
 public:
@@ -66,4 +66,4 @@ void loadInf(const std::string& filePath) {
     itemVisitor.visitInf_file(tree);
 }
 
-} // namespace inf
+} // namespace outlaws

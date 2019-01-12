@@ -21,7 +21,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-namespace inf {
+namespace outlaws {
 
 AtxItem::AtxItem(int isector, AtxWallKind wallKind, int iwall, const AtxInstructions& instructions)
     : isector(isector)
@@ -34,7 +34,7 @@ AtxItem::AtxItem(int isector, AtxWallKind wallKind, int iwall, const AtxInstruct
 {
 }
 
-void AtxItem::trigger(const lvt::LvtLevel& level, uint32_t eventMask) {
+void AtxItem::trigger(const LvtLevel& level, uint32_t eventMask) {
 #if 0
     const lvt::Sector& sector = level.sectors.at(isector);
     const lvt::Wall& wall = sector.walls.at(iwall);
@@ -51,7 +51,7 @@ void AtxItem::trigger(const lvt::LvtLevel& level, uint32_t eventMask) {
     triggered = true;
 }
 
-void AtxItem::update(const lvt::LvtLevel& level, float deltaTime) {
+void AtxItem::update(const LvtLevel& level, float deltaTime) {
     timeLeft += deltaTime;
 
     // Process trigger
@@ -226,4 +226,4 @@ AtxInstructions loadAtx(const std::string& filePath) {
     return atxVisitor.instructions;
 }
 
-} // namespace inf
+} // namespace outlaws
