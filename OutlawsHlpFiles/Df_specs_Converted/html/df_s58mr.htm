@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>(Untitled)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<P><A NAME="jdkgm3"></A><B>event_mask:</B></P>
+
+<P>Determines what event will operate an elevator or trigger.  The event, when carried out, will move an elevator to its next stop, or trigger a trigger.</P>
+
+<P><I>event_mask values</I></P>
+
+<TABLE cols=2 width=451>
+
+<TR VALIGN="top">
+<TD width=24%>1</TD>
+<TD width=76%>Cross line from front side</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>2 </TD>
+<TD width=76%>Cross line from back side</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>4 </TD>
+<TD width=76%>Enter sector</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>8 </TD>
+<TD width=76%>Leave sector</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>16 </TD>
+<TD width=76%>Nudge line from front side / Nudge sector from inside</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>32 </TD>
+<TD width=76%>Nudge line from back side /  Nudge sector from outside</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>64 </TD>
+<TD width=76%>Explosion</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>256 </TD>
+<TD width=76%>Shoot or punch line (see <A HREF="df_s6f6t.htm">entity_mask</A>)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>512 </TD>
+<TD width=76%>Land on floor of sector</TD>
+</TR>
+</TABLE><BR>
+
+<P>(The above are bit values, so are added up when more than one are needed.)</P>
+
+<TABLE cols=2 width=451>
+
+<TR VALIGN="top">
+<TD width=24%>* or -1</TD>
+<TD width=76%>All bits set</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%>Custom values</TD>
+<TD width=76%>Triggered by triggers with an event: or by certain messages with the custom value as a parameter.</TD>
+</TR>
+</TABLE><BR>
+
+<P><I>Usage:</I></P>
+
+<P>| event_mask: [value]</P>
+
+<P>See <A HREF="df_s72ud.htm">Defaults</A></P>
+
+</BODY>
+</HTML>

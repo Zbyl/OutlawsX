@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>LEV Geometry - Sector</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="LEV file">
+	<PARAM NAME="Keyword" VALUE="sector">
+</OBJECT>
+
+<H4><A NAME="4m1__eo"></A>LEV Geometry - Sector</H4>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>| SECTOR scnum</TD>
+</TR>
+</TABLE><BR>
+
+<P>This is the sector number, it is zero based.</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  NAME             sector_name</TD>
+</TR>
+</TABLE><BR>
+
+<P>This is both a link to the .INF file and a useful reminder.</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  AMBIENT          20</TD>
+</TR>
+</TABLE><BR>
+
+<P>Ambient light level in this sector.</P>
+
+<P>Note that this value is used in GROMAS to indicate an amount of red fog, not a light level.</P>
+
+<P>This is a good demonstration of the use of the CMP files.</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  FLOOR TEXTURE    80 -0.38 -0.06 2</TD>
+</TR>
+</TABLE><BR>
+
+<P>The TX to apply to the floor of the SC as an index in the TX table.</P>
+
+<P>The following two floats are the X and Z offsets by which the TX must be moved before being mapped.</P>
+
+<P>The third (int) value is unused.</P>
+
+<P>It seems that floor textures must be 64x64, or the game engine does strange things.</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  FLOOR ALTITUDE    0.00</TD>
+</TR>
+</TABLE><BR>
+
+<P>The altitude of the floor of this SC. Note that the Y axis goes "down", so higher altitudes have lower values.</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  CEILING TEXTURE  0  0.00  0.00 2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  CEILING ALTITUDE -12.00</TD>
+</TR>
+</TABLE><BR>
+
+<P>Same as floor.</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  SECOND ALTITUDE   0.00</TD>
+</TR>
+</TABLE><BR>
+
+<P>This is used to indicate a second "floor" altitude in a sector. For instance, a second altitude of 4 will make you "enter into the floor" 4 deep. It will in addition make the sector water like and generate a splashing sound. If you set a negative second altitude, you will be able to walk higher on the sector, provided you also enter the sector higher. This is the way platforms are created (the platform object is only a visual clue).</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  FLAGS            0 0 0</TD>
+</TR>
+</TABLE><BR>
+
+<P>Three flags, the second of which is never used in the 14 original levels.</P>
+
+<P>Change various things in the sector. See <A HREF="df_s7e2d.htm">Sector Flags</A>.</P>
+
+<TABLE cols=1 width=375>
+
+<TR VALIGN="top">
+<TD width=100%>|  LAYER            1</TD>
+</TR>
+</TABLE><BR>
+
+<P>The layer on which the SC is (positive, 0 or negative).</P>
+
+<P>This value is used in the game to make different maps corresponding to zones of altitude.</P>
+
+<P>Note that this is only a logical grouping, but is also used by the map in the game.</P>
+
+</BODY>
+</HTML>

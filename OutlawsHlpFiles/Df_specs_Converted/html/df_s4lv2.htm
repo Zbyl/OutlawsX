@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>(Untitled)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<P><A NAME="1.vrtsn"></A><B>adjoin:</B></P>
+
+<P>Adjoins a line to another line when an elevator arrives at a stop,  removing any adjoins it had with a previous line. This is required if you  need a line to remove its adjoin with one line and adjoin with another  line midway through a level. "Adjoin" is placed in an elevator's sequence.</P>
+
+<P>For example, in level 6 (detention center), you may notice that the 2  main lifts have a door on each layer adjoined to it on the same line.  Since a line cannot be adjoined to more than one other line at once,  the following occurs: midway through moving up between 2 layers, the  elevator move_floor arrives at a stop which it remains at for 0 seconds.  At this stop, a line of the lift sector is adjoined to a line of the door  sector on the layer above, at the same time removing its adjoin with a  line of the door sector on the layer below. The lift's doors all appear  to be directly on top of each other.</P>
+
+<P><I>Usage:</I></P>
+
+<P>| adjoin: [stopnum] [sector1] [line1] [sector2] [line2]</P>
+
+</BODY>
+</HTML>

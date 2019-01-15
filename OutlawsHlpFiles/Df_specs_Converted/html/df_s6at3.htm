@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>3DO Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="3DO Files">
+	<PARAM NAME="Keyword" VALUE="file format">
+</OBJECT>
+
+<H4><A NAME="1bgxuw"></A>3DO Files</H4>
+
+<P>They contain the "3D" objects. (samples : MOUSEBOT, the DEATH STAR HOLOGRAM, ...)</P>
+
+<P>They are text files containing a geometric description of a full 3D object, and are converted from 3D Studio .ASC format. They accept # comments.</P>
+
+<P>3DO format: [ by Michael Taylor]</P>
+
+<P>| 3DO 1.2</P>
+
+<P>Magic and Version Number: this is the word "3DO" followed by a version #, either 1.2, 1.20, or 1.30. </P>
+
+<P>Next comes several lines of header data.  Included is the picture name, number of objects in the file, number of vertice, number of polygons, palette used, and number of textures. </P>
+
+<P>| 3DONAME  cube</P>
+
+<P>| OBJECTS  00001</P>
+
+<P>| VERTICES 00008</P>
+
+<P>| POLYGONS 00006</P>
+
+<P>| PALETTE  METAL.PAL</P>
+
+<P>| TEXTURES 0</P>
+
+<P>or</P>
+
+<P>| TEXTURES 1</P>
+
+<P>|   TEXTURE: IPDTENGR.BM</P>
+
+<P>The palette file doesn't appear to relate to any PAL file found in the GOB directory.</P>
+
+<P>[Could this be the type of rendering (metal, phong, ...) used in 3DS ? [Yves]]</P>
+
+<P>[It is probably the palette used by LEC when testing the 3DOs out-of-game. In DF, the palette of the currently loaded level is used - Jereth]</P>
+
+<P>Please note that textures are a little different and will be explained below.</P>
+
+<P>If any textures are used then below the TEXTURES # line is additional lines defining each texture file. It creates a zero based array of textures for later usage by the objects.</P>
+
+<P>See <A HREF="df_s37qq.htm">Object Definitions</A></P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>FNT Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="FNT Files">
+</OBJECT>
+
+<H4><A NAME="w3hjbn"></A>FNT FILES</H4>
+
+<P>These files store a proportional character set. FNT files are found in DARK.GOB</P>
+
+<P>This set may not be complete. The font used to display the ammo, for instance contains only the numbers and the ':' character.</P>
+
+<P>FNT_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=600>
+
+<TR VALIGN="top">
+<TD width=16%>Magic</TD>
+<TD width=27%>char[4]</TD>
+<TD width=57%>// 'FNT' + 15h (21d)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%> Height</TD>
+<TD width=27%>byte</TD>
+<TD width=57%>// Height of the font</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%> u1</TD>
+<TD width=27%>byte</TD>
+<TD width=57%>// Unknown</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%> DataSize</TD>
+<TD width=27%>int</TD>
+<TD width=57%>// Data after header</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%> First</TD>
+<TD width=27%>byte</TD>
+<TD width=57%>// First character in font</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%> Last</TD>
+<TD width=27%>byte</TD>
+<TD width=57%>// Last character in font</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%> pad1</TD>
+<TD width=27%>byte[22]</TD>
+<TD width=57%>// 22 times 0x00</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Then follow the characters. </P>
+
+<P>There is (Last-First+1) FNT_Character blocks (one per character). </P>
+
+<P>FNT_Character IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=600>
+
+<TR VALIGN="top">
+<TD width=16%>Width</TD>
+<TD width=27%>byte</TD>
+<TD width=57%>// Width of the character</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%> Picture</TD>
+<TD width=27%>byte[Width*Height]</TD>
+<TD width=57%>// Bytes describing the character,<BR>
+// encoded by columns from bottom to top<BR>
+// Each byte is an index in the<BR>
+// current PAL palette</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>A few words about the DF engine scene rendering</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="limitations">
+	<PARAM NAME="Keyword" VALUE="rendering">
+	<PARAM NAME="Keyword" VALUE="smearing">
+	<PARAM NAME="Keyword" VALUE="windows">
+</OBJECT>
+
+<H4><A NAME="95cqx_"></A>A few words about the DF engine scene rendering</H4>
+
+<P>[by Daron Stinnett, DF Project Leader]</P>
+
+<P>To the engine, a window refers to a clipping region that is created for every adjoining wall in the current view. If the camera is in one sector looking at an adjoin into another sector, one window would be created. The window is used to clip the drawing of all walls and objects in the adjoining sector. Every adjoin becomes a window (clip region) for the drawing of all objects and walls that are viewed through the adjoin.</P>
+
+<P>The engine has a hard limitation of 40 active windows. Active windows build up when adjoins are viewed through other adjoins.  For example, given a single sector that has adjoins to three sectors along one side, if all three adjoins are viewed at once, there would only ever be one active adjoin. This is because none of the adjoins is viewed through another adjoin. However, all four sectors were stacked end to end and there was an adjoin between adjacent sectors, and the camera was placed so that it was in one of the end sectors and could view all three adjoins, this would result in 3 active windows.  So a long hallway made of 42 consecutive sectors that could all be seen from one end, would cause the maximum active windows to be exceeded, resulting in the smearing effect at the far end of the hallway.</P>
+
+<P>Something to watch out for is the effect of sub-sectors. Every edge (wall) of a sub-sector creates a window. So a sub-sector has the effect of splitting a scene up into pieces, often multiplying the number of windows in a scene. This is especially problematic when the windows created by a sub-sector split the drawing of 3D objects into several pieces. Since a window is a clip region for drawing all walls and objects, an object that is partially viewed through two or more windows will be drawn as many times as there are windows overlapping the 3D object. This can really slow down the engine.</P>
+
+<P>Managing windows is key to creating speedy levels. Often the speed of a scene is very closely related to the number of windows and their orientation to each other. A long hallway made up of 30 consecutive windows is much easier on the engine than a simpler room with a complex sub-sector (or set of sub-sectors) that creates 30 windows. A good example of a high window situation is looking over the low wall at the city early in the Talay level. However, it works out well because most windows are created further back in the scene. If the situation were reversed - one way to do that would be to split the low wall into many small walls - the engine would bog down in a big way.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,511 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>WAX Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="WAX Files">
+</OBJECT>
+
+<H4><A NAME="g9w2_8"></A>WAX Files</H4>
+
+<P>They contain the sprites.</P>
+
+<P>(samples : STORMTROOPERS, BONUS LIVES ...)</P>
+
+<P>They are a collection of embedded CELLS (FME files stripped of their FME_Header1).</P>
+
+<P>WAX file structure:</P>
+
+<P>WAX_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=20%>Version</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// constant = 0x00100100</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Nseqs</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// number of SEQUENCES</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Nframes</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// number of FRAMES</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Ncells</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// number of CELLS</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Xscale</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Yscale</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> XtraLight</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad4</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> WAXES</TD>
+<TD width=17%>long[32]</TD>
+<TD width=63%>// pointers to WAXES<BR>
+// = different actions</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>WAX IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=20%>Wwidth</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// World Width</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Wheight</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// World Height</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> FrameRate</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Frames per second</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Nframes</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad2</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad3</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad4</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> SEQS</TD>
+<TD width=17%>long[32]</TD>
+<TD width=63%>// pointers to SEQUENCES <BR>
+// = views from different angles</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P></P>
+
+<P><B>Note:</B> World Width and World Height are values which define how big the sprite actually appears in-game.</P>
+
+<P>SEQUENCE IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=20%>pad1</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad2</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad3</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad4</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused = 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> FRAMES</TD>
+<TD width=17%>long[32]</TD>
+<TD width=63%>// pointers to FRAMES<BR>
+// = the animation frames</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>FRAME IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=575>
+
+<TR VALIGN="top">
+<TD width=20%>InsertX</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Insertion point, X coordinate<BR>
+// Negative values shift the cell left
+<P>// Positive values shift the cell right</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> InsertY</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Insertion point, Y coordinate<BR>
+// Negative values shift the cell up
+<P>// Positive values shift the cell down</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Flip</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// 0 = not flipped<BR>
+// 1 = flipped horizontally</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Cell</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// pointer to CELL
+<P>// = single picture</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> UnitWidth</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> UnitHeight</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad3</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad4</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>CELL_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=575>
+
+<TR VALIGN="top">
+<TD width=20%>SizeX</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Size of the CELL, X value</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> SizeY</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Size of the CELL, Y value</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Compressed</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// 0 = not compressed</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+<TD width=63%>// 1 = compressed</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> DataSize</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Datasize for compressed CELL,
+<P>// equals length of the CELL</P>
+
+<P>// If not compressed, DataSize = 0</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> ColOffs</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Always 0, because columns table <BR>
+// follows just after</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad1</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<H4><I>An explanation of how it all works:</I></H4>
+
+<P>The 32 WAXes pointed to by the .WAX file header are 32 possible states that the sprite can be in (usually only up to 14 are used). The logic controls what WAX is shown when, so that the sprite appears to be doing what the logic actually is doing.</P>
+
+<P>All enemies apart from the REMOTE follow this general pattern:</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=10%><B>WAX #</B></TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%><B>state</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>0</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>moving -- eg. walking, floating</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>1</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>attacking (primary)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>2</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>dying (from punch)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>3</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>dying (from shot or explosion)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>4</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>lying dead</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>5</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>staying still (i.e. not sited player yet)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>6</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>follow through of primary attack -- eg. kick from gun</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>7</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>secondary attack -- eg. TD for reeyees, green junk for int. droid, ...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>8</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>follow through of secondary attack</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>9</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>jump (Kell Dragon)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>10</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>11</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>12</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>getting injured (dianoga looking around)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>13</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>special action <BR>
+Using shield for D_TROOP1, flying for D_TROOP2 and D_TROOP3, submerging for dianoga, ...</TD>
+</TR>
+</TABLE><BR>
+
+<P>Note: The Phase 3 varies from this pattern quite a bit.</P>
+
+<P>Where a state doesn't apply for a particular enemy logic, the WAX will usually just be the enemy walking or moving towards you. It won't be called for by the logic.</P>
+
+<P>The remote has 4 states:</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=10%><B>WAX #</B></TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%><B>state</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>0</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>moving</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>1</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>staying still -- before siting player</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>2</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>dying</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>3</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>dying</TD>
+</TR>
+</TABLE><BR>
+
+<P>LOGIC: SCENERY has 2 simple states:</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=10%><B>WAX #</B></TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%><B>state</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>0</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>normal</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>1</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>attacked</TD>
+</TR>
+</TABLE><BR>
+
+<P>LOGIC: BARREL has 2 states:</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=10%><B>WAX #</B></TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%><B>state</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>0</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>normal</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=10%>1</TD>
+<TD width=10%>&nbsp;</TD>
+<TD width=80%>exploding</TD>
+</TR>
+</TABLE><BR>
+
+<P>LOGIC: ANIM, as well as weapon projectiles, explosions, splashing water etc. have 1 continuous state.</P>
+
+<P>The 32 pointers to SEQUENCES in each WAX structure point to the view of the WAX (state) from 32 different angles as you move around it (0, 11.25, 22.50....348.75). The first pointer (angle 0) is when the logic is facing you. </P>
+
+<P>The pointers to FRAMEs in each SEQUENCE structure point to the FRAMEs that make up an animation sequence for each point of view. FRAMEs are the header 1 of FME files.</P>
+
+<P>The SEQUENCE consists of 32 FRAME entries. Usually no more than 5 are used, but the dianoga has 27 frames of animation for one of its states (WAX 12, when it looks around for you) !</P>
+
+<P>The entries = 0 are unused. </P>
+
+<P>Each FRAME points to a CELL, which is a picture with the same format as .FME files with header 2 of FME files.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>VOC Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="VOC Files">
+</OBJECT>
+
+<H4><A NAME="124d03v"></A>VOC Files</H4>
+
+<P>These are standard .VOC files in the <B>Creative Labs</B> format. </P>
+
+<P>The DF engine only accepts MONO 8-bit 11KHz (11025 Hz) .VOC files.</P>
+
+<P>Note that sounds are looped (eg. the water and wind) using REPEAT/END REPEAT markers.</P>
+
+<P>[by galt@dsd.es.com]</P>
+
+<P>Creative Voice File (VOC) Format:</P>
+
+<P>HEADER (bytes 00-19)</P>
+
+<P>Series of DATA BLOCKS (bytes 1A+) [Must end w/ Terminator Block]</P>
+
+<P>-----------------------------------------------------------------</P>
+
+<P>HEADER:</P>
+
+<P>=======</P>
+
+<P>byte #     Description</P>
+
+<P>------     ------------------------------------------</P>
+
+<P>00-12      Creative Voice File</P>
+
+<P>13-15      1A 1A 00  (eof to abort printing of file)</P>
+
+<P>16-17      Version number (minor,major) (VOC-HDR puts 0A 01)</P>
+
+<P>18-19      2's Comp of Ver. # + 1234h (VOC-HDR puts 29 11)</P>
+
+<P>-----------------------------------------------------------------</P>
+
+<P>DATA BLOCK:</P>
+
+<P>===========</P>
+
+<P>Data Block:  TYPE(1-byte), SIZE(3-bytes), INFO(0+ bytes)</P>
+
+<P>NOTE: Terminator Block is an exception -- it has only the TYPE byte.</P>
+
+<P>TYPE   Description     Size (3-byte int)   Info</P>
+
+<P>----   -----------     -----------------   -----------------------</P>
+
+<P>00     Terminator      (NONE)              (NONE)</P>
+
+<P>01     Sound data      2+length of data    *</P>
+
+<P>02     Sound continue  length of data      Voice Data</P>
+
+<P>03     Silence         3                   **</P>
+
+<P>04     Marker          2                   Marker# (2 bytes)</P>
+
+<P>05     ASCII           length of string    null terminated string</P>
+
+<P>06     Repeat          2                   Count# (2 bytes)</P>
+
+<P>07     End repeat      0                   (NONE)</P>
+
+<P>*Sound Info Format:       **Silence Info Format:</P>
+
+<P>---------------------      ----------------------------</P>
+
+<P>00   Sample Rate           00-01  Length of silence - 1</P>
+
+<P>01   Compression Type      02     Sample Rate</P>
+
+<P>02+  Voice Data</P>
+
+<P>Marker#           -- Driver keeps the most recent marker in a status byte</P>
+
+<P>Count#            -- Number of repetitions + 1</P>
+
+<P>Count# may be 1 to FFFE for 0 - FFFD repetitions</P>
+
+<P>or FFFF for endless repetitions</P>
+
+<P>Sample Rate       -- SR byte = 256-(1000000/sample_rate)</P>
+
+<P>Length of silence -- in units of sampling cycle</P>
+
+<P>Compression Type  -- of voice data</P>
+
+<P>8-bits    = 0</P>
+
+<P>4-bits    = 1</P>
+
+<P>2.6-bits  = 2</P>
+
+<P>2-bits    = 3</P>
+
+<P>Multi DAC = 3+(# of channels) [interesting--</P>
+
+<P>this isn't in the developer's manual]</P>
+
+</BODY>
+</HTML>

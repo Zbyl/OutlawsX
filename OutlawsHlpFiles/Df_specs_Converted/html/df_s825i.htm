@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GOL Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="GOL Files">
+</OBJECT>
+
+<H4><A NAME="6e52lf"></A>GOL FILES</H4>
+
+<P>GOL files control the functioning of the objective screen in the PDA. They contain a list of mission goals which are shown to be completed in the objective screen when they are fired. Note that the objective screen is an <A HREF="df_s3ycu.htm">ANIM</A> in DFBRIEF.LFD. It is composed of a number of DELTs (with yellow text) which are overlaid on the first embedded DELT (which has green text) as goals are completed.</P>
+
+<TABLE cols=1 width=357>
+
+<TR VALIGN="top">
+<TD width=100%>| GOL 1.0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| GOAL: 0       ITEM:   5       # DT weapon</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| GOAL: 1       TRIG:   1</TD>
+</TR>
+</TABLE><BR>
+
+<P>Each GOAL: can be a TRIG: -- a goal trigger, or an ITEM: -- a goal item.</P>
+
+<H4><I>Goal triggers</I></H4>
+
+<P>These are goals that are fired by the .INF file when a "complete" <A HREF="df_s6f8l.htm">message</A> is sent. The message will fire the appropriate goal in the GOL file.</P>
+
+<P>For instance,  "message: [stop] [recipient] complete 1" will say that "TRIG: 1" is complete!</P>
+
+<H4><I>Goal items</I></H4>
+
+<P>These are goals which are fired when you pick up a goal item. The logics of the goal items fire an internal message to the GOL when the item is picked up.</P>
+
+<P>Each goal item has a num of its own:</P>
+
+<TABLE cols=3 width=367>
+
+<TR VALIGN="top">
+<TD width=46%><B><I>Goal item</I></B></TD>
+<TD width=38%><B><I>Description</I></B></TD>
+<TD width=16%><B><I>Num</I></B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=46%>LOGIC: PLANS</TD>
+<TD width=38%>Death Star plans</TD>
+<TD width=16%>0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=46%>LOGIC: PHRIK</TD>
+<TD width=38%>Phrik metal</TD>
+<TD width=16%>1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=46%>LOGIC: NAVA</TD>
+<TD width=38%>Nava Card</TD>
+<TD width=16%>2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=46%>LOGIC: DATATAPE</TD>
+<TD width=38%>data tapes</TD>
+<TD width=16%>4</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=46%>LOGIC: DT_WEAPON</TD>
+<TD width=38%>broken DT weapon</TD>
+<TD width=16%>5</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=46%>LOGIC: PILE</TD>
+<TD width=38%>Your Gear</TD>
+<TD width=16%>6</TD>
+</TR>
+</TABLE><BR>
+
+<P>For instance, picking up a broken DT weapon will say that "ITEM: 5" is complete!</P>
+
+<P>Notice this implies that you can only use <B>one</B> of each goal item in each level.</P>
+
+<P>Note: the goal items will also move an elevator called "complete" to its next stop when picked up.</P>
+
+<H4><I>Managing Goals</I></H4>
+
+<P>The best way to handle goals is to use elevator "complete" only for mission goal/completion handling. It should have a number of "hold" stops and a final "complete" stop. Each goal you accomplish will move elevator "complete" one stop forward, until accomplishing the final goal moves it onto its "complete" stop, completing the level. Goal triggers will move elevator "complete" if the "complete" message is sent to elevator "complete" (because the "complete" message also moves its recipient to its next stop). Goal items automatically move elevator "complete" when they are picked up, as mentioned above.</P>
+
+<P>Don't get confused with the 3 different "completes" ! One is a message, one is the name of an elevator, and one is a stop option just like "hold".</P>
+
+<P>Final note: don't assume the goals will happen in the .GOL order ! Ordering completion of goals is something you need to do yourself as part of your level design !</P>
+
+</BODY>
+</HTML>

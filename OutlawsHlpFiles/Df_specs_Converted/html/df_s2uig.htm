@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>MSG Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="MSG Files">
+</OBJECT>
+
+<H4><A NAME="1fdcz78"></A>MSG Files</H4>
+
+<P>They contain the text messages used in the game.</P>
+
+<TABLE cols=2 width=537>
+
+<TR VALIGN="top">
+<TD width=15%>text.msg</TD>
+<TD width=85%>Contains in-game text messages. You can create new messages or patch existing ones. New messages can be displayed with the "TEXT:" INF function.</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%>local.msg</TD>
+<TD width=85%>Contains run-time error messages and should be left untouched.</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%>hotkeys.msg</TD>
+<TD width=85%>Contains menu hotkeys and should be left untouched</TD>
+</TR>
+</TABLE><BR>
+
+<P>General format:</P>
+
+<P>| MSG 1.0</P>
+
+<P>|</P>
+
+<P>| MSGS 119</P>
+
+<P>|</P>
+
+<P>| # internal game messages</P>
+
+<P>| 0    0:  "Joystick Off"</P>
+
+<P>| ...</P>
+
+<P>| END</P>
+
+<P>MSGS is the number of messages. Don't forget to update it if you add messages.</P>
+
+<P>I found no problems by adding messages to TEXT.MSG at 900 and more.</P>
+
+<P>eg.</P>
+
+<P>| 900  1:  "Hurry up !"</P>
+
+<P>The number followed by a colon (eg. 1:) rates the importance of the message relative to other messages in the MSG file. '0: ' is the most important, and as the number increases, the message becomes less important. If a message is currently on screen, it can be immediately overwritten with one of the same or more importance, otherwise if the incoming message is less important, it won't be shown. So for example, you will probably want the pickup message of a goal item to be more important than the pickup message of a shield or clip.</P>
+
+<P>The 'cheat messages' are from 700 onwards. </P>
+
+<P>Just so you know where to insert a few 'Cheater!' and 'Chicken Mode ON' ... :-)</P>
+
+</BODY>
+</HTML>

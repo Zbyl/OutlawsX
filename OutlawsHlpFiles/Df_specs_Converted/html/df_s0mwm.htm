@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>LEV Texture Table</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="LEV file">
+</OBJECT>
+
+<H4><A NAME="flcclv"></A>LEV Textures Table</H4>
+
+<P>As there is a lot of TX information in a level, a texture table is created to avoid storing TX names in full at each occurrence.</P>
+
+<P>Coding sample :</P>
+
+<TABLE cols=1 width=337>
+
+<TR VALIGN="top">
+<TD width=100%>| TEXTURES 85        # number of textures</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| TEXTURE: TEX00.BM  # texture 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| TEXTURE: TEX01.BM  # texture 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| ...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| TEXTURE: TEX84.BM  # texture 84</TD>
+</TR>
+</TABLE><BR>
+
+<P>Afterwards, all the textures are referred to by their 0 based index in this texture table.</P>
+
+<P>Note that changing TX names in the TX table may be an ultra fast way to relook a level !</P>
+
+</BODY>
+</HTML>

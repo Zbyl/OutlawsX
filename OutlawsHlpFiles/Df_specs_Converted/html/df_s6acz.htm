@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>CUTMUSE.TXT</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="cutmuse.txt File">
+	<PARAM NAME="Keyword" VALUE="file format">
+</OBJECT>
+
+<H4><A NAME="97ioa3"></A>CUTMUSE.TXT</H4>
+
+<P>This file controls the music to be played during cutscenes.</P>
+
+<P>CUTMUSE.TXT accepts // comments.</P>
+
+<P><B><I>File Format</I></B></P>
+
+<TABLE cols=1 width=157>
+
+<TR VALIGN="top">
+<TD width=100%>SEQUENCE: 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>// cue 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>CUE: star-thm</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>0 0 0 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>// cue 2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>CUE: star-thm</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>B 2 B 2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>SEQUENCE: 2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>// cue 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>CUE: execmus</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>0 0 0 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>...</TD>
+</TR>
+</TABLE><BR>
+
+<P>Note: there is no header.</P>
+
+<P>As you can see, the file is split into a number of <B>Sequences</B> which correspond to the "SEQ number" in CUTSCENE.LST. Sequences are nothing more than logical groupings of cutscenes that are played together, for example the starting sequence, the long sequence before TALAY, the ending sequence. The whole point of a sequence is that in CUTSCENE.LST, only the first cutscene in each sequence of cutscenes needs to point to the corresponding music sequence in CUTMUSE.TXT -- the rest can have "SEQ number" set to 0 as the same music sequence selected at the first cutscene will apply throughout the remainder of the cutscene sequence.</P>
+
+<P>Sequences each have a number of <B>Cues</B> which are fired by the CUST objects in FILMs of cutscenes. Cues define a .GMD file (note - without the extension) to play the music from, what chunk within it to play, and how and when to play the chunk.</P>
+
+<P>Note: the numbering of CUEs in CUTMUSE.TXT are just comments -- they are not actually defined with numbers.</P>
+
+<P>[Thanks to Alex Novikov for lots of help in figuring out the following]</P>
+
+<P>Cues point to the chunk to be played like this:</P>
+
+<P>%c %d %c %d</P>
+
+<P>The two characters refer to MTrk chunks within the GMD. Capital letters are used, i.e. A, B, C, D, E..... where A is the first track, B is the second...... The numbers seem to refer to a point in the track -- larger numbers will start the track from further on. They maybe refer to a number of patterns or an interval of time (seconds or beats?), from the start of the track.</P>
+
+<P>Now, the overall meaning seems to be something like this: the first character and number refer to a certain point in the music, which when reached, will change the music to a point defined by the second character and number. So "C 7 D 2" possibly means: when the music reaches track C time/pattern 7, then change to track D time/pattern 2. All this will happen when a FILM CUST object fires the Cue.</P>
+
+<P>There are also a few exceptions:</P>
+
+<P>"0 0 0 0" seems to be the equivilant of  "give no command", so the music will just play on through unless it gets into a melody loop.</P>
+
+<P>"1 0 0 0" usually means start the next track, but it has varying effects in different cutscenes, and sometimes will bring the music out of a loop, but sometimes won't.</P>
+
+<P>". 0 0 0" will fade the music away.</P>
+
+<P>A lot of this seems to be dependant on the internal iMUSE commands within GMD tracks, whose workings are unfortunately still very much unknown.</P>
+
+</BODY>
+</HTML>

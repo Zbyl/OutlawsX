@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>O Generators</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="generators">
+	<PARAM NAME="Keyword" VALUE="O File">
+	<PARAM NAME="Keyword" VALUE="object logics">
+	<PARAM NAME="Keyword" VALUE="object sequences">
+</OBJECT>
+
+<H4><A NAME="hjtvqh"></A>O Generators</H4>
+
+<P>Generators cause enemies to appear mid-way through a level. Here is a quite self explaining example:</P>
+
+<TABLE cols=1 width=489>
+
+<TR VALIGN="top">
+<TD width=100%>| CLASS: SPRITE  DATA:  4 X: 396.88   Y:  -2.00   Z: 217.48</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>\                       PCH:   0.00 YAW:   0.00 ROL:   0.00 </TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>\                         DIFF: 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SEQ</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   LOGIC:     GENERATOR STORM1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   DELAY:     30</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   INTERVAL:  20</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   MIN_DIST:  70</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   MAX_DIST:  200</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   MAX_ALIVE: 3</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   NUM_TERMINATE: 8</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   WANDER_TIME: 40</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SEQEND</TD>
+</TR>
+</TABLE><BR>
+
+<P>All generated enemies will use the sprite defined, and will appear "awake" (i.e. walking around, not standing still) from the X, Y and Z coordinates of the generator.</P>
+
+<P>LOGIC: is the logic that the generated sprites will have. Note the GENERATOR keyword. Note also that only the following logics are allowed to be generated (generating others will cause problems and usually crash the game!)</P>
+
+<P>I_OFFICER and key variations</P>
+
+<P>TROOP</P>
+
+<P>STORM1</P>
+
+<P>COMMANDO</P>
+
+<P>BOSSK</P>
+
+<P>G_GUARD</P>
+
+<P>REE_YEES</P>
+
+<P>REE_YEES2</P>
+
+<P>SEWER1</P>
+
+<P>INT_DROID</P>
+
+<P>PROBE_DROID</P>
+
+<P>REMOTE</P>
+
+<P>DELAY: is the time in seconds that needs to pass from the start of a level before the generator starts operating.</P>
+
+<P>INTERVAL: is the time in seconds between each generation.</P>
+
+<P>For an enemy to be generated, the <B>player</B> must be at a distance from the generator that is between MIN_DIST and MAX_DIST.</P>
+
+<P>MAX_ALIVE: is the maximum number of enemies from the generator allowed alive at the same time.</P>
+
+<P>NUM_TERMINATE: is the number of enemies to be generated. When this is reached, the generator deactivates. If set to -1, an infinite amount will be generated, and the generator will never deactivate.</P>
+
+<P>WANDER_TIME: is the time in seconds that a generated sprite walks around before becoming inactive.</P>
+
+<P>Note: in DARK.EXE, there is a keyword "PLUGIN:" among the above generator keywords. Its usage is still unknown.</P>
+
+<P>Sprites aren't generated when the generator is able to see you, however (otherwise it would look like the enemies were walking out of thin air!). The best way to observe a generator working is therefore on the map by using the LACDS cheat.</P>
+
+<P>Also note that you can set MASTER: OFF on a generator (not to be confused with the INF master variable!), and activate it by sending a "master_on" message to the sector that contains it.</P>
+
+</BODY>
+</HTML>

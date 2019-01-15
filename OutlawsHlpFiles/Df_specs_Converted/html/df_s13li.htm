@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>BM Compressed</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="BM Files">
+	<PARAM NAME="Keyword" VALUE="compressed BM">
+</OBJECT>
+
+<H4><A NAME="2zr1_vv"></A>BM Compressed</H4>
+
+<P>If Compressed = 1 or 2, the BM is compressed.</P>
+
+<P>These existed in the DEMO (buyit.bm, Compressed = 1; wait.bm, Compressed = 2), but there aren't any in the full game.</P>
+
+<P>The engine still supports them however, so here are their descriptions.</P>
+
+<P>Note that Multiple BMs don't allow compression.</P>
+
+<P>(thanks to Alex Novikov for corrections and improvements on these notions).</P>
+
+<P>The heart of the data is a <B>columns starts</B> table, with the start addresses of each of the columns. It is at the end of the file, at offset DataSize, and has one long entry per column containing this column start address.</P>
+
+<P>This start address is calculated without the 32 bytes BM header (i.e. read the header in a struct, then the data in a <B>huge buffer</B> at offset 0).</P>
+
+<P><B>Compressed = 1 (RLE)</B></P>
+
+<P>The coding of one column follows (in pseudo code format).</P>
+
+<TABLE cols=1 width=479>
+
+<TR VALIGN="top">
+<TD width=100%>while(end of data for this column not reached)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>{</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%> if(buffer[address] &lt;= 128)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>   the FOLLOWING n bytes are direct values</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%> else</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>   the FOLLOWING byte is a color byte to repeat n-128 times</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>}</TD>
+</TR>
+</TABLE><BR>
+
+<P>So, for example, the following hex values ...88 02 17 28 82... mean:</P>
+
+<P>write 8 pixels of color 02, then write 17 pixels with colors 28, 82, etc.</P>
+
+<P>This should be the format of choice for non-transparent BMs.</P>
+
+<P><B>Compressed = 2 (RLE0)</B></P>
+
+<P>The coding of one column follows (in pseudo code format).</P>
+
+<TABLE cols=1 width=479>
+
+<TR VALIGN="top">
+<TD width=100%>while(end of data for this column not reached)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>{</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%> if(buffer[address] &lt;= 128)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>   the FOLLOWING n bytes are direct values</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%> else</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>   skip n-128 transparent (background) pixels</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>}</TD>
+</TR>
+</TABLE><BR>
+
+<P>So, for example, the following hex values ...88 02 17 28 82... mean:</P>
+
+<P>skip 8 background pixels, then write two pixels with colors 17 and 28, then skip 2 background pixels, etc.</P>
+
+<P>This should be the format of choice for transparent BMs.</P>
+
+</BODY>
+</HTML>

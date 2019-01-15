@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GOB Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="gob">
+</OBJECT>
+
+<H4><A NAME="1n6tuvt"></A>GOB FILES<BR>
+<A HREF="df_s8gj4.htm">Doom Note</A></H4>
+
+<P>GOB files are a repository for many other files, and are by far the best way to distribute add-on levels.</P>
+
+<P>They contain a header with a signature, a data part and an index part.</P>
+
+<P>GOB_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=525>
+
+<TR VALIGN="top">
+<TD width=22%>GOB_MAGIC</TD>
+<TD width=25%>char[4]</TD>
+<TD width=53%>// 'GOB' followed by 0x0A</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> MASTERX</TD>
+<TD width=25%>long</TD>
+<TD width=53%>// offset to MASTERN</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>The embedded files follow, then comes the index.</P>
+
+<P>GOB_Index IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=525>
+
+<TR VALIGN="top">
+<TD width=22%>MASTERN</TD>
+<TD width=25%>long</TD>
+<TD width=53%>// number of files in the GOB</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> INDEXES</TD>
+<TD width=25%>GOB_Ix_Entry[n]</TD>
+<TD width=53%>// one index entry per file</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Where:</P>
+
+<P>GOB_Ix_Entry IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=525>
+
+<TR VALIGN="top">
+<TD width=22%>IX</TD>
+<TD width=25%>long</TD>
+<TD width=53%>// pointer to start of the file</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> LEN</TD>
+<TD width=25%>long</TD>
+<TD width=53%>// length of the file</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> NAME</TD>
+<TD width=25%>char[13]</TD>
+<TD width=53%>// name of the file,<BR>
+// null terminated</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+</BODY>
+</HTML>

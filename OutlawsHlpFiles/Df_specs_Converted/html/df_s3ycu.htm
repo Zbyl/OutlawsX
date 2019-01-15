@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>ANIM (ANM Files)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="ANIM">
+	<PARAM NAME="Keyword" VALUE="ANM Files">
+	<PARAM NAME="Keyword" VALUE="file format">
+</OBJECT>
+
+<H4><A NAME="30x.z8."></A>ANIM (ANM Files)</H4>
+
+<P>Those LFD resources contain animations played in the cutscenes, the missions objective screens that appear in the PDA, and the game menus.</P>
+
+<P>ANIMs are quite logically a collection of DELTs.</P>
+
+<P>Note: the .anm extension is a convention adopted by add-on developers when writing conversion programs, there are no real ANM files in DARK FORCES.</P>
+
+<P>Their format is quite simple:</P>
+
+<P>ANIM_Header IS</P>
+
+<TABLE cols=3 width=496>
+
+<TR VALIGN="top">
+<TD width=21%>{</TD>
+<TD width=21%>&nbsp;</TD>
+<TD width=58%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%> NbDELT</TD>
+<TD width=21%>int</TD>
+<TD width=58%>// number of embedded DELTs</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%>}</TD>
+<TD width=21%>&nbsp;</TD>
+<TD width=58%>&nbsp;</TD>
+</TR>
+</TABLE><BR>
+
+<P>Then follows each DELT, encoded as :</P>
+
+<P>ANIM_DELTData IS</P>
+
+<TABLE cols=3 width=496>
+
+<TR VALIGN="top">
+<TD width=23%>{</TD>
+<TD width=19%>&nbsp;</TD>
+<TD width=58%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%> DELTSize</TD>
+<TD width=19%>long</TD>
+<TD width=58%>// the size of the embedded DELT</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%> aDELT</TD>
+<TD width=19%>bytes[n]</TD>
+<TD width=58%>// a complete DELT resource</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>}</TD>
+<TD width=19%>&nbsp;</TD>
+<TD width=58%>&nbsp;</TD>
+</TR>
+</TABLE><BR>
+
+</BODY>
+</HTML>

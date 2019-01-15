@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>O Object Descriptions</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="difficulty">
+	<PARAM NAME="Keyword" VALUE="O File">
+	<PARAM NAME="Keyword" VALUE="object description">
+</OBJECT>
+
+<H4><A NAME="17suars"></A>O Object Descriptions</H4>
+
+<P>The first data is the total number of objects in the level :</P>
+
+<TABLE cols=1 width=479>
+
+<TR VALIGN="top">
+<TD width=100%>| OBJECTS 185</TD>
+</TR>
+</TABLE><BR>
+
+<P>Then each object is described.</P>
+
+<P>Please note that the object data first line has been split here for visual convenience.</P>
+
+<TABLE cols=1 width=479>
+
+<TR VALIGN="top">
+<TD width=100%>| CLASS: SPIRIT  DATA:  0 X: 131.00 Y:    0.00    Z: 210.00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>\                       PCH:   0.00 YAW: 176.34 ROL:   0.00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>\                       DIFF: 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SEQ</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   LOGIC:     PLAYER</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   EYE:       TRUE</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SEQEND</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| CLASS: SPRITE  DATA:  0 X: 320.62  Y:  20.00   Z:  275.64</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>\                       PCH: 0.00  YAW: 270.00 ROL:    0.00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>\                       DIFF: 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SEQ</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   TYPE:      I_OFFICER</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SEQEND</TD>
+</TR>
+</TABLE><BR>
+
+<P>CLASS is the type of object, and DATA is the offset in the corresponding object table.</P>
+
+<P>(SPIRIT and SAFE have DATA = 0).</P>
+
+<P>X, Y, Z are trivial.</P>
+
+<P>PCH, YAW, ROL are classic spatial orientation, but only YAW is really used (DOOM equivalent is THING orientation). It takes a value in degrees where 0 is at the "top of the screen when you look at the map". The value increases clockwise. PCH and ROL are only needed for 3D objects.</P>
+
+<P>DIFF is the difficulty level at which the object appears.</P>
+
+<TABLE cols=4 width=260>
+
+<TR VALIGN="top">
+<TD width=23%><B>DIFF</B></TD>
+<TD width=25%><B>EASY</B></TD>
+<TD width=26%><B>MED</B></TD>
+<TD width=26%><B>HARD</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>   -3</TD>
+<TD width=25%>X</TD>
+<TD width=26%>X</TD>
+<TD width=26%>X</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>-2</TD>
+<TD width=25%>X</TD>
+<TD width=26%>X</TD>
+<TD width=26%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>-1</TD>
+<TD width=25%>X</TD>
+<TD width=26%>&nbsp;</TD>
+<TD width=26%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>0</TD>
+<TD width=25%>X</TD>
+<TD width=26%>X</TD>
+<TD width=26%>X</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>1</TD>
+<TD width=25%>X</TD>
+<TD width=26%>X</TD>
+<TD width=26%>X</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>2</TD>
+<TD width=25%>&nbsp;</TD>
+<TD width=26%>X</TD>
+<TD width=26%>X</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=23%>3</TD>
+<TD width=25%>&nbsp;</TD>
+<TD width=26%>&nbsp;</TD>
+<TD width=26%>X</TD>
+</TR>
+</TABLE><BR>
+
+</BODY>
+</HTML>

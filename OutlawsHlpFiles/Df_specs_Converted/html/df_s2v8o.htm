@@ -1,0 +1,827 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>O All Object Logics</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="O File">
+	<PARAM NAME="Keyword" VALUE="object logics">
+	<PARAM NAME="Keyword" VALUE="object sequences">
+</OBJECT>
+
+<H4><A NAME=".42_7h"></A>O All Object Logics</H4>
+
+<P>This is a list of all the objects and other modifiers that can be used in the sequences of objects.</P>
+
+<P>Please also see the end of this section for some unknowns found in DARK.EXE.</P>
+
+<H4><I>Player</I></H4>
+
+<TABLE cols=2 width=152>
+
+<TR VALIGN="top">
+<TD width=49%>| LOGIC:</TD>
+<TD width=51%>PLAYER</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=49%>| EYE:</TD>
+<TD width=51%>TRUE</TD>
+</TR>
+</TABLE><BR>
+
+<P>These should always be used together. Technically though, the LOGIC: PLAYER is the entity that you will control and move around, while EYE: TRUE is the object from whose point of view the level is viewed from. So yes, you can try following enemies and mousebots around with the eye......</P>
+
+<H4><I>Items</I></H4>
+
+<P>Remember that you can use ITEM keyword before these logics.</P>
+
+<P>Message is the message number from TEXT.MSG that is displayed when you pick up the item (just in case you want to patch).</P>
+
+<TABLE cols=3 width=473>
+
+<TR VALIGN="top">
+<TD width=35%>
+<H4>Logic:</H4>
+</TD>
+<TD width=48%>
+<H4>Description:</H4>
+</TD>
+<TD width=17%>
+<H4>Message:</H4>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%><B>General -</B></TD>
+<TD width=48%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: SHIELD</TD>
+<TD width=48%>20 shield units</TD>
+<TD width=17%>114</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: BATTERY</TD>
+<TD width=48%>battery unit</TD>
+<TD width=17%>211</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CLEATS</TD>
+<TD width=48%>ice cleats</TD>
+<TD width=17%>304</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: GOGGLES</TD>
+<TD width=48%>infra red goggles</TD>
+<TD width=17%>303</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: MASK</TD>
+<TD width=48%>gas mask</TD>
+<TD width=17%>305</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: MEDKIT</TD>
+<TD width=48%>med kit</TD>
+<TD width=17%>311</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%><B>Weapons -</B></TD>
+<TD width=48%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: RIFLE</TD>
+<TD width=48%>Blaster rifle / 15 energy units</TD>
+<TD width=17%>100 / 101</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: AUTOGUN</TD>
+<TD width=48%>Repeater Rifle / 30 power units</TD>
+<TD width=17%>103 / 104</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: FUSION</TD>
+<TD width=48%>Jeron fusion cutter / 50 power units</TD>
+<TD width=17%>107 / 108</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: MORTAR</TD>
+<TD width=48%>Mortar Gun / 3 mortar shells</TD>
+<TD width=17%>105 / 106</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CONCUSSION</TD>
+<TD width=48%>Concussion Rifle / 100 power units</TD>
+<TD width=17%>110 / 111</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CANNON</TD>
+<TD width=48%>Assault cannon / 30 plasma units</TD>
+<TD width=17%>112 / 113</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%><B>Ammo -</B></TD>
+<TD width=48%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: ENERGY</TD>
+<TD width=48%>15 energy units</TD>
+<TD width=17%>200</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: DETONATOR</TD>
+<TD width=48%>1 thermal detonator</TD>
+<TD width=17%>203</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: DETONATORS</TD>
+<TD width=48%>5 thermal detonators</TD>
+<TD width=17%>204</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: POWER</TD>
+<TD width=48%>10 power units</TD>
+<TD width=17%>201</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: MINE</TD>
+<TD width=48%>1 mine</TD>
+<TD width=17%>207</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: MINES</TD>
+<TD width=48%>5 mines</TD>
+<TD width=17%>208</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: SHELL</TD>
+<TD width=48%>1 mortar shell</TD>
+<TD width=17%>205</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: SHELLS</TD>
+<TD width=48%>5 mortar shells</TD>
+<TD width=17%>206</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: PLASMA</TD>
+<TD width=48%>20 Plasma units</TD>
+<TD width=17%>202</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: MISSILE</TD>
+<TD width=48%>1 missile</TD>
+<TD width=17%>209</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: MISSILES</TD>
+<TD width=48%>5 missiles</TD>
+<TD width=17%>210</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%><B>Bonuses -</B></TD>
+<TD width=48%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: SUPERCHARGE</TD>
+<TD width=48%>weapon supercharge</TD>
+<TD width=17%>307</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: INVINCIBLE</TD>
+<TD width=48%>shield supercharge</TD>
+<TD width=17%>306</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: LIFE</TD>
+<TD width=48%>extra life</TD>
+<TD width=17%>310</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: REVIVE</TD>
+<TD width=48%>revive</TD>
+<TD width=17%>308</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%><B>Keys -</B></TD>
+<TD width=48%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: BLUE</TD>
+<TD width=48%>blue key</TD>
+<TD width=17%>302</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: RED</TD>
+<TD width=48%>red key</TD>
+<TD width=17%>300</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: YELLOW</TD>
+<TD width=48%>yellow key</TD>
+<TD width=17%>301</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE1</TD>
+<TD width=48%>code key 1</TD>
+<TD width=17%>501</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE2</TD>
+<TD width=48%>code key 2</TD>
+<TD width=17%>502</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE3</TD>
+<TD width=48%>code key 3</TD>
+<TD width=17%>503</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE4</TD>
+<TD width=48%>code key 4</TD>
+<TD width=17%>504</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE5</TD>
+<TD width=48%>code key 5</TD>
+<TD width=17%>505</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE6</TD>
+<TD width=48%>code key 6</TD>
+<TD width=17%>506</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE7</TD>
+<TD width=48%>code key 7</TD>
+<TD width=17%>507</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE8</TD>
+<TD width=48%>code key 8</TD>
+<TD width=17%>508</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: CODE9</TD>
+<TD width=48%>code key 9</TD>
+<TD width=17%>509</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%><B>Goal items -</B></TD>
+<TD width=48%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: DATATAPE</TD>
+<TD width=48%>data tapes</TD>
+<TD width=17%>406</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: PLANS</TD>
+<TD width=48%>Death Star plans</TD>
+<TD width=17%>400</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: DT_WEAPON</TD>
+<TD width=48%>broken DT weapon</TD>
+<TD width=17%>405</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: NAVA</TD>
+<TD width=48%>Nava Card</TD>
+<TD width=17%>402</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: PHRIK</TD>
+<TD width=48%>Phrik metal</TD>
+<TD width=17%>401</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=35%>| LOGIC: PILE</TD>
+<TD width=48%>Your Gear</TD>
+<TD width=17%>312</TD>
+</TR>
+</TABLE><BR>
+
+<H4><I>Enemy logics</I></H4>
+
+<TABLE cols=2 width=417>
+
+<TR VALIGN="top">
+<TD width=45%>
+<H4>Logic:</H4>
+</TD>
+<TD width=55%>
+<H4>Description:</H4>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%><B>Imperials -</B></TD>
+<TD width=55%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER</TD>
+<TD width=55%>Imperial officer</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICERR</TD>
+<TD width=55%>Officer with red key</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICERB</TD>
+<TD width=55%>Officer with blue key</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICERY</TD>
+<TD width=55%>Officer with yellow key</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER1</TD>
+<TD width=55%>Officer with code key 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER2</TD>
+<TD width=55%>Officer with code key 2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER3</TD>
+<TD width=55%>Officer with code key 3</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER4</TD>
+<TD width=55%>Officer with code key 4</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER5</TD>
+<TD width=55%>Officer with code key 5</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER6</TD>
+<TD width=55%>Officer with code key 6</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER7</TD>
+<TD width=55%>Officer with code key 7</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER8</TD>
+<TD width=55%>Officer with code key 8</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: I_OFFICER9</TD>
+<TD width=55%>Officer with code key 9</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: TROOP</TD>
+<TD width=55%>Stormtrooper</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: STORM1</TD>
+<TD width=55%>Stormtrooper</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: COMMANDO</TD>
+<TD width=55%>Imperial Commando</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%><B>Aliens -</B></TD>
+<TD width=55%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: BOSSK</TD>
+<TD width=55%>Bossk</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: G_GUARD</TD>
+<TD width=55%>Gammorean Guard</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: REE_YEES</TD>
+<TD width=55%>ReeYees with thermal detonators</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: REE_YEES2</TD>
+<TD width=55%>ReeYees w/o thermal detonators</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: SEWER1</TD>
+<TD width=55%>Sewer creature</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%><B>Robots -</B></TD>
+<TD width=55%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: INT_DROID</TD>
+<TD width=55%>Interrogator droid</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: PROBE_DROID</TD>
+<TD width=55%>Probe droid</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: REMOTE</TD>
+<TD width=55%>Remote</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%><B>Bosses -</B></TD>
+<TD width=55%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: BOBA_FETT</TD>
+<TD width=55%>Boba Fett</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: KELL</TD>
+<TD width=55%>Kell Dragon</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: D_TROOP1</TD>
+<TD width=55%>Phase 1 Dark Trooper</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: D_TROOP2</TD>
+<TD width=55%>Phase 2 Dark Trooper</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: D_TROOP3</TD>
+<TD width=55%>Phase 3 Dark Trooper (Mohc)</TD>
+</TR>
+</TABLE><BR>
+
+<H4><I>Special sprite logics</I></H4>
+
+<P>Note: The WAX files used for the explosions of the Barrel and Land Mine are hardcoded.</P>
+
+<TABLE cols=2 width=379>
+
+<TR VALIGN="top">
+<TD width=40%>
+<H4>Logic:</H4>
+</TD>
+<TD width=60%>
+<H4>Description:</H4>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=40%>| LOGIC: SCENERY</TD>
+<TD width=60%>Displays first cell of wax 0, then all of wax 1 when attacked</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=40%>| LOGIC: ANIM</TD>
+<TD width=60%>Displays wax 0 over and over</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=40%>| LOGIC: BARREL</TD>
+<TD width=60%>Power Generating unit</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=40%>| LOGIC: LAND_MINE</TD>
+<TD width=60%>Land mine</TD>
+</TR>
+</TABLE><BR>
+
+<H4><I>3D object logics</I></H4>
+
+<TABLE cols=2 width=417>
+
+<TR VALIGN="top">
+<TD width=45%>
+<H4>Logic: </H4>
+</TD>
+<TD width=55%>
+<H4>Description: </H4>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: TURRET</TD>
+<TD width=55%>gun turret</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: MOUSEBOT</TD>
+<TD width=55%>mousebot</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=45%>| LOGIC: WELDER</TD>
+<TD width=55%>welding arm</TD>
+</TR>
+</TABLE><BR>
+
+<H4><I>3D object motion logics</I></H4>
+
+<P>There are 2 logics for giving motions to a  3D object:</P>
+
+<P>LOGIC: UPDATE to perpetually rotate a 3D, and </P>
+
+<P>LOGIC: KEY to give a VUE motion to the 3D</P>
+
+<P><B>Rotation on X-axis</B></P>
+
+<TABLE cols=2 width=322>
+
+<TR VALIGN="top">
+<TD width=29%>| LOGIC:</TD>
+<TD width=71%>UPDATE</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=29%>| FLAGS:</TD>
+<TD width=71%>8</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=29%>| D_PITCH:</TD>
+<TD width=71%>[speed]</TD>
+</TR>
+</TABLE><BR>
+
+<P><B>Rotation on Y-axis</B></P>
+
+<TABLE cols=2 width=322>
+
+<TR VALIGN="top">
+<TD width=29%>| LOGIC:</TD>
+<TD width=71%>UPDATE</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=29%>| FLAGS:</TD>
+<TD width=71%>16</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=29%>| D_YAW:</TD>
+<TD width=71%>[speed]</TD>
+</TR>
+</TABLE><BR>
+
+<P><B>Rotation on Z-axis</B></P>
+
+<TABLE cols=2 width=322>
+
+<TR VALIGN="top">
+<TD width=29%>| LOGIC:</TD>
+<TD width=71%>UPDATE</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=29%>| FLAGS:</TD>
+<TD width=71%>32</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=29%>| D_ROLL:</TD>
+<TD width=71%>[speed]</TD>
+</TR>
+</TABLE><BR>
+
+<P>Speed is the speed at which the 3D object rotates from -999 (max anti-clockwise) to 999 (max clockwise).</P>
+
+<P><B>VUE object</B></P>
+
+<TABLE cols=2 width=265>
+
+<TR VALIGN="top">
+<TD width=42%>| LOGIC:</TD>
+<TD width=58%>KEY</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=42%>| VUE:</TD>
+<TD width=58%>filename.VUE "id"</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=42%>| VUE_APPEND:</TD>
+<TD width=58%>filenam2.VUE "id"</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=42%>| PAUSE:</TD>
+<TD width=58%>TRUE</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=42%>| FRAME_RATE:</TD>
+<TD width=58%>[frame rate]</TD>
+</TR>
+</TABLE><BR>
+
+<P>filename.VUE is the name of the VUE file to use.</P>
+
+<P>"id" is the name of the identifier within the VUE file to use.</P>
+
+<P>VUE_APPEND: is an optional VUE to be played after the first VUE.</P>
+
+<P>PAUSE: TRUE will cause the VUE to pause each time it is played until a "wakeup" message is sent to the sector containing the 3D object. Objects with "PAUSE: TRUE" will also be "woken up" if their RADIUS is shot.</P>
+
+<P>Frame rate is in frames per second.</P>
+
+<H4><I>Other sequence modifiers</I></H4>
+
+<TABLE cols=2 width=190>
+
+<TR VALIGN="top">
+<TD width=39%>| BOSS:</TD>
+<TD width=61%>TRUE</TD>
+</TR>
+</TABLE><BR>
+
+<P>This can be set to the following logics:</P>
+
+<P>BOBA_FETT</P>
+
+<P>KELL</P>
+
+<P>D_TROOP1</P>
+
+<P>D_TROOP2</P>
+
+<P>D_TROOP3</P>
+
+<P>When you kill the enemy, an elevator called "boss" will move to its next stop (unless it is LOGIC: D_TROOP3, where the elevator must be called "mohc"). This is similar to the movement of "complete" when a goal item is picked up. Using this modifier, you can cause something to happen when the player has killed the boss, for instance the player could be locked in a certain area until he has killed the boss and then a door will be opened letting him out.</P>
+
+<P></P>
+
+<TABLE cols=2 width=284>
+
+<TR VALIGN="top">
+<TD width=33%>| RADIUS:</TD>
+<TD width=67%>[horizontal distance]</TD>
+</TR>
+</TABLE><BR>
+
+<P>This defines the size of an invisible circle around the object where the PLAYER cannot enter or shoot through. Frames and sprites have radiuses by default, but 3D objects don't, so you have to set one unless you want the PLAYER to walk right through. You can use this with a Spirit to create an invisible obstacle.</P>
+
+<TABLE cols=2 width=284>
+
+<TR VALIGN="top">
+<TD width=33%>| HEIGHT:</TD>
+<TD width=67%>[vertical distance]</TD>
+</TR>
+</TABLE><BR>
+
+<P>Similar to radius, height defines an area above (positive value) or below (negative value) an object where you can't walk or fire through. Therefore, using radius and height together, you can effectively create an impenetrable cylinder-shaped area around an object.</P>
+
+<P>A further note:</P>
+
+<P>RADIUS and HEIGHT, if used with objects having a logic, will also affect how the logic interacts with the player. If used with items, they determine the distance Kyle has to be from the item to pick it up. If used with enemies and "LOGIC: SCENERY", they determine the distance from the enemy that laser bolts etc. have to come within to damage the enemy.</P>
+
+<H4><I>Unknown</I></H4>
+
+<P>These are found in DARK.EXE. It is likely that some are only used internally by the DF engine. We would appreciate any help working out any possible usable ones!</P>
+
+<P>VISIBLE:</P>
+
+<P>SHADED:</P>
+
+<P>LIGHT:</P>
+
+<P>PARENT:</P>
+
+<P>D_X:</P>
+
+<P>D_Y:</P>
+
+<P>D_Z:</P>
+
+<P>D_VIEW_PITCH:</P>
+
+<P>D_VIEW_YAW:</P>
+
+<P>D_VIEW_ROLL:</P>
+
+<P>VIEW_PITCH:</P>
+
+<P>VIEW_YAW:</P>
+
+<P>VIEW_ROLL:</P>
+
+<P>EYE_D_XYZ:</P>
+
+<P>EYE_D_PYR:</P>
+
+<P>SYNC:</P>
+
+<P>PLUGIN:</P>
+
+<P>STORM</P>
+
+<P>DISPATCH</P>
+
+<P>THINKER</P>
+
+<P>FOLLOW</P>
+
+<P>FOLLOW_Y</P>
+
+<P>RANDOM_YAW</P>
+
+<P>MOVER</P>
+
+<P>SHAKER</P>
+
+<P>PERSONALITY</P>
+
+</BODY>
+</HTML>

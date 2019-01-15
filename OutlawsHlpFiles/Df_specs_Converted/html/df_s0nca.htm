@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>INF File Format</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="INF File">
+</OBJECT>
+
+<H4><A NAME="51v5uj"></A>INF File Format</H4>
+
+<P>Here is the header of the INF file:</P>
+
+<TABLE cols=1 width=281>
+
+<TR VALIGN="top">
+<TD width=100%>|  INF 1.0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  LEVELNAME SECBASE</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  items 2</TD>
+</TR>
+</TABLE><BR>
+
+<P>INF File version and level name, followed by total number of items in the file.</P>
+
+<P>Don't forget to change this value when you add or remove items in an INF. </P>
+
+<P>Then follow the items:</P>
+
+<TABLE cols=1 width=281>
+
+<TR VALIGN="top">
+<TD width=100%>|  item: sector  name: secname</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|    seq</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|     ........</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|    seqend</TD>
+</TR>
+</TABLE><BR>
+
+<P>A Sector Item.</P>
+
+<TABLE cols=1 width=446>
+
+<TR VALIGN="top">
+<TD width=100%>|  item: sector  name: secname  num: #wallnum</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|    seq</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|     ........</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|    seqend</TD>
+</TR>
+</TABLE><BR>
+
+<P>A Wall Item.</P>
+
+<P>etc.</P>
+
+<P>See also <A HREF="df_s4pv5.htm">item: level</A></P>
+
+<P>Each item follows the same format, structured by the <B>seq</B> and <B>seqend</B> statements, between which the definitions are contained.</P>
+
+<P>Note:</P>
+
+<P>More than one class statement is allowed per item.</P>
+
+</BODY>
+</HTML>

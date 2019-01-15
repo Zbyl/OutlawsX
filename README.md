@@ -27,6 +27,10 @@ Everything else.
 In LabFuse directory there is a working user-mode file system (requires Dokany installed) for mounting LAB package files as drives in Windows.  
 It is written using FUSE, so it should be trivial to port to Linux.
 
+# Outlaws specs and file formats
+
+See here: [OutlawsHlpFiles](./OutlawsHlpFiles)
+
 # Used third-party lbraries
 
 - `json` by Niels Lohmann (MIT license),

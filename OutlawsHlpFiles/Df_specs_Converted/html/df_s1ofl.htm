@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>O Object Sequences and Logics</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="O File">
+	<PARAM NAME="Keyword" VALUE="object logics">
+	<PARAM NAME="Keyword" VALUE="object sequences">
+</OBJECT>
+
+<H4><A NAME="1o9e5i1"></A>O Object Sequences and Logics</H4>
+
+<H4><A HREF="df_s4qch.htm">Doom note</A></H4>
+
+<P>SEQ and SEQEND are delimiters for a series of options/modifiers to apply to the object, which determine its behavior.</P>
+
+<P>The basic thing that all entities will have is a LOGIC: that controls it (eg. for an enemy, tells it what direction to walk in, when to shoot and so on). Logics are hardcoded in DARK.EXE and also determine things like how fast an enemy moves, how it attacks, how strong it is, what sounds it makes, what weapon it drops when it dies etc. In addition, logics will control what the sprite appears to be doing (i.e. what frames in the WAX that are shown).</P>
+
+<P>See <A HREF="df_s2v8o.htm">Full Logics list</A>.</P>
+
+<P>The same viewable file may be used to create 'different' objects. For instance, OFFCFIN.WAX may be used with a LOGIC: I_OFFICER or LOGIC: I_OFFICERR (note the second 'R') which will generate a red key then killed instead of the usual ammo clip. Or you can use it with LOGIC: STORM1 and although the enemy will appear like an officer, it will behave as a stormtrooper, take as many shots to kill as a stormtrooper etc.</P>
+
+<P>The keywords TYPE: and LOGIC: are freely exchangeable, and the ITEM keyword is optional before item logics.</P>
+
+<H4><I>Combined Logics</I></H4>
+
+<P>You can combine logics freely. LOGIC: ANIM is frequently combined with many of the item and scenery logics to animate the sprites.</P>
+
+<P>If you combine enemy logics, the first LOGIC: is in this case the primary logic, which means that to kill the object, you have to use the firepower needed to kill its first LOGIC: . Very strange things may happen when combining LOGICs, and some combinations don't work, or even don't work every time!</P>
+
+<P>Try Mousebot + Barrel, or Player + Mousebot...</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>CUTSCENE.LST</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="cutscene.lst File">
+	<PARAM NAME="Keyword" VALUE="file format">
+</OBJECT>
+
+<H4><A NAME="jueh4e"></A>CUTSCENE.LST</H4>
+
+<P>[by Michael Taylor]</P>
+
+<P>The cutscene.lst file contains the necessary information to display the various scenes in between missions. This includes the starting logos and the ending credits. The file is integrated with the various LFD files that make up the cutscenes. Following is the complete file format and the descriptive notes I have made. </P>
+
+<H4><I>File Format</I></H4>
+
+<P>Firstly, comments are denoted by the pound sign (#). Everything after the sign is ignored until the end of the line.</P>
+
+<P>First comes the magic 'CUT' and a version number.</P>
+
+<TABLE cols=1 width=385>
+
+<TR VALIGN="top">
+<TD width=100%>| CUT 1.0</TD>
+</TR>
+</TABLE><BR>
+
+<P>Next is the keyword CUTS and the number of cutscenes defined in the file.</P>
+
+<TABLE cols=1 width=385>
+
+<TR VALIGN="top">
+<TD width=100%>| CUTS 39</TD>
+</TR>
+</TABLE><BR>
+
+<P>Then starts the cutscene information:</P>
+
+<TABLE cols=1 width=385>
+
+<TR VALIGN="top">
+<TD width=100%>| 550:  gromas1.lfd  gromas1   10  0  0  3  100</TD>
+</TR>
+</TABLE><BR>
+
+<P>Lets decipher this line. The first number is an id number used by the LFD file. It seems that each mission is given its own id number and therefore you cannot change the first id number but you may add id numbers which in effect adds more cutscenes to a file. More on this later.</P>
+
+<P>Note: as stated in the file, don't change the ftextcra.lfd scenes id number, it is hardcoded into the program.</P>
+
+<P>[There are in fact id numbers which are hardcoded to be played before and after each level. Cutscene 100 is played before level 1, 150 is played after level 1, 200 is played before level 2, 250 is played after level 2 and so on. Also note that cutscene 10 is played just after loading up DF, and 1500 when the game has been completed. And for your interest, the reason the textcrawl is hardcoded at 30 is because cutscene 30 was specially designed to have the text scroll into the distance -- giving the textcrawl another id number will cause it to scroll straight up -Jereth]</P>
+
+<P>Next comes the resource file that contains the cutscene and following this a scenes file. You can move most of the resource files around and effectively change the scenes provided you also change the scenes file. I received an error message when I tried to change the scenes file while leaving the resource file the same. It is possible to swap files, for example you can have the credits displayed prior to the Dark Forces logo if you swap lines 41 and 40. This is not a good way to swap scenes though. I'll show you a better way later.</P>
+
+<P>[Actually, the resource file is the .LFD to take the cutscene from, while the scenes file is the FILM within the .LFD to use as a script for the cutscene. So they do <B>not</B> actually need to have the same name - Jereth]</P>
+
+<P>Next comes the speed at which the scene is showed. It must be in the range of 5-20 else an error message is displayed. 20 is the fastest. I use this to speed up the starting logos when I'm testing things in the cutscene.lst file.</P>
+
+<P>The next number is the scene id that should be displayed when this one ends. Zero means that this is the last scene to display. This is by far the best way to swap scenes. For example if you want to show the credits prior to the Dark Forces logo then you would change the next scene number in line 30 to 41 and then change the next scene number in line 41 to 40. Finally, change the next scene number in line 40 to 0. If you forget to change the last scene's next scene number to 0 then it will get into a loop. By changing the next scene number, you can also add your own cutscenes.</P>
+
+<P>The next number is the skip scene number. This number determines which scene to be displayed if ESC [or Enter] is hit. In most files, it should be zero which means to go to the menu or the next mission. But it can contain an id number for a scene.</P>
+
+<P>Next comes the SEQ number for the cutmuse.txt file. This links the appropriate music with the scenes.</P>
+
+<P>Finally is the volume at which the sound is played. 100 is normal.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>FILM (FLM Files)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="FILM">
+	<PARAM NAME="Keyword" VALUE="FLM Files">
+</OBJECT>
+
+<H4><A NAME="1q2six6"></A>FILM (FLM Files)</H4>
+
+<P>A FILM LFD resource handles the scripting of a scene.</P>
+
+<P>It specifies the PLTT to use as palette, the DELT to use as background, the ANIM to play, and the VOIC to play during the ANIM.</P>
+
+<P>The PLTT, DELT and ANIM are in the same LFD as the FILM, while all the VOIC seem to refer to jedisfx.lfd</P>
+
+<P>Note: the .flm extension is a convention adopted by add-on developers when writing conversion programs, there are no real FLM files in DARK FORCES.</P>
+
+<P>First comes a header :</P>
+
+<P>FILM_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=411>
+
+<TR VALIGN="top">
+<TD width=24%>u1</TD>
+<TD width=23%>int</TD>
+<TD width=53%>// unknown</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%> u2</TD>
+<TD width=23%>int</TD>
+<TD width=53%>// unknown</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%> nbENTRIES</TD>
+<TD width=23%>int</TD>
+<TD width=53%>// number of entries</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Then follow a series of entries:</P>
+
+<P>FILM_Entry IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=525>
+
+<TR VALIGN="top">
+<TD width=22%>TYPE</TD>
+<TD width=25%>char[4]</TD>
+<TD width=53%>// type of the resource</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> NAME</TD>
+<TD width=25%>char[8]</TD>
+<TD width=53%>// name of the resource</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> LENGTH</TD>
+<TD width=25%>long</TD>
+<TD width=53%>// length of the resource<BR>
+// including this structure</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Note that this structure is identical to the LFD_IX_Entry structure.</P>
+
+<P>Each entry may be:</P>
+
+<TABLE cols=2 width=385>
+
+<TR VALIGN="top">
+<TD width=21%><B>Section</B></TD>
+<TD width=79%><B>Description</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%>ANIM</TD>
+<TD width=79%>animation, this is a collection of DELT</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%>DELT</TD>
+<TD width=79%>static image in delta format</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%>PLTT</TD>
+<TD width=79%>palette used for ANIM and DELT</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%>VOIC</TD>
+<TD width=79%>VOC (standard Creative Labs format)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%>VIEW</TD>
+<TD width=79%>First entry in the FILM</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%>CUST</TD>
+<TD width=79%>Custom</TD>
+</TR>
+</TABLE><BR>
+
+<P>The first entry is of type VIEW.</P>
+
+<P>The PLTT entry seems to be of fixed size, and the ANIM entry depends on the number of frames in the animation.</P>
+
+<P>See Carl Kenner's Description for more details on these entries.</P>
+
+<P>Then comes a trailer:</P>
+
+<P>FILM_Trailer IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=411>
+
+<TR VALIGN="top">
+<TD width=24%>MAGIC</TD>
+<TD width=23%>char[4]</TD>
+<TD width=53%>// = 'END' + 0x00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%> u1</TD>
+<TD width=23%>int</TD>
+<TD width=53%>// unknown</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%> u2</TD>
+<TD width=23%>int</TD>
+<TD width=53%>// unknown</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=24%> u3</TD>
+<TD width=23%>int</TD>
+<TD width=53%>// unknown</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>See <A HREF="df_s2mqt.htm">Carl Kenner's description</A></P>
+
+</BODY>
+</HTML>

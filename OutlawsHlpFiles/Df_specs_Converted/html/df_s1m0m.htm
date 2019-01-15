@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>FONT (FON Files)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="FON Files">
+	<PARAM NAME="Keyword" VALUE="FONT">
+</OBJECT>
+
+<H4><A NAME="dncaev"></A>FONT (FON Files)</H4>
+
+<P>These LFD resources store a proportional character set, which may be incomplete.</P>
+
+<P>I found two examples : font6 and font8.</P>
+
+<P>Note: the .fon extension is a convention adopted by add-on developers when writing conversion programs, there are no real FON files in DARK FORCES. There are FNT files however, which are quite different !</P>
+
+<P>FON_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=546>
+
+<TR VALIGN="top">
+<TD width=15%>First</TD>
+<TD width=29%>int</TD>
+<TD width=56%>// First character in font</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%> Last</TD>
+<TD width=29%>int</TD>
+<TD width=56%>// Last character in font</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%> u1</TD>
+<TD width=29%>int</TD>
+<TD width=56%>// 8, could be bits per char line</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%> Height</TD>
+<TD width=29%>int</TD>
+<TD width=56%>// Height of Chars</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%> u2</TD>
+<TD width=29%>int</TD>
+<TD width=56%>// could be average Width</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%> </TD>
+<TD width=29%>&nbsp;</TD>
+<TD width=56%>// or the minimal Width to use</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%> pad1</TD>
+<TD width=29%>byte[2]</TD>
+<TD width=56%>// 2 times 0x00</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Then follows a block of (Last-First+1) bytes (one per character), which code the width of the corresponding character.</P>
+
+<P>FON_Characters_Widths IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=546>
+
+<TR VALIGN="top">
+<TD width=15%>Widths</TD>
+<TD width=29%>byte[Last-First+1]</TD>
+<TD width=56%>// each byte is the width of one</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=15%> </TD>
+<TD width=29%>&nbsp;</TD>
+<TD width=56%>// character</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Then each character is described in turn:</P>
+
+<P>FON_Character IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=546>
+
+<TR VALIGN="top">
+<TD width=15%>Bitmap</TD>
+<TD width=29%>Byte[Height]</TD>
+<TD width=56%>// Height bytes for each character</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Now the funny part: each of these bytes is a bitmap representation of a line of the character. A bit set correspond to a pixel drawn on the screen.</P>
+
+<P>For example, if the bytes are 48h, FCh, 48h, FCh, 48h, 00h</P>
+
+<P>this gives</P>
+
+<TABLE cols=2 width=149>
+
+<TR VALIGN="top">
+<TD width=36%>48h</TD>
+<TD width=64%>.X..X...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=36%>FCh</TD>
+<TD width=64%>XXXXXX..</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=36%>48h</TD>
+<TD width=64%>.X..X...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=36%>FCh</TD>
+<TD width=64%>XXXXXX..</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=36%>48h</TD>
+<TD width=64%>.X..X...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=36%>00h</TD>
+<TD width=64%>........</TD>
+</TR>
+</TABLE><BR>
+
+<P>Which is the # character.</P>
+
+<P>Note that the width as referenced in the FON_Characters_Widths array would be 6 for this character. </P>
+
+<P>In fact, FON_Characters_Widths must be used to determine where on the screen to draw the next character.</P>
+
+</BODY>
+</HTML>

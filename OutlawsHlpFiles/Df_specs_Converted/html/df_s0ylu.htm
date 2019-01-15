@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>(Untitled)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<P><A NAME="ehf4ar"></A><B>flags:</B></P>
+
+<P>Determines whether or not the player moves with a morphing or a horizontally scrolling elevator.</P>
+
+<P><I>flag values</I></P>
+
+<TABLE cols=2 width=197>
+
+<TR VALIGN="top">
+<TD width=16%>1</TD>
+<TD width=84%>Move on floor</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%>2 </TD>
+<TD width=84%>Move on 2nd altitude</TD>
+</TR>
+</TABLE><BR>
+
+<P>These are bit values, so can be added (3) for moving on both the floor  AND 2nd alt.</P>
+
+<P>Note: In FUELSTAT.INF (I think) you may find "flags: 7". This suggests that there is a value for 4 as well.</P>
+
+<P>Note: In some places in the original levels, flags is set on vertically moving elevators like move_floor and move_fc. I'm not sure whether this is a mistake, or if flags do something different here.</P>
+
+<P><I>Usage:</I></P>
+
+<P>| flags: [value]</P>
+
+<P>See <A HREF="df_s98xk.htm">Defaults</A></P>
+
+</BODY>
+</HTML>

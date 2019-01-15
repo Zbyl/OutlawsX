@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>FILM (FLM Files)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="FILM">
+	<PARAM NAME="Keyword" VALUE="FLM Files">
+</OBJECT>
+
+<H4><A NAME="22cf9ee"></A>FILM (FLM Files)</H4>
+
+<P>Here is Carl Kenner's much more complete description of FILMs.</P>
+
+<P>FILM File Specs (DOS Name = .FLM)</P>
+
+<P>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</P>
+
+<P>Addresses mentioned are hexadecimal. Values are decimal.</P>
+
+<P>Film files contain the directions of what to do in a cutscene.</P>
+
+<P>Although they can also be used for dialog boxes, this is rare and should not bother you.</P>
+
+<P>They are part of the LANDRU system developed by Ed "Kill'em" Kilham, and as such are only found in .LFD files. They are used in Dark Forces, X-Wing, Imperial Pursuit, B-Wing, TIE Fighter and Defender of the Empire.</P>
+
+<P>Here is the format of the header:</P>
+
+<P>00:    Magic  (Integer)         Always equals 4</P>
+
+<P>02:    FilmLength (Integer)     In clock ticks (about 1/10 of a second)</P>
+
+<P>04:    ObjectCount (Integer)    Not including END</P>
+
+<P>"Magic" may mean something, but it probably just identifies it as a FILM file.</P>
+
+<P>A series of ObjectCount object blocks follows.</P>
+
+<P>Here is the format of each object block:</P>
+
+<P>00:    Extension (4 chars)        Block Type Name (see table)</P>
+
+<P>04:    Name (8 chars)             File Name (see table)</P>
+
+<P>0C:    TotalLength (Long Int)     Total length of Block (BlockLength + 22)</P>
+
+<P>10:    BlockType (Integer)        (See Table)</P>
+
+<P>12:    NumberOfCommands (Integer) Number Of Commands (including End command)</P>
+
+<P>14:    BlockLength (Integer)      TotalLength - 22 (don't ask me why)</P>
+
+<P>16:    ===== Command List ======  (see below)</P>
+
+<P>If the object file doesn't exist you will get an error in a dialog box saying</P>
+
+<P>"Unable to load all items in cutscene _________"</P>
+
+<P>============================</P>
+
+<P>Block Types</P>
+
+<P>----------------------------</P>
+
+<P>01:    END/0</P>
+
+<P>02:    VIEW</P>
+
+<P>03:    DELT   ANIM   CUST</P>
+
+<P>04:    PLTT</P>
+
+<P>05:    VOIC</P>
+
+<P>============================</P>
+
+<P>================================================================</P>
+
+<P>BlockNames</P>
+
+<P>----------------------------------------------------------------</P>
+
+<P>VIEW:    "UNTITLED"  \  Maybe you can give the film a title,</P>
+
+<P>END:     "UNTITLED"  /  but nobody ever does, so I don't either.</P>
+
+<P>CUST:    "CUSTOM"</P>
+
+<P>Otherwise it is the filename</P>
+
+<P>================================================================</P>
+
+<P>Here is the format of each command:</P>
+
+<P>00: CommandLength (Integer)   Total length of the command</P>
+
+<P>02: Command (Integer)         (See Table)</P>
+
+<P>04: ParameterList (Integers)  (CommandLength-4) / 2 parameters</P>
+
+<P>====================================================</P>
+
+<P>Commands (decimal not hex)</P>
+
+<P>--------------- General Commands -------------------</P>
+
+<P>0:  Unused ???</P>
+
+<P>1:  Unused ???</P>
+
+<P>2:  END ()</P>
+
+<P>3:  *TIME* (timeframe)</P>
+
+<P>--------------- Type 3 Commands --------------------</P>
+
+<P>4:  MOVE (x, y, 0, 0)</P>
+
+<P>5:  SPEED (horizontal, vertical, 0, 0)</P>
+
+<P>6:  LAYER (z)</P>
+
+<P>7:  FRAME (n, ?0?)</P>
+
+<P>8:  ANIMATE (direction, ?0?)</P>
+
+<P>9:  CUE (n)</P>
+
+<P>10: VAR (v) ???</P>
+
+<P>11: WINDOW (xMin, yMin, xMax, yMax)</P>
+
+<P>12: ?</P>
+
+<P>13: SWITCH (OnOff)</P>
+
+<P>14: ???? (1, 0/1)</P>
+
+<P>--------------- Palette commands -----------------</P>
+
+<P>15: PALETTE (0)</P>
+
+<P>16: ?</P>
+
+<P>17: ?</P>
+
+<P>----------------- View Commands ------------------</P>
+
+<P>18: CUT (c, t)</P>
+
+<P>19: ?</P>
+
+<P>----------------- Sound Commands -----------------</P>
+
+<P>20: LOOP (0)</P>
+
+<P>21: ?</P>
+
+<P>22: ?</P>
+
+<P>23: ?</P>
+
+<P>24: PRELOAD (2/1)</P>
+
+<P>25: SOUND (OnOff, volume, 0, 0)</P>
+
+<P>26: ?</P>
+
+<P>27: ?</P>
+
+<P>28: STEREO (OnOff, volume, 0, 0, PanPosition, 0, 0)</P>
+
+<P>====================================================</P>
+
+<P>All .FILM files must have one VIEW block and it must be the first.</P>
+
+<P>It's name should be UNTITLED.</P>
+
+<P>There is also a END block at the end of the file. It is not counted in NumberOfObjects. It contains only the first part of the object block header. It has the same name as the VIEW block.</P>
+
+<P>One or Two CUST blocks both named CUSTOM are optional. They are not associated with files.</P>
+
+<P>Command Descriptions:</P>
+
+<P>~~~~~~~~~~~~~~~~~~~~~</P>
+
+<P>END ()</P>
+
+<P>======</P>
+
+<P>Length: 4</P>
+
+<P>Number: 2</P>
+
+<P>Syntax: END</P>
+
+<P>This command is always the last command for an object.</P>
+
+<P>*TIME* () </P>
+
+<P>=========</P>
+
+<P>Length: 6</P>
+
+<P>Number: 3</P>
+
+<P>Syntax: *TIME* x</P>
+
+<P>or  *TIME* x.x</P>
+
+<P>This command is always the first command for an object. It tells LANDRU when to do the following commands up to the next *TIME* command.</P>
+
+<P>The next *TIME* command tells it when to do the commands following it, etc.</P>
+
+<P>Any commands between 2 *TIME* commands will be done simultaneously (almost).</P>
+
+<P>*TIME* commands must come in chronological order otherwise the LANDRU system</P>
+
+<P>will hang (or give an error message?).</P>
+
+<P>x is the time in clock ticks (about 1/10th of a second).</P>
+
+<P>x.x is the time in seconds approximately (decimal number). </P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>Type 3 Commands</P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>These commands may only be used on graphical objects or a CUSTOM object.</P>
+
+<P>MOVE (x, y, 0, 0)</P>
+
+<P>=================</P>
+
+<P>length: 12 or 18</P>
+
+<P>number: 4</P>
+
+<P>Syntax: MOVE x y 0 0</P>
+
+<P>or  MOVE x y 0 0 0 0 0</P>
+
+<P>or  MOVETO x y 0 0</P>
+
+<P>or  MOVETO x y 0 0 0 0 0</P>
+
+<P>Moves the object to the coordinates (x,y).</P>
+
+<P>All objects are at the origin (0,0) at the start.</P>
+
+<P>SPEED (right, down, 0, 0)</P>
+
+<P>=========================</P>
+
+<P>length: 12 or 18</P>
+
+<P>number: 5</P>
+
+<P>Syntax: SPEED right down 0 0</P>
+
+<P>or  SPEED right down 0 0 0 0 0</P>
+
+<P>Changes the objects horizontal speed to &lt;right&gt; and its veritcal speed to &lt;down&gt;. Negatives mean left and up respectively.</P>
+
+<P>The units are approximately decapixels per time frame, or something similar.</P>
+
+<P>Objects are stationary by default.</P>
+
+<P>LAYER (z)</P>
+
+<P>=========</P>
+
+<P>length: 6</P>
+
+<P>number: 6</P>
+
+<P>Syntax: LAYER z</P>
+
+<P>Changes the object's layer to z. The smaller or more negative &lt;z&gt; is the further forward it is. Objects with a low &lt;z&gt; move in front of objects with a high &lt;z&gt;.</P>
+
+<P>Objects always start on layer 0.</P>
+
+<P>100 is usually the background.</P>
+
+<P>*** I think that layer zero is done like the text crawl for scene #30 ***</P>
+
+<P>FRAME (n, ?0?)</P>
+
+<P>==============</P>
+
+<P>length: 8</P>
+
+<P>number: 7</P>
+
+<P>Syntax: FRAME n 0</P>
+
+<P>? or ?  FRAME n 128</P>
+
+<P>Displays the frame number &lt;n&gt; of a .ANIM object.</P>
+
+<P>If n is odd then frame &lt;n&gt;-1 will be drawn first then frame &lt;n&gt; will be drawn on top. If &lt;n&gt; is higher than the number of frames in a .ANIM then you will get an error message:</P>
+
+<P>" XACTOR.C: Value out of bounds. "</P>
+
+<P>or something similar.</P>
+
+<P>Animations start at frame 0.</P>
+
+<P>ANIMATE (direction, ?0?)</P>
+
+<P>========================</P>
+
+<P>length: 8</P>
+
+<P>number: 8</P>
+
+<P>Syntax: ANIMATE direction 0</P>
+
+<P>??? or  ANIMATE direction 128</P>
+
+<P>Direction may be one of the following:</P>
+
+<P>0, OFF</P>
+
+<P>1, ON, FORWARDS</P>
+
+<P>-1, BACKWARDS</P>
+
+<P>This command starts a .ANIM object animating in the appropriate direction.</P>
+
+<P>.ANIMs start, by default, inanimate on frame 0.</P>
+
+<P>CUE (n)</P>
+
+<P>=======</P>
+
+<P>length: 6</P>
+
+<P>number: 9</P>
+
+<P>Syntax: CUE n</P>
+
+<P>If used in a CUST object in Dark Forces then it sends a cue to iMuse to start the music. This corresponds to the cue number (which is only a comment) in the CUTMUSE.TXT file under the SEQUENCE specified in the CUTSCENE.LST file. Music is not a part of Landru so it is found in GOB files not LFD files. This makes it HARD to add music to cutscenes.</P>
+
+<P>If used in a CUST object in X-Wing or TIE Fighter then it handles all sorts of goodies, such as speech, text and music. The VAR command also plays an important role.</P>
+
+<P>If used in a graphical object then it probably does nothing useful.</P>
+
+<P>VAR (n)</P>
+
+<P>=======</P>
+
+<P>length: 6</P>
+
+<P>number: 10</P>
+
+<P>Syntax: VAR n</P>
+
+<P>Unknown. Used mainly in X-Wing, TIE Fighter CUST objects.</P>
+
+<P>WINDOW (xMin, yMin, xMax, yMax)</P>
+
+<P>===============================</P>
+
+<P>length: 12</P>
+
+<P>number: 11</P>
+
+<P>Syntax: WINDOW xMin yMin xMax yMax</P>
+
+<P>Probably clips and limits the displayed image to the specified region.</P>
+
+<P>Useful to make stars fit a window, when other parts are transparent.</P>
+
+<P>SWITCH (OnOff)                          \    |    / </P>
+
+<P>==============                            \  |  / </P>
+
+<P>length: 6                              -  -  *  -  -</P>
+
+<P>number: 13                                /  |  \</P>
+
+<P>Syntax: SWITCH OnOff                    /    |    \ </P>
+
+<P>OnOff may be one of the following:</P>
+
+<P>0, OFF</P>
+
+<P>1, ON</P>
+
+<P>This command is VERY important. It switches the graphic on or off.</P>
+
+<P>When graphics are switched off they are not displayed.</P>
+
+<P>Graphics are SWITCHED OFF BY DEFAULT.</P>
+
+<P>Objects should always be switched on at the start and switched off at the end (NumberOfFrames-1).</P>
+
+<P>???? (1, 0/1)</P>
+
+<P>=============</P>
+
+<P>length: 8</P>
+
+<P>number: 14</P>
+
+<P>Syntax ???? 1 0</P>
+
+<P>or  ???? 1 1</P>
+
+<P>This command is quite common is some games, but I have no idea what it does.</P>
+
+<P>It can't do anything important because cutscenes work fine without it.</P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>Palette Commands</P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>These commands may only be used on palette objects. (Type 4)</P>
+
+<P>PALETTE (0)</P>
+
+<P>===========</P>
+
+<P>Length: 6</P>
+
+<P>Number: 15</P>
+
+<P>Syntax: PALETTE 0</P>
+
+<P>Sets the palette to the palette in this palette file.</P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>View Commands</P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>These commands may only be used on the View Block.</P>
+
+<P>A VIEW block must always be present, but may contain no commands.</P>
+
+<P>CUT (how, type)</P>
+
+<P>===============</P>
+
+<P>Length: 8</P>
+
+<P>Number: 18</P>
+
+<P>Syntax: CUT how type</P>
+
+<P>I'm not sure exactly what this does, but it is definately a cut of some sort.</P>
+
+<P>&lt;how&gt; may be one of the following:</P>
+
+<P>1, SWAP</P>
+
+<P>2, CLEAR</P>
+
+<P>3, DIRTY</P>
+
+<P>12, FadeRight</P>
+
+<P>13, FadeLeft</P>
+
+<P>14, FadeUp</P>
+
+<P>15, FadeDown</P>
+
+<P>21, FadeUpDown</P>
+
+<P>2333, FadeToBlack</P>
+
+<P>23, Stop</P>
+
+<P>&lt;type&gt; may be one of the following:</P>
+
+<P>2, Old</P>
+
+<P>3, End</P>
+
+<P>4, New</P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>Sound Commands</P>
+
+<P>-----------------------------------------------------------------------------</P>
+
+<P>These commands may only be used on sound objects. (Type 5)</P>
+
+<P>SOUND (OnOff, Volume, 0, 0)</P>
+
+<P>===========================</P>
+
+<P>Length: 12</P>
+
+<P>Number: 25</P>
+
+<P>Syntax: SOUND 1 volume% 0 0</P>
+
+<P>or : SOUND 0 0 ? ?</P>
+
+<P>Plays the sound or switches it off depending on the value of OnOff.</P>
+
+<P>STEREO (OnOff, Volume%, 0, 0, PanPosition, 0, 0)</P>
+
+<P>================================================</P>
+
+<P>Length: 18 or 24</P>
+
+<P>Number: 28</P>
+
+<P>Syntax: STEREO 1 volume% 0 0 PanPosition 0 0</P>
+
+<P>or   STEREO 0 0 ? ? 0 ? ?</P>
+
+<P></P>
+
+<P>Plays a sound in stereo or switches it off.</P>
+
+<P>PanPosition is 0-255.</P>
+
+<P>0 = left</P>
+
+<P>255 = right</P>
+
+<P>128/127 = center</P>
+
+<P>LOOP (0)</P>
+
+<P>========</P>
+
+<P>Length: 6</P>
+
+<P>Number: 20</P>
+
+<P>Syntax: LOOP 0</P>
+
+<P>Breaks out of the current repeating loop. (I think)</P>
+
+<P>PRELOAD (2/1)</P>
+
+<P>=============</P>
+
+<P>Length: 6</P>
+
+<P>Number: 24</P>
+
+<P>Syntax: PRELOAD 1</P>
+
+<P>or   PRELOAD 2</P>
+
+<P>Unknown. Probably has something to do with loading?</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Geometry Elements</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="layer">
+	<PARAM NAME="Keyword" VALUE="sector">
+	<PARAM NAME="Keyword" VALUE="vertex">
+	<PARAM NAME="Keyword" VALUE="wall">
+</OBJECT>
+
+<H4><A NAME="qyobrm"></A>Geometry Elements<BR>
+<A HREF="df_s2ozb.htm">Doom note</A></H4>
+
+<P>The basic geometry elements of a DF level are :</P>
+
+<TABLE cols=2 width=487>
+
+<TR VALIGN="top">
+<TD width=14%><B>VERTEX</B></TD>
+<TD width=86%>a point in a 2 dimensions projection (X and Z)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=14%><B>WALL</B></TD>
+<TD width=86%>a line joining 2 vertices</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=14%><B>SECTOR</B></TD>
+<TD width=86%>a collection of walls generally closed, can contain "gaps" or other sectors</TD>
+</TR>
+</TABLE><BR>
+
+<P>As the game works with a two dimensions projection, the third (Y) dimension is coded at the sector level by a floor altitude and a ceiling altitude.</P>
+
+<P>Note that this imply that floors and ceilings of a sector are always <B>FLAT</B>.</P>
+
+<P>Sectors can however be <B>layered</B> on top of one another to give a "full 3D" feeling. </P>
+
+<P>Each sector is coded with its walls and vertices, and is completely self contained </P>
+
+<P>The relation between sectors is done at the wall level by the <A HREF="df_s4ws2.htm">adjoin/mirror/walk mechanism</A>.</P>
+
+</BODY>
+</HTML>

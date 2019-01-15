@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>VUE Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="3D Studio">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="VUE Files">
+</OBJECT>
+
+<H4><A NAME="1ely.cp"></A>VUE Files</H4>
+
+<P>[Slightly edited extract from VUE.TXT by Paul Nemesh]</P>
+
+<P>[changed the references to "object name" to "id" which is what is used in the OFFSTVUE tool]</P>
+
+<P>This what a sample .VUE looks like:</P>
+
+<TABLE cols=1 width=459>
+
+<TR VALIGN="top">
+<TD width=100%>| vue 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| transform "id" #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| transform "id" ......</TD>
+</TR>
+</TABLE><BR>
+
+<P>"id" is the identifier (referenced by the .o file, see below). So you can store more than one set of 3D object motions within the one VUE, each with a different identifier.</P>
+
+<P>The values for #1 through #9 are the coefficients of the rotating and scaling matrix that is used by DF to determine how to draw the .3do. [...]</P>
+
+<P>The formulas are:</P>
+
+<TABLE cols=1 width=469>
+
+<TR VALIGN="top">
+<TD width=100%>#1: Scale x [cos(H) x cos(R)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#2: Scale x [-sin(H) x cos(P) + cos(H) x sin(R) x sin(P)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#3: Scale x [-sin(H) x sin(P) - cos(H) x sin(R) x cos(P)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#4: Scale x [sin(H) x cos(R)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#5: Scale x [cos(H) x cos(P) + sin(H) x sin(R) x sin(P)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#6: Scale x [cos(H) x sin(P) - sin(H) x sin(R) x cos(P)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#7: Scale x [sin(R)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#8: Scale x [-cos(R) x sin(P)]</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#9: Scale x [cos(R) x cos(P)]</TD>
+</TR>
+</TABLE><BR>
+
+<P>The values for #10 through #12 are:</P>
+
+<TABLE cols=1 width=469>
+
+<TR VALIGN="top">
+<TD width=100%>#10: X coordinate</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#11: Z coordinate</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>#12: -Y coordinate</TD>
+</TR>
+</TABLE><BR>
+
+<P>The .o file should have the following logic associated with the .3do:</P>
+
+<P>SEQ</P>
+
+<TABLE cols=2 width=619>
+
+<TR VALIGN="top">
+<TD width=42%>LOGIC: KEY</TD>
+<TD width=58%>/* This always needs to be present. */</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=42%> VUE: FILENAME.VUE "ID"</TD>
+<TD width=58%>/* This is the filename of the .VUE, with the identifier in quotes. */</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=42%> VUE_APPEND: FILENAM2.VUE "ID"</TD>
+<TD width=58%>/* Same as the previous line, except this will be run directly after the first .VUE is finished. */</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=42%> PAUSE: TRUE</TD>
+<TD width=58%>/* If this line is used, the .VUE will run exactly once (like Kyle's ship taking off). If this line is omitted, the .VUE will continuously repeat itself. */</TD>
+</TR>
+</TABLE><BR>
+
+<P>SEQEND</P>
+
+<P>[End of extract]</P>
+
+<P>Apparently, the very best way to generate VUE files is to use 3D Studio, as .VUE is a standard 3DS file format, used to describe objects motion. By the way, 3DS .ASC is the base format for the 3DOs, after which the LEC team converted them.</P>
+
+</BODY>
+</HTML>

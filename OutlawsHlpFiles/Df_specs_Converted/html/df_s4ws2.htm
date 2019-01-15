@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Adjoin/Mirror/Walk Mechanism</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="adjoin">
+	<PARAM NAME="Keyword" VALUE="mirror">
+	<PARAM NAME="Keyword" VALUE="walk">
+</OBJECT>
+
+<H4><A NAME="c3uzxr"></A>Adjoin/Mirror/Walk Mechanism<BR>
+<A HREF="df_s4zjr.htm">Doom note</A></H4>
+
+<P>1--------2    Sector 1 has 5 vertices (0 to 4) marked 0 1 2 A B</P>
+
+<P>|        |                 5 walls    including AB (wall 3)</P>
+
+<P>|   S1   |</P>
+
+<P>|        |    Sector 2 has 4 vertices (0 to 3) marked 0 1 B A</P>
+
+<P>0---B====A                 4 walls    including BA (wall 2)</P>
+
+<P>| S2 |</P>
+
+<P>1----0</P>
+
+<P>It is VERY important to note that there are 2 vertices at point A, two vertices at point B and 2 walls marked ==== . As I said earlier, sectors are self contained.</P>
+
+<P>So, to come back to the adjoin/mirror/walk mechanism, if S1 and S2 must be connected, an adjoin/mirror relation must be established.</P>
+
+<P>+----1---+</P>
+
+<P>|        |</P>
+
+<P>0        2</P>
+
+<P>| 4    3 |</P>
+
+<P>+---+====+</P>
+
+<P>1  2 3</P>
+
+<P>+--0-+</P>
+
+<P>This is quite simple : the adjoin is the number of the connected sector, and the mirror is the number of the connection wall.</P>
+
+<P>So we would need to set:</P>
+
+<P>in S1 : W3.adjoin = S2 and W3.mirror = 2</P>
+
+<P>in S2 : W2.adjoin = S1 and W2.mirror = 3</P>
+
+<P>If there is no adjoin/mirror relationship, the values for adjoin and mirror will be -1.</P>
+
+<P>Walk values seem to have no effect at all in a level, but they are mostly set to the same value as adjoin.</P>
+
+</BODY>
+</HTML>

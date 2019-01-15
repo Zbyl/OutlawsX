@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>FME Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="FME Files">
+</OBJECT>
+
+<H4><A NAME="4onxkvh"></A>FME Files</H4>
+
+<P>They contain the frames, which are the "one view" objects (you can turn around them, and you always see the same image).</P>
+
+<P>Here are the data structures for the FME file headers.</P>
+
+<P>FME_Header1 IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=575>
+
+<TR VALIGN="top">
+<TD width=20%>InsertX</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Insertion point, X coordinate<BR>
+// Negative values shift the FME left
+<P>// Positive values shift the FME right</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> InsertY</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Insertion point, Y coordinate<BR>
+// Negative values shift the FME up
+<P>// Positive values shift the FME down</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Flip</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// 0 = not flipped<BR>
+// 1 = flipped horizontally</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Header2</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// pointer to FME_Header2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> UnitWidth</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> UnitHeight</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad3</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad4</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>FME_Header2 IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=575>
+
+<TR VALIGN="top">
+<TD width=20%>SizeX</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Size of the FME, X value</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> SizeY</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Size of the FME, Y value</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Compressed</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// 0 = not compressed</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>&nbsp;</TD>
+<TD width=17%>&nbsp;</TD>
+<TD width=63%>// 1 = compressed</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> DataSize</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Datasize for compressed FMEs,
+<P>// equals length of the FME file - 32<BR>
+// If not compressed, DataSize = 0</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> ColOffs</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Always 0, because columns table <BR>
+// follows just after</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad1</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Unused</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>If Compressed = 0, the data follows, encoded by COLUMNS from the bottom to the top.</P>
+
+<H4><I>Compressed FME</I></H4>
+
+<P>Compressed FMEs are very similar to compressed BMs (RLE0).</P>
+
+<P>After FME_Header2 follows a table of offsets to the starts of the columns data. </P>
+
+<P>Those are offsets from the start of FME_Header2.</P>
+
+<P>Then follow the columns data.</P>
+
+<P>The coding of one column follows (in pseudo code format).</P>
+
+<TABLE cols=1 width=479>
+
+<TR VALIGN="top">
+<TD width=100%>while(end of data for this column not reached)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>{</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%> if(buffer[address] &lt;= 128)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>   the FOLLOWING n bytes are direct values</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%> else</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>   skip n-128 transparent (background) pixels</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>}</TD>
+</TR>
+</TABLE><BR>
+
+<P>So, for example, the following hex values ...88 02 17 28 82... mean:</P>
+
+<P>skip 8 background pixels, then write two pixels with colors 17 and 28, then skip 2 background pixels, etc.</P>
+
+</BODY>
+</HTML>

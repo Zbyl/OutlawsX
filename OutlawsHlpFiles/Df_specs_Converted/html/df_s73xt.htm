@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>LEV Magic, Version number and General Level Info</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="LEV file">
+</OBJECT>
+
+<H4><A NAME="1_9trsq"></A>LEV Magic, Version number and General Level Info</H4>
+
+<H4><I>Magic and version number</I></H4>
+
+<P>This is trivial.</P>
+
+<TABLE cols=1 width=271>
+
+<TR VALIGN="top">
+<TD width=100%>| LEV 2.1</TD>
+</TR>
+</TABLE><BR>
+
+<H4><I>General Level Info</I></H4>
+
+<P>This part contains the following data (sample from secbase.lev):</P>
+
+<TABLE cols=1 width=271>
+
+<TR VALIGN="top">
+<TD width=100%>| LEVELNAME SECBASE</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| PALETTE   SECBASE.PAL</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| MUSIC     AVENGE.GMD</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| PARALLAX  1024.0000 1024.0000</TD>
+</TR>
+</TABLE><BR>
+
+<P>It seems that LEVELNAME isn't used at all by DF.</P>
+
+<P>MUSIC is also unused, because musics are hardcoded in dark.exe.</P>
+
+<P>(AVENGE.GMD doesn't even exist in DF, I think it is a Tie Fighter music !)</P>
+
+<P>PALETTE determines the palette (PAL) used in the level, you may change it.</P>
+
+<P>PARALLAX determines how much the "exterior" backgrounds scroll as you turn.</P>
+
+<P>1024 1024 means as you turn around 360 degrees, you will see 1024 pixel columns of background sky.</P>
+
+<P>Vertical PARALLAX is similar, although of course you can't pitch 360 degrees in DF.</P>
+
+</BODY>
+</HTML>

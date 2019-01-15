@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>General Description - Containers &amp; Patching</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="-u option">
+	<PARAM NAME="Keyword" VALUE="files">
+	<PARAM NAME="Keyword" VALUE="gob">
+	<PARAM NAME="Keyword" VALUE="gob and wad">
+	<PARAM NAME="Keyword" VALUE="jedi.lvl">
+	<PARAM NAME="Keyword" VALUE="lfd">
+</OBJECT>
+
+<P><A NAME="2jjk.s2"></A><B>General Description<BR>
+    Containers &amp; Patching<BR>
+</B><A HREF="df_s001a.htm">Doom Note</A></P>
+
+<H4><I>Containers</I></H4>
+
+<P>Dark Forces contains a huge amount of files, and these are grouped by type in what are called <A HREF="df_s8stw.htm">GOB</A> files and <A HREF="df_s4j1x.htm">LFD</A> Files.</P>
+
+<P>They serve as <B>containers</B> for other files which in turn contain information. </P>
+
+<P>GOB Files mainly contain data for the DF engine, while LFD Files contain the data needed for the Landru system (cutscenes, menus, briefings).</P>
+
+<H4><I>Patching</I></H4>
+
+<P>Files can be extracted from the <A HREF="df_s8stw.htm">GOB</A> and worked upon, then be used in the game.</P>
+
+<P>LucasArts made a very good job of this and prepared a path for users to modify levels.</P>
+
+<P>If you want to make DF accept new or modified files, create a GOB file with them (say mylevel.gob).</P>
+
+<P>Then use the following command line: <B>dark -umylevel.gob</B></P>
+
+<P>The order in which DF looks for a file is as follows:</P>
+
+<P>1) as a file in the installed directory</P>
+
+<P>2) in the GOB specified by -u...</P>
+
+<P>3) in its normal GOB in the installed directory</P>
+
+<P>4) in its normal GOB on the CD</P>
+
+<P>LFD resources can also be extracted and worked upon, but there isn't any facility to load them.</P>
+
+<P>What you have to do is recompose the patched LFD, and set it in the installed directory, or in the LFD subdirectory of the installed directory. A LFD in the installed directory will be taken in preference to one in the LFD subdirectory with the same name.</P>
+
+<P>Putting a patched LFD in a GOB and loading it with -u doesn't work.</P>
+
+</BODY>
+</HTML>

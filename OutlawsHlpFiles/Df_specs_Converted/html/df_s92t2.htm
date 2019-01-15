@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Metrics</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="damage">
+	<PARAM NAME="Keyword" VALUE="falling">
+	<PARAM NAME="Keyword" VALUE="metrics">
+</OBJECT>
+
+<H4><A NAME="_eydjv"></A>Metrics</H4>
+
+<P>This collection of numerical data should be a useful reference for level designers asking themselves questions like:</P>
+
+<P>·will the player be able to climb this stairs smoothly ?</P>
+
+<P>·will the player be able to jump this ?</P>
+
+<P>·will the player die from this fall ?</P>
+
+<P>·will the player pass through this gap ?</P>
+
+<P>·etc.</P>
+
+<P><B>MAXIMUM WALKABLE HEIGHT : 3.50</B></P>
+
+<P><B>Note</B></P>
+
+<P>·Don't forget that any height can be made walkable by setting Wall Flag 3 bit 1.</P>
+
+<P><B>MAXIMUM JUMPABLE HEIGHT : 9.65</B></P>
+
+<P><B>Notes</B></P>
+
+<P>·It doesn't matter if you're running or not</P>
+
+<P>·It doesn't matter if you're crouching or not</P>
+
+<P>·Don't forget that any height can be made walkable by setting Wall Flag 3 bit 1.</P>
+
+<P><B>DAMAGE FROM FALLING :</B></P>
+
+<TABLE cols=5 width=451>
+
+<TR VALIGN="top">
+<TD width=20%><B>HEIGHT</B></TD>
+<TD width=21%><B>MIN</B></TD>
+<TD width=21%><B>MAX</B></TD>
+<TD width=21%><B>MEAN</B></TD>
+<TD width=17%><B>Notes</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>36</TD>
+<TD width=21%>0</TD>
+<TD width=21%>0</TD>
+<TD width=21%>0</TD>
+<TD width=17%>(1) </TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>37</TD>
+<TD width=21%>0</TD>
+<TD width=21%>1</TD>
+<TD width=21%>0</TD>
+<TD width=17%>(2) </TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>40</TD>
+<TD width=21%>4</TD>
+<TD width=21%>9</TD>
+<TD width=21%>6</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>45</TD>
+<TD width=21%>19</TD>
+<TD width=21%>23</TD>
+<TD width=21%>21</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>50</TD>
+<TD width=21%>31</TD>
+<TD width=21%>35</TD>
+<TD width=21%>33</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>55</TD>
+<TD width=21%>43</TD>
+<TD width=21%>48</TD>
+<TD width=21%>44</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>60</TD>
+<TD width=21%>54</TD>
+<TD width=21%>58</TD>
+<TD width=21%>56</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>65</TD>
+<TD width=21%>67</TD>
+<TD width=21%>71</TD>
+<TD width=21%>69</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>70</TD>
+<TD width=21%>77</TD>
+<TD width=21%>78</TD>
+<TD width=21%>77</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>75</TD>
+<TD width=21%>87</TD>
+<TD width=21%>91</TD>
+<TD width=21%>89</TD>
+<TD width=17%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>79</TD>
+<TD width=21%>93</TD>
+<TD width=21%>98</TD>
+<TD width=21%>95</TD>
+<TD width=17%>(3)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>80</TD>
+<TD width=21%>95</TD>
+<TD width=21%>++</TD>
+<TD width=21%>98</TD>
+<TD width=17%>(4)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>81</TD>
+<TD width=21%>98</TD>
+<TD width=21%>++</TD>
+<TD width=21%>++</TD>
+<TD width=17%>(5)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%>82</TD>
+<TD width=21%>++</TD>
+<TD width=21%>++</TD>
+<TD width=21%>++</TD>
+<TD width=17%>(6)</TD>
+</TR>
+</TABLE><BR>
+
+<P><B>Notes</B></P>
+
+<P>(1) Maximum "no damage" fall</P>
+
+<P>(2) 1 point of damage happened twice in 30 falls.</P>
+
+<P>(3) Maximum "no death" fall</P>
+
+<P>(4) % death :3/11 = 27%</P>
+
+<P>(5) % death :12/19 = 63%</P>
+
+<P>(6) Minimum "sure kill"</P>
+
+<P>·Shields or Supershield are of no help</P>
+
+<P>·LAIMLAME totally protects you (at least up to 3000).</P>
+
+<P>·Crouching doesn't affect the damage taken.</P>
+
+<P>·Jumping up before the fall does of course add to it.</P>
+
+<P>·Sprinting when hitting the ground doesn't change anything.</P>
+
+<P>·The current health doesn't affect damage.</P>
+
+<P><B><I>Effects of second altitude:</I></B></P>
+
+<P>1) A positive second altitude (water) must be added to the height of the fall.</P>
+
+<P>I.e. the water doesn't break the fall at all, it increases the damage :-)</P>
+
+<P>2) A negative second altitude (platform) must be subtracted from the height of the fall.</P>
+
+<P>3) In both cases the results are consistent with the equivalent fall from the sum or difference of heights.</P>
+
+<P>[All falls tested between 10 and 30 times.]</P>
+
+<P><B>MINIMUM WALKABLE WIDTH : 4.90</B></P>
+
+<P><B>Notes</B></P>
+
+<P>·This is a width between two angles of columns in a room.</P>
+
+<P>Passing between those two isn't exactly the same as walking in a 4.9 wide corridor !</P>
+
+<P>·When running you may sometimes pass through a gap as little as 4.6</P>
+
+<P>I strongly believe this is a problem in the engine collision detection.</P>
+
+<P><B>MINIMUM WALKABLE HEIGHT : 6.80</B></P>
+
+<P><B>Note</B></P>
+
+<P>The generally adopted rule of thumb of 1 DF unit = 1 foot would make Kyle very big (207 cm).</P>
+
+<P>I believe we should use <B>1DF unit = 25 cm</B> instead.</P>
+
+<P><B>MINIMUM CROUCH HEIGHT : 3.00</B></P>
+
+<P><B>LONGJUMPS</B></P>
+
+<TABLE cols=2 width=149>
+
+<TR VALIGN="top">
+<TD width=61%>Standing</TD>
+<TD width=39%>~14</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=61%>Walking</TD>
+<TD width=39%>~20</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=61%>Running</TD>
+<TD width=39%>~40</TD>
+</TR>
+</TABLE><BR>
+
+<P><B>Notes</B></P>
+
+<P>·These values assume that the start and end altitudes of the jump are the same.</P>
+
+<P>·DF levels must be set on low gravity worlds :-)</P>
+
+</BODY>
+</HTML>

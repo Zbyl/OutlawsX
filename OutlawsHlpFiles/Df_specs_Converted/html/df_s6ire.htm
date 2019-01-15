@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>(Untitled)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<P><A NAME="i7nifz"></A><B>stop:</B></P>
+
+<P>A stop is a value that an elevator can arrive at. This value varies depending on the class of elevator, and can be floor altitude, ceiling  altitude, ambience, degrees etc.  Stops can be used practically, such as different heights a lift stops at, or can be used purely for level control as elevators can also send a <A HREF="df_s6f8l.htm">message</A>,  <A HREF="df_s523o.htm">page</A> a sound, or create an <A HREF="df_s4lv2.htm">adjoin</A> upon arriving at a stop.</P>
+
+<P>Note: Elevators can have any number of stops. If no stops are given, the elevator will start at value 0 and keep increasing its value throughout the entire level. This may be appropriate for an "elevator scroll_floor", but not for an "elevator move_floor" !!!</P>
+
+<P>Note: Door elevators should  NOT be given stops. They will have automatic stops set depending on the altitudes of the floor and ceiling of their sector.</P>
+
+<P><I>Usage:</I></P>
+
+<P>| stop: [value1] [value2]</P>
+
+<P>The first value can be given in three ways:</P>
+
+<TABLE cols=2 width=529>
+
+<TR VALIGN="top">
+<TD width=28%>| [num]</TD>
+<TD width=72%>absolute stop</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=28%>| @[num]</TD>
+<TD width=72%>relative stop</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=28%>| [sectorname]</TD>
+<TD width=72%>equal the value of the sector [sectorname]</TD>
+</TR>
+</TABLE><BR>
+
+<P>The second value can be given in 4 ways:</P>
+
+<TABLE cols=2 width=529>
+
+<TR VALIGN="top">
+<TD width=28%>| [time]</TD>
+<TD width=72%>time in sec that elevator remains at stop</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=28%>| hold</TD>
+<TD width=72%>elevator will remain at stop indefinitely</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=28%>| terminate</TD>
+<TD width=72%>elevator will stay at the stop permanently</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=28%>| complete</TD>
+<TD width=72%>mission will be complete when elev arrives at stop</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>

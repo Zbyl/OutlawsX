@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>(Untitled)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<P><A NAME="17iz12w"></A><B>Doom note</B></P>
+
+<P>In Doom, the equivalent to an Adjoin/Mirror is the sharing of two vertices and a linedef between two sectors.</P>
+
+<P>Contrary to a DF Wall, the linedef doesn't contain texturing information, this one being coded at the sidedef level.</P>
+
+<P>There is no node building (BSP) to do on these levels.</P>
+
+<P>There certainly are checks at level loading time, but a few tests on complicated sectors seem to show 'errors' in texturing or HOM problems.</P>
+
+<P>In fact, it seems that big non-convex sectors are problematic.</P>
+
+<P>Maybe you just have to try and create a few 'more convex' sectors instead.</P>
+
+</BODY>
+</HTML>

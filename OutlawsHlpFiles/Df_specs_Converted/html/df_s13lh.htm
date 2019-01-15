@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>BM Multiple</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="BM Files">
+	<PARAM NAME="Keyword" VALUE="multiple BM">
+</OBJECT>
+
+<H4><A NAME="2zr1_vu"></A>BM Multiple</H4>
+
+<P>If SizeX = 1  (EXCEPT if SizeY = 1 in which case it is a 1*1 BM) the BM file is multiple.</P>
+
+<P>The header of multiple BMs is different from that of a normal BM.</P>
+
+<P>BM_Multiple_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=593>
+
+<TR VALIGN="top">
+<TD width=20%>MAGIC</TD>
+<TD width=16%>char[4]</TD>
+<TD width=64%>// = 'BM ' + 0x1E</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> SizeX</TD>
+<TD width=16%>int</TD>
+<TD width=64%>// = 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> SizeY</TD>
+<TD width=16%>int</TD>
+<TD width=64%>// = length of file - 32</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> idemX</TD>
+<TD width=16%>int</TD>
+<TD width=64%>// = -2</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> idemY</TD>
+<TD width=16%>int</TD>
+<TD width=64%>// number of 'sub' BMs</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Transparent</TD>
+<TD width=16%>byte</TD>
+<TD width=64%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> logSizeY</TD>
+<TD width=16%>byte</TD>
+<TD width=64%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Compressed</TD>
+<TD width=16%>int</TD>
+<TD width=64%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> DataSize</TD>
+<TD width=16%>long</TD>
+<TD width=64%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad1</TD>
+<TD width=16%>byte[12]</TD>
+<TD width=64%>// 12 times 0x00</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Straight after the Multiple BM header are two bytes:</P>
+
+<P>- The first is either the <B>frame rate</B> (in frames per second) of an <B>animated texture</B>, or is <B>0</B> to designate a <B>switch</B>. You may alter this value if you want.</P>
+
+<P>- The second byte is 2.</P>
+
+<P>Then follows a table of offsets to the 'sub' BM composed of idemY long.</P>
+
+<P>The simple fact that this table exists tells us that sub BMs of different sizes may be stored.</P>
+
+<P>Each 'sub' BM then has its own header, slightly different from the BM_Header:</P>
+
+<P>BM_SUBHeader IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=575>
+
+<TR VALIGN="top">
+<TD width=20%>SizeX</TD>
+<TD width=17%>int</TD>
+<TD width=63%>// horizontal size</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> SizeY</TD>
+<TD width=17%>int</TD>
+<TD width=63%>// vertical size</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> idemX</TD>
+<TD width=17%>int</TD>
+<TD width=63%>// unused by engine</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> idemY</TD>
+<TD width=17%>int</TD>
+<TD width=63%>// unused by engine</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> DataSize</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// unused (no compression allowed)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> logSizeY</TD>
+<TD width=17%>byte</TD>
+<TD width=63%>// logSizeY = log2(SizeY)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad1</TD>
+<TD width=17%>byte[3]</TD>
+<TD width=63%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> u1</TD>
+<TD width=17%>byte[3]</TD>
+<TD width=63%>// these are always filled, but they seem // to be unused</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad2</TD>
+<TD width=17%>byte[5]</TD>
+<TD width=63%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Transparent</TD>
+<TD width=17%>byte</TD>
+<TD width=63%>// 0x36 for normal<BR>
+// 0x3E for transparent</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> pad3</TD>
+<TD width=17%>byte[3]</TD>
+<TD width=63%>&nbsp;</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P><B>Important notes</B></P>
+
+<P>1) There is no MAGIC field.</P>
+
+<P>2) For a multiple BM to work correctly, it must be made a SIGN, and for switches there MUST also exist a corresponding trigger in the .INF Else, switches will be displayed wrong (as a single column) and the animated will display correctly, but static.<BR>
+This means that you cannot do animated floors and ceilings this way !</P>
+
+<P>3) The multiple BMs are limited to 64K in size because SizeY contains the size of the file - 32 and is an int.<BR>
+Although it should never be a problem with switches, this means that you must use animated BMs for small textures only.</P>
+
+<P>A solution that allows animated walls of any size AND animated floors and ceilings is to compose a huge texture with your multiple images pasted next to each other. Then use INF elevators to scroll wall or scroll floor/ceiling using the offsets of the images as stops. If you set a speed of 0, the change will be instantaneous, and the effect will be the same. An added bonus is that you'll also have complete control on starting/stopping the animation.</P>
+
+</BODY>
+</HTML>

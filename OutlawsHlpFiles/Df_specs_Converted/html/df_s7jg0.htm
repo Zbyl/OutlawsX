@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>O Object Tables</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="O File">
+	<PARAM NAME="Keyword" VALUE="object table">
+</OBJECT>
+
+<H4><A NAME="14bku_p"></A>O Object Tables</H4>
+
+<P>As there is a lot of OB information in a level, 4 object tables are created to avoid storing OB names in full at each occurrence.</P>
+
+<TABLE cols=1 width=394>
+
+<TR VALIGN="top">
+<TD width=100%>| PODS 3             # These are the "3D" objects</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  POD: DEATH.3DO    # 00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  ...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| SPRS 10            # These are the SPRITES</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SPR: OFFCFIN.WAX  # 00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   ...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| FMES 6             # These are the FRAMES</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  FME: IENERGY.FME  # 00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  ...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>| SOUNDS 1           # These are the SOUNDS</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  SOUND: BANG.VOC   #00</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  ...</TD>
+</TR>
+</TABLE><BR>
+
+<P>Afterwards, all the objects are referred to by their 0 based index in the object tables. The object CLASS determines in which table to look.</P>
+
+</BODY>
+</HTML>

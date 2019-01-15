@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>CMP Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="CMP Files">
+	<PARAM NAME="Keyword" VALUE="file format">
+</OBJECT>
+
+<H4><A NAME="1bt9sq"></A>CMP FILES</H4>
+
+<P>CMP files store palette mappings (like DOOM COLORMAP), which are the way the colors behave under different light levels.</P>
+
+<P>Each byte is an index into the palette, and the CMP file is in fact an array that can be used for shading.</P>
+
+<P>Given a color value [C] and a light value [L] the correct color to draw can be determined with the following formula:</P>
+
+<TABLE cols=1 width=394>
+
+<TR VALIGN="top">
+<TD width=100%>DrawColor = [start_of_CMP_file]+(256*L)+C</TD>
+</TR>
+</TABLE><BR>
+
+<P>There are 128 added bytes at the end of the file generally forming a slow gradient from 0x00 to 0x1F.</P>
+
+<P>Those serve to modify light values when you use the headlight (or when firing a weapon lights the area).</P>
+
+<P>The first of the 128 bytes controls the area right next to you and each one after that control an area progressively further away.</P>
+
+<P>0x00 is the maximum illumination while 0x1f is minimum for the headlight.</P>
+
+<P>Values above 0x1f and up to 0x27 serve to suppress the weapon lighting effect too.</P>
+
+<P>The only use I see for those is to set them all to 0x1f to suppress the headlight altogether.</P>
+
+<P>It doesn't seem logical to suppress the weapon lighting, although it can be done too...</P>
+
+</BODY>
+</HTML>

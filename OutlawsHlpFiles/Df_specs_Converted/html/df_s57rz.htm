@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>DELT (DLT Files)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="DELT">
+	<PARAM NAME="Keyword" VALUE="DLT Files">
+	<PARAM NAME="Keyword" VALUE="file format">
+</OBJECT>
+
+<H4><A NAME="32boo__"></A>DELT (DLT Files)</H4>
+
+<P>A DELT LFD resource codes a static image. </P>
+
+<P>They are generally used as backgrounds for ANIMs, but their most important use is in the briefings 'texts' (the scrollable section of the briefing screen) which are a DELT stored in dfbrief.lfd for each level</P>
+
+<P>Note: the .dlt extension is a convention adopted by add-on developers when writing conversion programs, there are no real DLT files in DARK FORCES.</P>
+
+<P>DELT_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=487>
+
+<TR VALIGN="top">
+<TD width=22%>OffsX</TD>
+<TD width=17%>int</TD>
+<TD width=61%>// X offset</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> OffsY</TD>
+<TD width=17%>int</TD>
+<TD width=61%>// Y offset</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> SizeX</TD>
+<TD width=17%>int</TD>
+<TD width=61%>// X size - 1 !</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> SizeY</TD>
+<TD width=17%>int</TD>
+<TD width=61%>// Y size - 1 !</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>After the header, a variable number of <B>line descriptors</B> follow.</P>
+
+<P>They are composed of an header and some data.</P>
+
+<P>DELT_Line</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=487>
+
+<TR VALIGN="top">
+<TD width=22%>SizeAndType</TD>
+<TD width=17%>int</TD>
+<TD width=61%>// size and compression of the line</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%>StartX</TD>
+<TD width=17%>int</TD>
+<TD width=61%>// X position of line start</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%>StartY</TD>
+<TD width=17%>int</TD>
+<TD width=61%>// Y position of line start</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>StartX and StartY indicate the point where to start the drawing. You can start in the middle of a line, and draw a portion of it. Lines need not be in consequential order. You can split one line in more than one section. Portions not covered are, of course, transparent.</P>
+
+<P>Bits 1-15 of SizeAndType indicate the number of pixels described in this section.</P>
+
+<P>If bit 0 of SizeAndType is 0, the byte following the header contains the number of bytes to copy.</P>
+
+<P>Those bytes follow.</P>
+
+<P>If bit 0 is 1, data compressed with RLE follows.</P>
+
+<P>This data may be composed of copy and RLE parts, which is indicated by <B>bit 0</B> of the count byte.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>INF Messages</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="INF File">
+	<PARAM NAME="Keyword" VALUE="message">
+</OBJECT>
+
+<H4><A NAME="21kx8ie"></A>INF Messages</H4>
+
+<P>Messages are sent from triggers when they are triggered and elevators when they arrive at stops.</P>
+
+<P>They are sent to other triggers and elevators, and in some cases just regular sectors and lines (except <B>message: lights</B>, which is sent to the <B>system</B>). They do various things to their recipients.</P>
+
+<P>Messages are placed in the sequence of elevators and triggers.</P>
+
+<P>Messages all have these general syntax:</P>
+
+<P><I>(sent from an elevator)</I></P>
+
+<P>| message: [stop number] [receiver] [message] [parameters]</P>
+
+<P><I>(sent from a trigger)</I></P>
+
+<P>| client: [receiver]</P>
+
+<P>| message: [message] [parameters]</P>
+
+<P>[receiver]  is the receiver of a message. Can be one of the following:</P>
+
+<TABLE cols=2 width=473>
+
+<TR VALIGN="top">
+<TD width=44%>[sectorname] </TD>
+<TD width=56%>receiver is a sector</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=44%>[sectorname([wallnum])] </TD>
+<TD width=56%>receiver is a wall</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=44%>SYSTEM </TD>
+<TD width=56%>receiver is the SYSTEM (message: lights only)</TD>
+</TR>
+</TABLE><BR>
+
+<P>[parameters] are parameters specific to the type of message.</P>
+
+<P>Here are the messages:</P>
+
+<P><A HREF="df_s8lbd.htm">m_trigger</A></P>
+
+<P><A HREF="df_s67zq.htm">goto_stop</A></P>
+
+<P><A HREF="df_s173n.htm">next_stop</A></P>
+
+<P><A HREF="df_s5fam.htm">prev_stop</A></P>
+
+<P><A HREF="df_s52jo.htm">master_on</A></P>
+
+<P><A HREF="df_s9eax.htm">master_off</A></P>
+
+<P><A HREF="df_s7inr.htm">clear_bits</A></P>
+
+<P><A HREF="df_s30bv.htm">set_bits</A></P>
+
+<P><A HREF="df_s752u.htm">complete</A></P>
+
+<P><A HREF="df_s0ptc.htm">done</A></P>
+
+<P><A HREF="df_s9hk7.htm">wakeup</A></P>
+
+<P><A HREF="df_s3lbk.htm">lights</A></P>
+
+<P>Remember that when you look at an INF file and you see something like :</P>
+
+<TABLE cols=1 width=205>
+
+<TR VALIGN="top">
+<TD width=100%>| class: elevator eeeee</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  stop: 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   message: 0 mmmmm</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|  stop: 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>|   message: 1 mmmmm</TD>
+</TR>
+</TABLE><BR>
+
+<P>it's only a visual clue, and you could group all the messages in one place and in any order.</P>
+
+<P>Important : if you add a stop, you have to renumber !</P>
+
+<P><B>Notes</B>:</P>
+
+<P>- When a specific message is not specified, the default message is  <A HREF="df_s8lbd.htm">m_trigger</A>.</P>
+
+<P>- When messages are sent from an elevator, they are sent when it ARRIVES at a stop.</P>
+
+<P>- For some reason, messages can't be sent from "terminate" or "complete" stops.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>LEV Sector Flags</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="flags">
+	<PARAM NAME="Keyword" VALUE="LEV file">
+	<PARAM NAME="Keyword" VALUE="sector flags">
+</OBJECT>
+
+<H4><A NAME="3ogfo15"></A>LEV Sector Flags</H4>
+
+<H4><I>FLAG 1</I></H4>
+
+<TABLE cols=3 width=612>
+
+<TR VALIGN="top">
+<TD width=11%><B>Bit</B></TD>
+<TD width=38%><B>Description</B></TD>
+<TD width=51%><B>Comment</B></TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>1</TD>
+<TD width=38%>EXTERIOR - NO CEIL.  (SKY)</TD>
+<TD width=51%>Note: actual ceiling limit will be the ceiling altitude + 100</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>2</TD>
+<TD width=38%>DOOR</TD>
+<TD width=51%>instant door</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>4</TD>
+<TD width=38%>SHOT REFLECTION / MAG.SEAL</TD>
+<TD width=51%>walls, floor and ceiling reflect weapon shots</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>8</TD>
+<TD width=38%>EXTERIOR ADJOIN</TD>
+<TD width=51%>will adjoin adjacent skies</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>16</TD>
+<TD width=38%>ICE FLOOR        (SKATING)</TD>
+<TD width=51%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>32</TD>
+<TD width=38%>SNOW FLOOR</TD>
+<TD width=51%>no apparent effects</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>64</TD>
+<TD width=38%>EXPLODING WALL/DOOR</TD>
+<TD width=51%>instant exploding door</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>128</TD>
+<TD width=38%>EXTERIOR - NO FLOOR  (PIT)</TD>
+<TD width=51%>Note: actual floor limit will be the floor altitude - 100</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>256</TD>
+<TD width=38%>EXTERIOR FLOOR ADJOIN</TD>
+<TD width=51%>will adjoin adjacent pits</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>512</TD>
+<TD width=38%>CRUSHING SECTOR</TD>
+<TD width=51%>vertically moving elevators will crush the player</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>1024</TD>
+<TD width=38%>NO WALL DRAW / "HORIZON"</TD>
+<TD width=51%>removes walls of a sector
+<P>(sector must be sky and pit to work properly)</P>
+</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>2048</TD>
+<TD width=38%>LOW  DAMAGE</TD>
+<TD width=51%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>4096</TD>
+<TD width=38%>HIGH DAMAGE</TD>
+<TD width=51%>both can be combined for GAS</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>8192</TD>
+<TD width=38%>NO SMART OBJECT REACTION</TD>
+<TD width=51%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>16384</TD>
+<TD width=38%>SMART OBJECT REACTION</TD>
+<TD width=51%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>32768</TD>
+<TD width=38%>SUBSECTOR </TD>
+<TD width=51%>no apparent effects</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>65536</TD>
+<TD width=38%>SAFE SECTOR</TD>
+<TD width=51%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>131072</TD>
+<TD width=38%>RENDERED</TD>
+<TD width=51%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>262144</TD>
+<TD width=38%>PLAYER</TD>
+<TD width=51%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=11%>524288</TD>
+<TD width=38%>SECRET SECTOR</TD>
+<TD width=51%>increments the %secret when entered</TD>
+</TR>
+</TABLE><BR>
+
+<P><B>Note on the Smart Objects: </B></P>
+
+<P>Smart Object Reactions will cause doors and CERTAIN elevator classes to react to enemies. There are two values, not a toggle, because Flag doors by default react to smart objects, and INF elevators by default don't react.</P>
+
+<P>These are the elevators than can react to smart objects:</P>
+
+<P>basic</P>
+
+<P>inv</P>
+
+<P>basic_auto</P>
+
+<P>morph_move1</P>
+
+<P>morph_move2</P>
+
+<P>morph_spin1</P>
+
+<P>morph_spin2</P>
+
+<P>move_wall</P>
+
+<P>rotate_wall</P>
+
+<P>door</P>
+
+<P>door_mid</P>
+
+<P>door_inv</P>
+
+<H4><I>FLAG 2 </I></H4>
+
+<P>is unused.</P>
+
+<H4><I>FLAG 3 </I></H4>
+
+<P>When "message: system lights" is sent (e.g. in TALAY when you turn on the generator), the engine copies the value here to the Ambient of the sector.</P>
+
+</BODY>
+</HTML>

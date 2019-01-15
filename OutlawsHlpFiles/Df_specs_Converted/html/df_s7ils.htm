@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GMD Files</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="GMD Files">
+</OBJECT>
+
+<H4><A NAME="idui90"></A>GMD Files</H4>
+
+<P>They contain the musics.</P>
+
+<P>[by Alex Novikov]</P>
+
+<P>The header of GMD file (or the LFD GMID resource) consists of two fields:</P>
+
+<P>GMD_Header IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=20%>Magic</TD>
+<TD width=17%>char[4]</TD>
+<TD width=63%>// the string 'MIDI'</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Size</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Size of the whole file excluding header<BR>
+// inverted byte order</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>The order of bytes in the Size field is inverted: the first byte is the highest byte, the 4th byte is the lowest byte of the value (this order is normal for Mac, but inverted for PC).</P>
+
+<P>Then follow a variable number of chunks in format:</P>
+
+<P>GMD_Chunk IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=572>
+
+<TR VALIGN="top">
+<TD width=20%>Type</TD>
+<TD width=17%>char[4]</TD>
+<TD width=63%>// chunk type</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=20%> Size</TD>
+<TD width=17%>long</TD>
+<TD width=63%>// Size of the chunk excluding header<BR>
+// inverted byte order</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>The field Size has the inverted order of bytes - same as the field Size of the file header.</P>
+
+<P>The following Chunks are encountered:</P>
+
+<P>MDpg</P>
+
+<P>Varied length, usually 14 (0Eh)</P>
+
+<P>Very strange content - mostly doesn't change from file to file, but if it does - some new byte is INSERTED between usual ones (with chunk size preserved, so the last byte of chunk goes).</P>
+
+<P>MThd</P>
+
+<P>6 bytes long.</P>
+
+<P>Normal MIDI header. Indicates MIDI format 2.</P>
+
+<P>MTHD_CHUNK IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=568>
+
+<TR VALIGN="top">
+<TD width=19%>Format</TD>
+<TD width=23%>INVERTED_INT</TD>
+<TD width=58%>// always 2 (MIDI2 format)</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=19%>NTracks</TD>
+<TD width=23%>INVERTED_INT</TD>
+<TD width=58%>// Number of tracks in the file</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=19%>Division</TD>
+<TD width=23%>INVERTED_INT</TD>
+<TD width=58%>// always 1E0h (tempo constant)</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>INVERTED_INT is an INT with inverted byte order.</P>
+
+<P>MTrk</P>
+
+<P>Normal MIDI format 0(2) track data with the exception that "running status" (i.e. if one MIDI event followed by the same MIDI event with different parameters, the MIDI event code can omitted) is not used/supported. You cannot omit MIDI event codes.This basically means that GMD MTrk data are compatible with the MIDI standard, but MTrk from external MIDIs can be (and often are) incompatible with the GMD standard. See SMF (Standard MIDI File) specs for more info on MTrk chunk content.</P>
+
+<P>The additional data in GMD's MTrk chunks is internal iMuse commands. Internal iMuse commands are stored as SysEx (System Exclusive) messages. They usually look like:</P>
+
+<P>F0 Size 7D 03 TEXT 00 F7</P>
+
+<TABLE cols=2 width=568>
+
+<TR VALIGN="top">
+<TD width=16%>F0</TD>
+<TD width=84%> identifier of SysEx message</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%>Size</TD>
+<TD width=84%> value of message size in MIDI variable length format</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%>7D 03</TD>
+<TD width=84%> probably an identifier of iMuse message</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%>TEXT</TD>
+<TD width=84%> a text string of several characters</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%>00</TD>
+<TD width=84%> string terminator</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=16%>F7</TD>
+<TD width=84%> SysEx message terminator</TD>
+</TR>
+</TABLE><BR>
+
+<P>The encountered messages are (TEXT part):</P>
+
+<TABLE cols=2 width=568>
+
+<TR VALIGN="top">
+<TD width=32%>start new</TD>
+<TD width=68%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>stalk trans #</TD>
+<TD width=68%>// # is a number appears to be a float</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>fight trans #,#</TD>
+<TD width=68%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>engage trans #</TD>
+<TD width=68%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>from fight #,#</TD>
+<TD width=68%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>from stalk #,#,#</TD>
+<TD width=68%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>from boss #</TD>
+<TD width=68%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>clear callback</TD>
+<TD width=68%>&nbsp;</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>to X</TD>
+<TD width=68%>// X= A,B,C...</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=32%>to Xslow</TD>
+<TD width=68%>// X= A,B,C...</TD>
+</TR>
+</TABLE><BR>
+
+<P>The number of parameters may vary. And, actually, the effect of these messages is not really known.</P>
+
+<P>There are also iMuse messages beginning with 7D 01 whose format is unknown.</P>
+
+<P>They seem to have something to do with looping the in-level music.</P>
+
+</BODY>
+</HTML>

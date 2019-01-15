@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>DFBRIEF.LFD</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="dfbrief.lfd File">
+</OBJECT>
+
+<H4><A NAME="184q0we"></A>DFBRIEF.LFD</H4>
+
+<P>The following files must always be present in DFBRIEF.LFD:</P>
+
+<TABLE cols=2 width=357>
+
+<TR VALIGN="top">
+<TD width=41%>PLTTbrf-jan</TD>
+<TD width=59%>Palette to use for briefings</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=41%>DELTcursor</TD>
+<TD width=59%>Cursor for briefings and PDA</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=41%>ANIMguns</TD>
+<TD width=59%>Weapons screen in PDA</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=41%>ANIMitems</TD>
+<TD width=59%>Items screen in PDA</TD>
+</TR>
+</TABLE><BR>
+
+<P>There must also be one or more briefing backgrounds as necessary:</P>
+
+<TABLE cols=2 width=357>
+
+<TR VALIGN="top">
+<TD width=41%>ANIMbrf-jan</TD>
+<TD width=59%>Jan</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=41%>ANIMbrf-mon</TD>
+<TD width=59%>Mon Mothma</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=41%>ANIMbrf-nil</TD>
+<TD width=59%>Jabba</TD>
+</TR>
+</TABLE><BR>
+
+<P>Briefings are stored in DELT sections of dfbrief.lfd, named after the level.</P>
+
+<P>The width of the scrollable region seems to be hardcoded in the game, so the only field we'll want to change is SizeY.</P>
+
+<P>Objective screens are stored in ANIM sections of dfbrief.lfd, also named after the level.</P>
+
+<P>The first DELT in the ANIM has all the goals in green text. The following DELTs have one goal each in yellow text. They are overlaid on the first DELT when the goal has been completed. See <A HREF="df_s825i.htm">GOL file</A></P>
+
+<P>See also <A HREF="df_s76et.htm">BRIEFING.LST</A></P>
+
+</BODY>
+</HTML>

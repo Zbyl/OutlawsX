@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>(Untitled)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<P><A NAME="egp8hs"></A><B>event:</B></P>
+
+<P>Creates a custom event value  for a trigger. The trigger will then only affect an elevator class with this event value set in its <A HREF="df_s58mr.htm">event_mask</A>. The custom value should  be a bit value (i.e. a power of 2) so that it can be added with the other  custom and preset bits (this works fine). LEC always uses 65536 onwards so  I suggest you do this too. However, it seems that you do not HAVE to use a  bit value because in EXECUTOR.INF LEC uses 2621444 (note the extra 4) and  it works OK. But I don't suggest you do this.</P>
+
+<P>Event: is needed with multi-class elevators or triggers where each class is  controlled by a separate trigger. For example in the Research Facility  (level 4), the sector called "Corecat" (spins around the Phrik metal) is  two classes of elevator - elevator move_fc and elevator morph_spin2. Two switches control these classes individually. If the "event" variable was  not used, both switches would move both classes of elevator to its next  stop at the same time. Utilising the event variable, it is made possible  to have one switch control the spinning and the other control the moving  floor/ceiling.</P>
+
+<P><I>Usage:</I></P>
+
+<P>| event: [value]</P>
+
+</BODY>
+</HTML>

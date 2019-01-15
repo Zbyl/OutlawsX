@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>PLTT (PLT Files)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="file format">
+	<PARAM NAME="Keyword" VALUE="PLT Files">
+	<PARAM NAME="Keyword" VALUE="PLTT">
+</OBJECT>
+
+<H4><A NAME="1_firud"></A>PLTT (PLT Files)</H4>
+
+<P>PLTT LFD resources are of variable size, and store a (possibly incomplete) palette used by ANIM and DELT resources.</P>
+
+<P>Note: the .plt extension is a convention adopted by add-on developers when writing conversion programs, there are no real PLT files in DARK FORCES.</P>
+
+<P>PLTT_File IS</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=508>
+
+<TR VALIGN="top">
+<TD width=21%>First</TD>
+<TD width=28%>byte</TD>
+<TD width=51%>// first color in the palette</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%> Last</TD>
+<TD width=28%>byte</TD>
+<TD width=51%>// last color in the palette</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%> colors</TD>
+<TD width=28%>RGB_Color[n]</TD>
+<TD width=51%>// n = Last - First + 1</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=21%> pad1</TD>
+<TD width=28%>byte</TD>
+<TD width=51%>// unused = 0</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Where:</P>
+
+<P>RGB_Color Is</P>
+
+<P>{</P>
+
+<TABLE cols=3 width=499>
+
+<TR VALIGN="top">
+<TD width=22%>R</TD>
+<TD width=28%>byte</TD>
+<TD width=50%>// Red intensity</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> G</TD>
+<TD width=28%>byte</TD>
+<TD width=50%>// Green intensity</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=22%> B</TD>
+<TD width=28%>byte</TD>
+<TD width=50%>// Blue intensity</TD>
+</TR>
+</TABLE><BR>
+
+<P>}</P>
+
+<P>Note that contrary to the PAL files, the intensities range from 0 to 255 in the PLTT resources.</P>
+
+</BODY>
+</HTML>

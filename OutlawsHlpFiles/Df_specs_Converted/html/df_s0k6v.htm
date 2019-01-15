@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>LEV Geometry - Walls</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="LEV file">
+	<PARAM NAME="Keyword" VALUE="walls">
+</OBJECT>
+
+<H4><A NAME="am1rww"></A>LEV Geometry - Walls</H4>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>| WALLS wlnum</TD>
+</TR>
+</TABLE><BR>
+
+<P>This is the number of walls that this SC has.</P>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>|  WALL LEFT:  0 RIGHT:  1</TD>
+</TR>
+</TABLE><BR>
+
+<P>These are the origin and destination vertices for this wall.</P>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>\       MID:   0  0.00  0.00 0</TD>
+</TR>
+</TABLE><BR>
+
+<P>The TX to apply to the middle of the WL as an index in the TX table.</P>
+
+<P>The following two floats are the X and Y offsets by which the TX must be moved before being mapped (remember Y goes down).</P>
+
+<P>The third (int) value is unused.</P>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>\       TOP:   1  0.00  0.00 0</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=100%>\       BOT:   2  0.17  0.00 0</TD>
+</TR>
+</TABLE><BR>
+
+<P>Same as MID</P>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>\       SIGN: -1  0.00  0.00</TD>
+</TR>
+</TABLE><BR>
+
+<P>A sign is a second TX on the same WL, its main use is to place switches.</P>
+
+<P>First is the TX to apply to a sign on the WL as an index in the TX table.</P>
+
+<P>The following two floats are the X and Y offsets by which the TX must be moved before being mapped (remember Y goes down). Also note that this is relative to the texturing of the wall. So if you offset the WALL, you have to add this offset to that of the SIGN.</P>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>\       ADJOIN: 57 MIRROR: 0 WALK: 57</TD>
+</TR>
+</TABLE><BR>
+
+<P>See <A HREF="df_s4ws2.htm">The Adjoin/Mirror/Walk mechanism</A></P>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>\       FLAGS: 0 0 0</TD>
+</TR>
+</TABLE><BR>
+
+<P>Three flags.</P>
+
+<P>Change various things in the wall. See <A HREF="df_s2iso.htm">Wall Flags</A>.</P>
+
+<TABLE cols=1 width=309>
+
+<TR VALIGN="top">
+<TD width=100%>\       LIGHT: 5</TD>
+</TR>
+</TABLE><BR>
+
+<P>Relative modification of the luminosity on this specific WL.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>(Untitled)</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<P><A NAME="wm4zxe"></A><B>entity_mask:</B></P>
+
+<P>Defines the entity that triggers a trigger</P>
+
+<P><I>entity_mask values</I></P>
+
+<TABLE cols=2 width=187>
+
+<TR VALIGN="top">
+<TD width=59%>1</TD>
+<TD width=41%>Enemy</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=59%>8 </TD>
+<TD width=41%>Weapon</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=59%>2147483648 </TD>
+<TD width=41%>Player</TD>
+</TR>
+</TABLE><BR>
+
+<P>(The above are bit values, so are added up when more than one are needed.)</P>
+
+<TABLE cols=2 width=187>
+
+<TR VALIGN="top">
+<TD width=59%>* or -1 </TD>
+<TD width=41%>All bits set</TD>
+</TR>
+</TABLE><BR>
+
+<P>Note: Enemies and weapons (laser bolts, rockets etc.) can enter and leave  sectors and cross lines just like the PLAYER, but can't nudge or land on the  floor. i.e. you can use entity_mask values 1 and 8 with event_mask values  1, 2, 4 and 8 but NOT with 16, 32 and 512. </P>
+
+<P><I>Usage:</I></P>
+
+<P>| entity_mask: [value]</P>
+
+<P><I>Default:</I></P>
+
+<P>| entity_mask: 2147483648</P>
+
+</BODY>
+</HTML>
