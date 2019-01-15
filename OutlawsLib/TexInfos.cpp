@@ -48,10 +48,10 @@ TexInfos loadTexInfos(const std::string& filePath) {
         auto tu1 = static_cast<float>(rect.x + rect.width) / texInfo.width;
         auto tv0 = static_cast<float>(rect.y) / texInfo.height;
         auto tv1 = static_cast<float>(rect.y + rect.height) / texInfo.height;
-        tv0 = 1.0f - tv0;
-        tv1 = 1.0f - tv1;
+        //tv0 = 1.0f - tv0;
+        //tv1 = 1.0f - tv1;
 
-        TextureUvs uvs { tu0, tv0, tu1, tv1 };
+        TextureUvs uvs { tu0, tv0, tu1, tv1, rect.width, rect.height };
         auto canonicalTexName = canonicalTextureName(texName);
         texInfos[canonicalTexName] = uvs;
     }
@@ -63,6 +63,19 @@ std::string canonicalTextureName(const std::string& textureName) {
     auto texName = textureName.substr(0, textureName.size() - 4); // Cut off the extension.
     std::transform(texName.begin(), texName.end(), texName.begin(), [](char c) { return static_cast<char>(std::tolower(static_cast<unsigned char>(c))); });
     return texName;
+}
+
+TextureUvs getTextureUvs(const TexInfos& texInfos, const std::string& textureName) {
+    auto canonicalName = canonicalTextureName(textureName);
+    return texInfos.at(canonicalName);
+}
+
+TextureUvs getTextureUvs(const TexInfos& texInfos, const std::string& textureName, const std::string& defaultTextureName) {
+    auto canonicalName = canonicalTextureName(textureName);
+    if (texInfos.count(canonicalName) > 0)
+        return texInfos.at(canonicalName);
+
+    return getTextureUvs(texInfos, defaultTextureName);
 }
 
 } // namespace outlaws

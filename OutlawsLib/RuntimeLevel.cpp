@@ -1,4 +1,4 @@
-#include "LevelRuntime.h"
+#include "RuntimeLevel.h"
 
 #include "zerrors.h"
 
@@ -10,11 +10,24 @@ extern "C" {
 
 namespace outlaws {
 
-std::vector<int> LevelRuntime::getIncidentSectors(Vector3 point) const {
+std::vector<int> RuntimeLevel::getIncidentSectors(Vertex2 point) const {
     std::vector<int> incidentSectors;
 
-    for (int i = 0; i < static_cast<int>(level.sectors.size()); ++i) {
-        const auto& sector = sectorRuntimes[i];
+    for (int i = 0; i < static_cast<int>(runtimeSectors.size()); ++i) {
+        const auto& sector = runtimeSectors[i];
+        if (sector.isPointInSector(point)) {
+            incidentSectors.push_back(i);
+        }
+    }
+
+    return incidentSectors;
+}
+
+std::vector<int> RuntimeLevel::getIncidentSectors(Vector3 point) const {
+    std::vector<int> incidentSectors;
+
+    for (int i = 0; i < static_cast<int>(runtimeSectors.size()); ++i) {
+        const auto& sector = runtimeSectors[i];
         if (sector.isPointInSector(point)) {
             incidentSectors.push_back(i);
         }
@@ -48,7 +61,7 @@ bool isCrossed(Vertex2 wall0, Vertex2 wall1, Vertex2 v0, Vertex2 v1) {
     return true;
 }
 
-std::vector<int> SectorRuntime::getWallsCrossed(const Sector& sector, Vertex2 v0, Vertex2 v1) const {
+std::vector<int> RuntimeSector::getWallsCrossed(const Sector& sector, Vertex2 v0, Vertex2 v1) const {
     std::vector<int> wallsCrossed;
 
     for (int i = 0; i < static_cast<int>(sector.walls.size()); ++i) {
@@ -63,7 +76,7 @@ std::vector<int> SectorRuntime::getWallsCrossed(const Sector& sector, Vertex2 v0
     return wallsCrossed;
 }
 
-bool SectorRuntime::isPointInSector(Vertex2 point) const {
+bool RuntimeSector::isPointInSector(Vertex2 point) const {
     Vector3 point3d { point.x, 0.0f, point.z };
 
     for (int i = 0; i < static_cast<int>(tesselatedTriangles.size()) / 3; ++i) {
@@ -86,7 +99,7 @@ bool SectorRuntime::isPointInSector(Vertex2 point) const {
     return false;
 }
 
-bool SectorRuntime::isPointInSector(Vector3 point) const {
+bool RuntimeSector::isPointInSector(Vector3 point) const {
     auto floorDist = floorPlane.signedDistance(point);
     if (floorDist < 0.0f)
         return false;
@@ -139,21 +152,9 @@ float computeVertexHeight(const Plane& plane, Vertex2 vertex) {
     return height;
 }
 
-/// Returns rectangle in texture atlas that corresponds to given textureId.
-TextureUvs getTextureUvs(const LvtLevel& level, const TexInfos& texInfos, int textureId) {
-    if (textureId == -1)
-        return TextureUvs { 0 };
-
-    auto texName = level.textures.at(textureId);
-    auto canonicalTexName = canonicalTextureName(texName);
-    if (texInfos.count(canonicalTexName) > 0)   // @todo This is to skip animated textures for now (ATX format).
-        return texInfos.at(canonicalTexName);
-
-    return texInfos.at("default");
-}
-
-void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, int iwall, std::vector<Vector3>& vertices, std::vector<Uv>& uvs, std::vector<int>& triangles) {
-    const Sector& sector = level.sectors.at(isector);
+void computeWall(const RuntimeLevel& level, int isector, int iwall, SectorMeshUV& mesh) {
+    const RuntimeSector& runtimeSector = level.runtimeSectors.at(isector);
+    const Sector& sector = level.lvt.sectors.at(isector);
     const Wall& wall = sector.walls.at(iwall);
 
     // Structure of a wall:
@@ -190,32 +191,25 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
     const Sector* adjoinedSector;
     const Sector* dadjoinedSector;
 
-    Plane floorPlane { Vector3::up, 0 };
-    Plane ceilingPlane { Vector3::up, 0 };
+    Plane floorPlane = runtimeSector.floorPlane;
+    Plane ceilingPlane  = runtimeSector.ceilingPlane;
     Plane adjoinedFloorPlane { Vector3::up, 0 };
     Plane adjoinedCeilingPlane { Vector3::up, 0 };
     Plane dadjoinedFloorPlane { Vector3::up, 0 };
     Plane dadjoinedCeilingPlane { Vector3::up, 0 };
 
-    if (hasFlag(sector, SectorFlag1::SLOPED_FLOOR))
-        floorPlane = computeSlopePlane(level, sector.floorSlope);
-    if (hasFlag(sector, SectorFlag1::SLOPED_CEILING))
-        ceilingPlane = computeSlopePlane(level, sector.ceilingSlope);
-
     if (wall.adjoin != -1) {
-        adjoinedSector = &level.sectors.at(wall.adjoin);
-        if (hasFlag(*adjoinedSector, SectorFlag1::SLOPED_FLOOR))
-            adjoinedFloorPlane = computeSlopePlane(level, adjoinedSector->floorSlope);
-        if (hasFlag(*adjoinedSector, SectorFlag1::SLOPED_CEILING))
-            adjoinedCeilingPlane = computeSlopePlane(level, adjoinedSector->ceilingSlope);
+        adjoinedSector = &level.lvt.sectors.at(wall.adjoin);
+        const RuntimeSector& adjoinedRuntimeSector = level.runtimeSectors.at(wall.adjoin);
+        adjoinedFloorPlane = adjoinedRuntimeSector.floorPlane;
+        adjoinedCeilingPlane = adjoinedRuntimeSector.ceilingPlane;
     }
 
     if (wall.dadjoin != -1) {
-        dadjoinedSector = &level.sectors.at(wall.dadjoin);
-        if (hasFlag(*dadjoinedSector, SectorFlag1::SLOPED_FLOOR))
-            dadjoinedFloorPlane = computeSlopePlane(level, dadjoinedSector->floorSlope);
-        if (hasFlag(*dadjoinedSector, SectorFlag1::SLOPED_CEILING))
-            dadjoinedCeilingPlane = computeSlopePlane(level, dadjoinedSector->ceilingSlope);
+        dadjoinedSector = &level.lvt.sectors.at(wall.dadjoin);
+        const RuntimeSector& dadjoinedRuntimeSector = level.runtimeSectors.at(wall.dadjoin);
+        dadjoinedFloorPlane = dadjoinedRuntimeSector.floorPlane;
+        dadjoinedCeilingPlane = dadjoinedRuntimeSector.ceilingPlane;
     }
 
     struct VertexHeights {
@@ -325,13 +319,17 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
         }
     }
 
-    auto firstIdx = static_cast<int>(vertices.size());
+    auto firstIdx = static_cast<int>(mesh.vertices.size());
     auto currentIdx = firstIdx;
 
-    auto addWall = [&](WallKind wallKind, int textureId) {
+    // @todo Check how WallFlag1::WALL_TX_ANCHORED and WallFlag1::ELEV_CAN_SCROLL_* flags come into play here.
+    float wallBase = sector.floorY;
+    float wallLength = (verts[1] - verts[0]).magnitude();
+
+    auto addWall = [&](WallKind wallKind, TextureParamsSmall textureParams) {
         if (!drawWall[wallKind])
             return;
-        if (textureId == -1)
+        if (textureParams.textureId == -1)
             return;
 
         for (int i = 0; i < 2; ++i) {
@@ -371,45 +369,47 @@ void computeWall(const LvtLevel& level, const TexInfos& texInfos, int isector, i
 
             Vector3 vh { v.x, high, v.z };
             Vector3 vl { v.x, low, v.z };
-            vertices.push_back(vh);
-            vertices.push_back(vl);
+
+            mesh.vertices.push_back(vh);
+            mesh.vertices.push_back(vl);
+
+            //auto wb = hasFlag(wall, WallFlag1::WALL_TX_ANCHORED) ? : wallBase;
+            auto wb = wallBase;
+            
+            if ( (wallKind == TOP) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_TOP_TX) ) wb = 0.0f;
+            if ( (wallKind == MID_TOP || wallKind == MID_MID || wallKind == MID_BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_MID_TX) ) wb = 0.0f;
+            if ( (wallKind == BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_SIGN_TX) ) wb = 0.0f;
+            //if ( (wallKind == OVER) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_SIGN_TX) ) wb = 0.0f;
+            mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (high - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&wall.flag1) });
+            mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (low - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&wall.flag1) });
         }
 
-        TextureUvs texUvs = getTextureUvs(level, texInfos, textureId);
+        mesh.triangles.push_back(currentIdx + 1);
+        mesh.triangles.push_back(currentIdx + 0);
+        mesh.triangles.push_back(currentIdx + 2);
+        mesh.triangleToWall.push_back(iwall);
 
-        uvs.push_back({ texUvs.start.u, texUvs.start.v });
-        uvs.push_back({ texUvs.start.u, texUvs.end.v });
-
-        uvs.push_back({ texUvs.end.u, texUvs.start.v });
-        uvs.push_back({ texUvs.end.u, texUvs.end.v });
-
-        triangles.push_back(currentIdx + 1);
-        triangles.push_back(currentIdx + 0);
-        triangles.push_back(currentIdx + 2);
-
-        triangles.push_back(currentIdx + 2);
-        triangles.push_back(currentIdx + 3);
-        triangles.push_back(currentIdx + 1);
+        mesh.triangles.push_back(currentIdx + 2);
+        mesh.triangles.push_back(currentIdx + 3);
+        mesh.triangles.push_back(currentIdx + 1);
+        mesh.triangleToWall.push_back(iwall);
 
         currentIdx += 4;
     };
 
-    addWall(TOP, wall.top.textureId);
-    addWall(MID_TOP, wall.mid.textureId);
-    addWall(MID_MID, wall.mid.textureId);
-    addWall(MID_BOT, wall.mid.textureId);
-    addWall(MID_TOP, wall.overlay.textureId);
-    addWall(MID_MID, wall.overlay.textureId);
-    addWall(MID_BOT, wall.overlay.textureId);
-    addWall(BOT, wall.bot.textureId);
+    addWall(TOP, wall.top);
+    addWall(MID_TOP, wall.mid);
+    addWall(MID_MID, wall.mid);
+    addWall(MID_BOT, wall.mid);
+    addWall(MID_TOP, wall.overlay);
+    addWall(MID_MID, wall.overlay);
+    addWall(MID_BOT, wall.overlay);
+    addWall(BOT, wall.bot);
 }
 
 /// Tesselates given sector.
-/// @note It is possible to tesselate with holes - we just need to identify walls that are creating holes (in current sector or some other sectors).
-/// @note Tesselator might remove or reorder some vertices.
-std::pair< std::vector<Vertex2>, std::vector<int> > tesselateSector(const std::vector<Sector>& sectors, int isector) {
-    const Sector& sector = sectors.at(isector);
-
+/// @note Tesselator might remove or reorder vertices.
+std::pair< std::vector<Vertex2>, std::vector<int> > tesselateSector(const Sector& sector) {
     // Separate walls into closed loops.
 
     std::vector<std::pair<int, int>> wallsToUse;
@@ -486,9 +486,16 @@ std::pair< std::vector<Vertex2>, std::vector<int> > tesselateSector(const std::v
     return { vertices, triangles };
 }
 
-TextureUvs sectorBounds(const LvtLevel& level, int isector) {
-    const Sector& sector = level.sectors.at(isector);
+void computeSectorWalls(const RuntimeLevel& level, int isector, SectorMeshUV& mesh) {
+    const Sector& sector = level.lvt.sectors.at(isector);
 
+    // Walls
+    for (int i = 0; i < static_cast<int>(sector.walls.size()); ++i) {
+        computeWall(level, isector, i, mesh);
+    }
+}
+
+TextureUvs sectorBounds(const Sector& sector) {
     float minX = 100000.0f;
     float minZ = 100000.0f;
     float maxX = -100000.0f;
@@ -502,87 +509,92 @@ TextureUvs sectorBounds(const LvtLevel& level, int isector) {
     return TextureUvs { minX, minZ, maxX, maxZ };
 }
 
-void computeSector(const LvtLevel& level, const TexInfos& texInfos, int isector, std::vector<Vector3>& vertices, std::vector<Uv>& uvs, std::vector<int>& triangles) {
-    const Sector& sector = level.sectors.at(isector);
-
-    auto tesselated = tesselateSector(level.sectors, isector);
-    auto& tesselatedVertices = tesselated.first;
-    auto& tesselatedTriangles = tesselated.second;
+void computeSectorFloorCeiling(const RuntimeLevel& level, int isector, SectorMeshUV& mesh) {
+    const Sector& sector = level.lvt.sectors.at(isector);
+    const RuntimeSector& runtimeSector = level.runtimeSectors.at(isector);
 
     // Floor / Ceilling
-    auto firstIdx = static_cast<int>(vertices.size());
+    auto firstIdx = static_cast<int>(mesh.vertices.size());
 
-    TextureUvs floorUvs = getTextureUvs(level, texInfos, sector.floorTexture.textureId);
-    TextureUvs ceillingUvs = getTextureUvs(level, texInfos, sector.ceilingTexture.textureId);
+    Plane floorPlane = hasFlag(sector, SectorFlag1::SLOPED_FLOOR) ? computeSlopePlane(level.lvt, sector.floorSlope) : Plane { Vector3::up, 0 };
+    Plane ceilingPlane = hasFlag(sector, SectorFlag1::SLOPED_CEILING) ? computeSlopePlane(level.lvt, sector.ceilingSlope) : Plane { Vector3::up, 0 };
 
-    TextureUvs bounds = sectorBounds(level, isector);
-    float minX = bounds.start.u;
-    float minZ = bounds.start.v;
-    float maxX = bounds.end.u;
-    float maxZ = bounds.end.u;
-
-    auto rangeX = std::max(1.0f, maxX - minX);
-    auto rangeZ = std::max(1.0f, maxZ - minZ);
-
-    Plane floorPlane = hasFlag(sector, SectorFlag1::SLOPED_FLOOR) ? computeSlopePlane(level, sector.floorSlope) : Plane { Vector3::up, 0 };
-    Plane ceilingPlane = hasFlag(sector, SectorFlag1::SLOPED_CEILING) ? computeSlopePlane(level, sector.ceilingSlope) : Plane { Vector3::up, 0 };
-
-    for (auto wv : tesselatedVertices) {
+    for (auto wv : runtimeSector.tesselatedVertices) {
         auto floorAltitude = computeVertexHeight(floorPlane, wv) + sector.floorY;
         auto ceilingAltitude = computeVertexHeight(ceilingPlane, wv) + sector.ceilingY;
 
         Vector3 vf { wv.x, floorAltitude, wv.z };
         Vector3 vc { wv.x, ceilingAltitude, wv.z };
-        vertices.push_back(vf);
-        vertices.push_back(vc);
+        mesh.vertices.push_back(vf);
+        mesh.vertices.push_back(vf);
+        mesh.vertices.push_back(vc);
+        mesh.vertices.push_back(vc);
 
-        // 8 units on the floor is full texture width (maybe...)
-        // To support it we need custom wrapping in shader.
-        // For now we'll do a hack.
-        Uv uv { (wv.x - minX) / rangeX, (wv.z - minZ) / rangeZ };
+        int zero = 0;
+        Vector4 floorUv = { wv.x + sector.floorTexture.offsX, wv.z + sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 floorOverlayUv = { wv.x + sector.floorTexture.offsX, wv.z + sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 ceilingUv = { wv.x + sector.ceilingTexture.offsX, wv.z + sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 ceilingOverlayUv = { wv.x + sector.ceilingTexture.offsX, wv.z + sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
 
-        auto floorUv = uv;
-        floorUv.u = floorUv.u * (floorUvs.end.u - floorUvs.start.u) + floorUvs.start.u;
-        floorUv.v = floorUv.v * (floorUvs.end.v - floorUvs.start.v) + floorUvs.start.v;
-
-        auto ceillingUv = uv;
-        ceillingUv.u = ceillingUv.u * (ceillingUvs.end.u - ceillingUvs.start.u) + ceillingUvs.start.u;
-        ceillingUv.v = ceillingUv.v * (ceillingUvs.end.v - ceillingUvs.start.v) + ceillingUvs.start.v;
-
-        uvs.push_back(floorUv);
-        uvs.push_back(ceillingUv);
+        mesh.uvs.push_back(floorUv);
+        mesh.uvs.push_back(floorOverlayUv);
+        mesh.uvs.push_back(ceilingUv);
+        mesh.uvs.push_back(ceilingOverlayUv);
     }
 
-    for (int i = 0; i < static_cast<int>(tesselatedTriangles.size()); i += 3) {
-        int t0 = tesselatedTriangles[i + 0];
-        int t1 = tesselatedTriangles[i + 1];
-        int t2 = tesselatedTriangles[i + 2];
+    for (int i = 0; i < static_cast<int>(runtimeSector.tesselatedTriangles.size()); i += 3) {
+        int t0 = runtimeSector.tesselatedTriangles[i + 0];
+        int t1 = runtimeSector.tesselatedTriangles[i + 1];
+        int t2 = runtimeSector.tesselatedTriangles[i + 2];
 
         // Floor
         if (!hasFlag(sector, SectorFlag1::EXTERIOR_NO_FLOOR)) {
-            triangles.push_back(firstIdx + t0 * 2 + 0);
-            triangles.push_back(firstIdx + t1 * 2 + 0);
-            triangles.push_back(firstIdx + t2 * 2 + 0);
+            mesh.triangles.push_back(firstIdx + t0 * 4 + 0);
+            mesh.triangles.push_back(firstIdx + t1 * 4 + 0);
+            mesh.triangles.push_back(firstIdx + t2 * 4 + 0);
+            mesh.triangleToWall.push_back(SectorMeshUV::floorTriangle);
+        }
+
+        // Floor overlay
+        if (!hasFlag(sector, SectorFlag1::EXTERIOR_NO_FLOOR) && (sector.floorOverlayTexture.textureId != -1)) {    // @todo There is proabbly some flag for enabling floor overlay.
+            mesh.triangles.push_back(firstIdx + t0 * 4 + 1);
+            mesh.triangles.push_back(firstIdx + t1 * 4 + 1);
+            mesh.triangles.push_back(firstIdx + t2 * 4 + 1);
+            mesh.triangleToWall.push_back(SectorMeshUV::floorTriangle);
         }
 
         // Ceilling
         if (!hasFlag(sector, SectorFlag1::EXTERIOR_NO_CEIL)) {
-            triangles.push_back(firstIdx + t0 * 2 + 1);
-            triangles.push_back(firstIdx + t2 * 2 + 1);
-            triangles.push_back(firstIdx + t1 * 2 + 1);
+            mesh.triangles.push_back(firstIdx + t0 * 4 + 2);
+            mesh.triangles.push_back(firstIdx + t2 * 4 + 2);
+            mesh.triangles.push_back(firstIdx + t1 * 4 + 2);
+            mesh.triangleToWall.push_back(SectorMeshUV::ceilingTriangle);
         }
-    }
 
-    // Walls
-    for (int i = 0; i < static_cast<int>(sector.walls.size()); ++i) {
-        computeWall(level, texInfos, isector, i, vertices, uvs, triangles);
+        // Ceilling overlay
+        if (!hasFlag(sector, SectorFlag1::EXTERIOR_NO_CEIL) && (sector.ceilingOverlayTexture.textureId != -1)) {    // @todo There is proabbly some flag for enabling ceiling overlay.
+            mesh.triangles.push_back(firstIdx + t0 * 4 + 3);
+            mesh.triangles.push_back(firstIdx + t2 * 4 + 3);
+            mesh.triangles.push_back(firstIdx + t1 * 4 + 3);
+            mesh.triangleToWall.push_back(SectorMeshUV::ceilingTriangle);
+        }
     }
 }
 
-void computeLevel(const LvtLevel& level, const TexInfos& texInfos, std::vector<Vector3>& vertices, std::vector<Uv>& uvs, std::vector<int>& triangles) {
-    for (int i = 0; i < static_cast<int>(level.sectors.size()); ++i) {
-        computeSector(level, texInfos, i, vertices, uvs, triangles);
-    }
+void RuntimeSector::computeBasicGeometry(const LvtLevel& level, int isector) {
+    const Sector& sector = level.sectors.at(isector);
+
+    auto tesselated = tesselateSector(sector);
+    tesselatedVertices = tesselated.first;
+    tesselatedTriangles = tesselated.second;
+
+    floorPlane = hasFlag(sector, SectorFlag1::SLOPED_FLOOR) ? computeSlopePlane(level, sector.floorSlope) : Plane { Vector3::up, 0 };
+    ceilingPlane = hasFlag(sector, SectorFlag1::SLOPED_CEILING) ? computeSlopePlane(level, sector.ceilingSlope) : Plane { Vector3::up, 0 };
+}
+
+void RuntimeSector::computeMeshes(const RuntimeLevel& level, int isector) {
+    computeSectorFloorCeiling(level, isector, renderingMesh);
+    computeSectorWalls(level, isector, renderingMesh);
 }
 
 } // namespace outlaws

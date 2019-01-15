@@ -7,9 +7,147 @@
 
 #include <antlr4-runtime.h>
 
+#include <sstream>
+
 #include <boost/lexical_cast.hpp>
 
 namespace outlaws {
+
+std::string flagToStringImpl(const char* bitNames[32], uint32_t value) {
+    std::stringstream ss;
+
+    bool isFirst = true;
+    for (int i = 0; i < 32; ++i) {
+        uint32_t bitFlag = (1u << i);
+        if ((value & bitFlag) == 0) {
+            continue;
+        }
+        if (!isFirst) {
+            ss << " ";
+        }
+        isFirst = false;
+        ss << bitNames[i];
+    }
+
+    return ss.str();
+}
+
+std::string flagToString(SectorFlag1 value) {
+    const char* bitNames[32] = {
+        "EXTERIOR_NO_CEIL",
+        "DOOR",
+        "SHOT_REFLECTION",
+        "EXTERIOR_ADJOIN",
+        "ICE_FLOOR",
+        "SNOW_FLOOR",
+        "EXPLODING_WALL_OR_DOOR",
+        "EXTERIOR_NO_FLOOR",
+        "EXTERIOR_FLOOR_ADJOIN",
+        "CRUSHING_SECTOR",
+        "NO_WALL_DRAW",
+        "LOW_DAMAGE",
+        "HIGH_DAMAGE",
+        "NO_SMART_OBJECT_REACTION",
+        "SMART_OBJECT_REACTION",
+        "SUBSECTOR",
+        "SAFE_SECTOR",
+        "RENDERED",
+        "PLAYER",
+        "SECRET_SECTOR",
+        "BIT_20",
+        "BIT_21",
+        "BIT_22",
+        "BIT_23",
+        "BIT_24",
+        "BIT_25",
+        "BIT_26",
+        "BIT_27",
+        "BIT_28",
+        "BIT_29",
+        "SLOPED_FLOOR",
+        "SLOPED_CEILING",
+    };
+
+    return flagToStringImpl(bitNames, static_cast<uint32_t>(value));
+}
+
+std::string flagToString(WallFlag1 value) {
+    const char* bitNames[32] = {
+        "ADJOINING_MID_TX",
+        "ILLUMINATED_SIGN",
+        "FLIP_TEXTURE_HORIZONTALLY",
+        "ELEV_CAN_CHANGE_WALL_LIGHT",
+        "WALL_TX_ANCHORED",
+        "WALL_MORPHS_WITH_ELEV",
+        "ELEV_CAN_SCROLL_TOP_TX",
+        "ELEV_CAN_SCROLL_MID_TX",
+        "ELEV_CAN_SCROLL_BOT_TX",
+        "ELEV_CAN_SCROLL_SIGN_TX",
+        "HIDE_ON_MAP",
+        "SHOW_AS_NORMAL_ON_MAP",
+        "SIGN_ANCHORED",
+        "WALL_DAMAGES_PLAYER",
+        "SHOW_AS_LEDGE_ON_MAP",
+        "SHOW_AS_DOOR_ON_MAP",
+        "BIT_16",
+        "BIT_17",
+        "BIT_18",
+        "BIT_19",
+        "BIT_20",
+        "BIT_21",
+        "BIT_22",
+        "BIT_23",
+        "BIT_24",
+        "BIT_25",
+        "BIT_26",
+        "BIT_27",
+        "BIT_28",
+        "BIT_29",
+        "BIT_30",
+        "BIT_31",
+    };
+
+    return flagToStringImpl(bitNames, static_cast<uint32_t>(value));
+}
+
+std::string flagToString(WallFlag2 value) {
+    const char* bitNames[32] = {
+        "PLAYER_CAN_CLIMB_ANY_HEIGHT",
+        "NO_ONE_CAN_WALK",
+        "ENEMIES_CANT_WALK",
+        "CANNOT_SHOT_THROUGH",
+        "BIT_4",
+        "BIT_5",
+        "BIT_6",
+        "BIT_7",
+        "BIT_8",
+        "BIT_9",
+        "BIT_10",
+        "BIT_11",
+        "BIT_12",
+        "BIT_12",
+        "BIT_14",
+        "BIT_15",
+        "BIT_16",
+        "BIT_17",
+        "BIT_18",
+        "BIT_19",
+        "BIT_20",
+        "BIT_21",
+        "BIT_22",
+        "BIT_23",
+        "BIT_24",
+        "BIT_25",
+        "BIT_26",
+        "BIT_27",
+        "BIT_28",
+        "BIT_29",
+        "BIT_30",
+        "BIT_31",
+    };
+
+    return flagToStringImpl(bitNames, static_cast<uint32_t>(value));
+}
 
 TextureParamsSmall parseTextureParamsSmall(lvtgrammar::LvtParser::TextureParamsSmallContext* ctx) {
     TextureParamsSmall textureParams;
@@ -91,7 +229,9 @@ public:
         sector.ceilingY = boost::lexical_cast<float>(ctx->ceilingY->getText());
 
         sector.floorTexture = parseTextureParams(ctx->floorTexture);
+        sector.floorOverlayTexture = parseTextureParams(ctx->floorOverlayTexture);
         sector.ceilingTexture = parseTextureParams(ctx->ceilingTexture);
+        sector.ceilingOverlayTexture = parseTextureParams(ctx->ceilingOverlayTexture);
 
         sector.flag1 = boost::lexical_cast<int>(ctx->flag1->getText());
         sector.flag2 = boost::lexical_cast<int>(ctx->flag2->getText());

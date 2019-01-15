@@ -24,7 +24,7 @@ Everything else.
 
 # LabFuse
 
-In LabFuse directory there is a working user-mode file system (requires Dokany insatlled) for mounting LAB package files as drives in Windows.  
+In LabFuse directory there is a working user-mode file system (requires Dokany installed) for mounting LAB package files as drives in Windows.  
 It is written using FUSE, so it should be trivial to port to Linux.
 
 # Used third-party lbraries

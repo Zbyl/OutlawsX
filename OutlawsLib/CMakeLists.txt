@@ -31,8 +31,8 @@ set(TARGET_SOURCES
 
     Lvt.h
     Lvt.cpp
-    LevelRuntime.h
-    LevelRuntime.cpp
+    RuntimeLevel.h
+    RuntimeLevel.cpp
     TexInfos.h
     TexInfos.cpp
     Inf.h

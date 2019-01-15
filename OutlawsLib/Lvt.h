@@ -8,6 +8,10 @@
 
 namespace outlaws {
 
+std::string flagToStringImpl(const char* bitNames[32], uint32_t value);
+
+/// First flag of a Sector.
+/// @note When modifying update implementation of flagToString().
 enum class SectorFlag1 : uint32_t {
     EXTERIOR_NO_CEIL = (1u << 0),
     DOOR = (1u << 1),
@@ -60,6 +64,10 @@ enum class WallFlag2 : uint32_t {
     CANNOT_SHOT_THROUGH = (1u << 3),
 };
 
+std::string flagToString(SectorFlag1 value);
+std::string flagToString(WallFlag1 value);
+std::string flagToString(WallFlag2 value);
+
 struct TextureParamsSmall {
     int textureId;
     float offsX;
@@ -105,8 +113,10 @@ struct Sector {
 
     float floorY;
     TextureParams floorTexture;
+    TextureParams floorOverlayTexture;
     float ceilingY;
     TextureParams ceilingTexture;
+    TextureParams ceilingOverlayTexture;
 
     std::vector<Vertex2> vertices;
     std::vector<Wall> walls;

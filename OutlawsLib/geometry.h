@@ -109,6 +109,15 @@ struct Vector3 {
     static const Vector3 forward;   ///< z = 1
 };
 
+struct Vector4 {
+    float x, y, z, w;
+
+    Vector4() = default;
+    Vector4(const Vector4&) = default;
+    Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+    Vector4(Vector3 v, float w = 0.0f) : x(v.x), y(0.0f), z(v.z), w(w) {}
+};
+
 /// Plane as given by equation: ax + by + cz = d.
 struct Plane {
     Vector3 normal;     ///< Normalized normal of the plane.
