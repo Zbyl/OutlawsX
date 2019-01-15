@@ -115,7 +115,7 @@ struct Vector4 {
     Vector4() = default;
     Vector4(const Vector4&) = default;
     Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-    Vector4(Vector3 v, float w = 0.0f) : x(v.x), y(0.0f), z(v.z), w(w) {}
+    Vector4(Vector3 v, float w = 0.0f) : x(v.x), y(v.y), z(v.z), w(w) {}
 };
 
 /// Plane as given by equation: ax + by + cz = d.
