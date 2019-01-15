@@ -1,6 +1,6 @@
 {
   "antlr4.generation": {
-    "mode": "external",
+    "mode": "internal",
     "outputDir": "antlr4-runtime",
     "language": "Cpp",
     "listeners": false,

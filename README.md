@@ -12,11 +12,11 @@ MIT, with exception of third-party code (on their own licenses).
 ## Working
 
 - Level geometry is correctly interpreted and generated.  
-  Texture coordinates are not.
+  Texture coordinates are mostly ok.
 - Parser for LVT text level files (no LVB binary level files parser yet).
 - Parser for INF script files.
 - Parser for ATX animated texture files.
-- Unity project for displaying geometry (not commited yet).
+- Unity project for displaying geometry (see `OutlawsXUnity` subdirectory).
 
 ## Todo
 
