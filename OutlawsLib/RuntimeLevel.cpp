@@ -326,7 +326,7 @@ void computeWall(const RuntimeLevel& level, int isector, int iwall, SectorMeshUV
     float wallBase = sector.floorY;
     float wallLength = (verts[1] - verts[0]).magnitude();
 
-    auto addWall = [&](WallKind wallKind, TextureParamsSmall textureParams) {
+    auto addWall = [&](WallKind wallKind, TextureParamsSmall textureParams, bool isSign) {
         if (!drawWall[wallKind])
             return;
         if (textureParams.textureId == -1)
@@ -374,14 +374,21 @@ void computeWall(const RuntimeLevel& level, int isector, int iwall, SectorMeshUV
             mesh.vertices.push_back(vl);
 
             //auto wb = hasFlag(wall, WallFlag1::WALL_TX_ANCHORED) ? : wallBase;
-            auto wb = wallBase;
+            auto wb = low;
             
-            if ( (wallKind == TOP) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_TOP_TX) ) wb = 0.0f;
-            if ( (wallKind == MID_TOP || wallKind == MID_MID || wallKind == MID_BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_MID_TX) ) wb = 0.0f;
-            if ( (wallKind == BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_SIGN_TX) ) wb = 0.0f;
-            //if ( (wallKind == OVER) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_SIGN_TX) ) wb = 0.0f;
-            mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (high - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&wall.flag1) });
-            mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (low - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&wall.flag1) });
+            if ( (wallKind == TOP) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_TOP_TX) ) wb = wallBase;
+            if (isSign) {
+                if ( (wallKind == MID_TOP || wallKind == MID_MID || wallKind == MID_BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_SIGN_TX) ) wb = wallBase;
+            } else {
+                if ( (wallKind == MID_TOP || wallKind == MID_MID || wallKind == MID_BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_MID_TX) ) wb = wallBase;
+            }
+            if ( (wallKind == BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_BOT_TX) ) wb = wallBase;
+
+            int flag = wall.flag1;
+            if (isSign)
+                flag |= (1u << 31); // @todo This is a hacky flag for pixel shader.
+            mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (high - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&flag) });
+            mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (low - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&flag) });
         }
 
         mesh.triangles.push_back(currentIdx + 1);
@@ -397,14 +404,28 @@ void computeWall(const RuntimeLevel& level, int isector, int iwall, SectorMeshUV
         currentIdx += 4;
     };
 
-    addWall(TOP, wall.top);
-    addWall(MID_TOP, wall.mid);
-    addWall(MID_MID, wall.mid);
-    addWall(MID_BOT, wall.mid);
-    addWall(MID_TOP, wall.overlay);
-    addWall(MID_MID, wall.overlay);
-    addWall(MID_BOT, wall.overlay);
-    addWall(BOT, wall.bot);
+    addWall(TOP, wall.top, false);
+    addWall(MID_TOP, wall.mid, false);
+    addWall(MID_MID, wall.mid, false);
+    addWall(MID_BOT, wall.mid, false);
+    addWall(BOT, wall.bot, false);
+
+    auto ovr = wall.overlay;
+    ovr.offsX = wall.top.offsX - ovr.offsX;
+    ovr.offsY = wall.top.offsY + ovr.offsY;
+    addWall(TOP, ovr, true);
+
+    ovr = wall.overlay;
+    ovr.offsX = wall.mid.offsX - ovr.offsX;
+    ovr.offsY = wall.mid.offsY + ovr.offsY;
+    addWall(MID_TOP, ovr, true);
+    addWall(MID_MID, ovr, true);
+    addWall(MID_BOT, ovr, true);
+
+    ovr = wall.overlay;
+    ovr.offsX = wall.bot.offsX - ovr.offsX;
+    ovr.offsY = wall.bot.offsY + ovr.offsY;
+    addWall(BOT, ovr, true);
 }
 
 /// Tesselates given sector.
@@ -531,10 +552,12 @@ void computeSectorFloorCeiling(const RuntimeLevel& level, int isector, SectorMes
         mesh.vertices.push_back(vc);
 
         int zero = 0;
-        Vector4 floorUv = { wv.x + sector.floorTexture.offsX, wv.z + sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
-        Vector4 floorOverlayUv = { wv.x + sector.floorTexture.offsX, wv.z + sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
-        Vector4 ceilingUv = { wv.x + sector.ceilingTexture.offsX, wv.z + sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
-        Vector4 ceilingOverlayUv = { wv.x + sector.ceilingTexture.offsX, wv.z + sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        auto refv = wv;
+        //auto refv = sector.vertices.front();
+        Vector4 floorUv = { refv.x - sector.floorTexture.offsX, refv.z - sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 floorOverlayUv = { refv.x - sector.floorTexture.offsX, refv.z - sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 ceilingUv = { refv.x - sector.ceilingTexture.offsX, refv.z - sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 ceilingOverlayUv = { refv.x - sector.ceilingTexture.offsX, refv.z - sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
 
         mesh.uvs.push_back(floorUv);
         mesh.uvs.push_back(floorOverlayUv);
