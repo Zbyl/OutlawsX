@@ -118,7 +118,7 @@ public class GameHandler : MonoBehaviour {
     {
         var func = Native.InvokeSimple<loadLevel>(nativeLibraryPtr);
         var levelFilePtr = FreeCStrMarshaler.GetInstance("").MarshalManagedToNative(levelFile);
-        var textureFilePtr = FreeCStrMarshaler.GetInstance("").MarshalManagedToNative(textureFile); 
+        var textureFilePtr = FreeCStrMarshaler.GetInstance("").MarshalManagedToNative(textureFile);
         var result = func(levelFilePtr, textureFilePtr);
         FreeCStrMarshaler.GetInstance("").CleanUpNativeData(levelFilePtr);
         FreeCStrMarshaler.GetInstance("").CleanUpNativeData(textureFilePtr);

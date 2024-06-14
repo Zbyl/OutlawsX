@@ -13,27 +13,27 @@ public class FreeCStrMarshaler : ICustomMarshaler
     public object MarshalNativeToManaged(IntPtr pNativeData)
     {
         var str = Marshal.PtrToStringAnsi(pNativeData);
-        Debug.LogError(string.Format("FreeCStrMarshaler: native to managed: pNativeData={1} -> {0}", str, pNativeData));
+        Debug.Log(string.Format("FreeCStrMarshaler: native to managed: pNativeData={1} -> {0}", str, pNativeData));
         return str;
     }
 
     public IntPtr MarshalManagedToNative(object ManagedObj)
     {
         var pNativeData = Marshal.StringToCoTaskMemAnsi((string)ManagedObj);
-        Debug.LogError(string.Format("FreeCStrMarshaler: managed to native: {0} -> pNativeData={1}", (string)ManagedObj, pNativeData));
+        Debug.Log(string.Format("FreeCStrMarshaler: managed to native: {0} -> pNativeData={1}", (string)ManagedObj, pNativeData));
         return pNativeData;
     }
 
     public void CleanUpNativeData(IntPtr pNativeData)
     {
-        Debug.LogError(string.Format("FreeCStrMarshaler: releasing native: pNativeData={0}", pNativeData));
+        Debug.Log(string.Format("FreeCStrMarshaler: releasing native: pNativeData={0}", pNativeData));
         Marshal.FreeCoTaskMem(pNativeData);
     }
 
     public void CleanUpManagedData(object ManagedObj)
     {
         // Nothing to do
-        Debug.LogError(string.Format("FreeCStrMarshaler: releasing managed: {0}", (string)ManagedObj));
+        Debug.Log(string.Format("FreeCStrMarshaler: releasing managed: {0}", (string)ManagedObj));
     }
 
     public int GetNativeDataSize()
