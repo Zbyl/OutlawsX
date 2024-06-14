@@ -3,3 +3,4 @@ OutlawsLib/antlr/.antlr
 OutlawsLib/antlr/.vscode
 Textures/oltex/*.bmp
 OutlawsHlpFiles/**
+vcpkg_installed

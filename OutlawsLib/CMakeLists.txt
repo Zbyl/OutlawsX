@@ -9,14 +9,14 @@
 # Call macro to add lexer and grammar to your build dependencies.
 # NOTE: Here, we define "lvtgrammar" as our project's namespace
 # We need to put all output files together, so that ANTLR will find Lexer from inside the Parser.
-antlr_target(LvtLexer antlr/LvtLexer.g4 LEXER PACKAGE lvtgrammar OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
-antlr_target(LvtParser antlr/LvtParser.g4 PARSER PACKAGE lvtgrammar DEPENDS_ANTLR LvtLexer VISITOR OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
+antlr4_generate(LvtLexer ${CMAKE_CURRENT_SOURCE_DIR}/antlr/LvtLexer.g4 LEXER FALSE FALSE lvtgrammar)
+antlr4_generate(LvtParser ${CMAKE_CURRENT_SOURCE_DIR}/antlr/LvtParser.g4 PARSER FALSE TRUE lvtgrammar "${ANTLR4_TOKEN_FILES_LvtLexer}" "${ANTLR4_TOKEN_DIRECTORY_LvtLexer}")
 
-antlr_target(InfLexer antlr/InfLexer.g4 LEXER PACKAGE infgrammar OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
-antlr_target(InfParser antlr/InfParser.g4 PARSER PACKAGE infgrammar DEPENDS_ANTLR InfLexer VISITOR OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
+antlr4_generate(InfLexer ${CMAKE_CURRENT_SOURCE_DIR}/antlr/InfLexer.g4 LEXER FALSE FALSE infgrammar)
+antlr4_generate(InfParser ${CMAKE_CURRENT_SOURCE_DIR}/antlr/InfParser.g4 PARSER FALSE TRUE infgrammar "${ANTLR4_TOKEN_FILES_InfLexer}" "${ANTLR4_TOKEN_DIRECTORY_InfLexer}")
 
-antlr_target(AtxLexer antlr/AtxLexer.g4 LEXER PACKAGE atxgrammar OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
-antlr_target(AtxParser antlr/AtxParser.g4 PARSER PACKAGE atxgrammar DEPENDS_ANTLR AtxLexer VISITOR OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/antlr4cpp_generated)
+antlr4_generate(AtxLexer ${CMAKE_CURRENT_SOURCE_DIR}/antlr/AtxLexer.g4 LEXER FALSE FALSE atxgrammar)
+antlr4_generate(AtxParser ${CMAKE_CURRENT_SOURCE_DIR}/antlr/AtxParser.g4 PARSER FALSE TRUE atxgrammar "${ANTLR4_TOKEN_FILES_AtxLexer}" "${ANTLR4_TOKEN_DIRECTORY_AtxLexer}")
 
 
 set(TARGET_NAME OutlawsLib)
@@ -45,14 +45,14 @@ set(TARGET_SOURCES
     # Hack. Remove it from here.
     file_utilities.cpp
 
-    ${ANTLR_LvtLexer_CXX_OUTPUTS}
-    ${ANTLR_LvtParser_CXX_OUTPUTS}
+    ${ANTLR4_SRC_FILES_LvtLexer}
+    ${ANTLR4_SRC_FILES_LvtParser}
 
-    ${ANTLR_InfLexer_CXX_OUTPUTS}
-    ${ANTLR_InfParser_CXX_OUTPUTS}
+    ${ANTLR4_SRC_FILES_InfLexer}
+    ${ANTLR4_SRC_FILES_InfParser}
 
-    ${ANTLR_AtxLexer_CXX_OUTPUTS}
-    ${ANTLR_AtxParser_CXX_OUTPUTS}
+    ${ANTLR4_SRC_FILES_AtxLexer}
+    ${ANTLR4_SRC_FILES_AtxParser}
 
     NatvisFile.natvis
     )
@@ -66,15 +66,15 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES
     antlr/InfParser.g4
 )
 
-source_group(TREE "${CMAKE_CURRENT_BINARY_DIR}" FILES
-    ${ANTLR_LvtLexer_CXX_OUTPUTS}
-    ${ANTLR_LvtParser_CXX_OUTPUTS}
+source_group(TREE "${CMAKE_BINARY_DIR}" FILES
+    ${ANTLR4_SRC_FILES_LvtLexer}
+    ${ANTLR4_SRC_FILES_LvtParser}
 
-    ${ANTLR_InfLexer_CXX_OUTPUTS}
-    ${ANTLR_InfParser_CXX_OUTPUTS}
+    ${ANTLR4_SRC_FILES_InfLexer}
+    ${ANTLR4_SRC_FILES_InfParser}
 
-    ${ANTLR_AtxLexer_CXX_OUTPUTS}
-    ${ANTLR_AtxParser_CXX_OUTPUTS}
+    ${ANTLR4_SRC_FILES_AtxLexer}
+    ${ANTLR4_SRC_FILES_AtxParser}
 )
 
 # Required Boost components: exception, endian, range
@@ -91,15 +91,16 @@ target_include_directories(${TARGET_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/../Arbitr
 target_include_directories(${TARGET_NAME} PRIVATE "${Boost_INCLUDE_DIRS}")
 target_include_directories(${TARGET_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/third_party/nlohmann-json-3.4.0")
 
-target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIRS})
-message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIRS} ")
+message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIR}")
+target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIR})
 
-# include generated files in project environment
-target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR_LvtLexer_OUTPUT_DIR})
-target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR_LvtParser_OUTPUT_DIR})
-target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR_InfLexer_OUTPUT_DIR})
-target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR_InfParser_OUTPUT_DIR})
-target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR_AtxLexer_OUTPUT_DIR})
-target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR_AtxParser_OUTPUT_DIR})
+# Add generated files to includes.
+target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIR_LvtLexer})
+target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIR_LvtParser})
+target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIR_InfLexer})
+target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIR_InfParser})
+target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIR_AtxLexer})
+target_include_directories(${TARGET_NAME} PRIVATE ${ANTLR4_INCLUDE_DIR_AtxParser})
 
-target_link_libraries(${TARGET_NAME} PUBLIC antlr4_static)
+add_dependencies(${TARGET_NAME} antlr4_shared)
+target_link_libraries(${TARGET_NAME} PUBLIC antlr4_shared)

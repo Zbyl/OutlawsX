@@ -2,22 +2,19 @@ cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
 project(OutlawsX LANGUAGES C CXX)
 
-LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-set(ANTLR4CPP_JAR_LOCATION )
+option(BUILD_LAB_FUSE "Builds lab-fuse. Requires Dokan." ON)
+option(ANTLR4_JAR_LOCATION "Location of the ANTLR4 jar." "${CMAKE_SOURCE_DIR}/../Antlr4/antlr-4.13.1-complete")
 
-# compiler must be 11 or 14
-SET(CMAKE_CXX_STANDARD 14)
+# compiler must be 17 or higher.
+SET(CMAKE_CXX_STANDARD 17)
+
 # using /MD flag for antlr4_runtime (for Visual C++ compilers only)
-set(ANTLR4_WITH_STATIC_CRT OFF)
-# add external build for antlrcpp
-set(ANTLR4_TAG be58ebf)
-include(ExternalAntlr4Cpp)
+#set(ANTLR4_WITH_STATIC_CRT OFF)
 
-# set variable pointing to the antlr tool that supports C++
-# this is not required if the jar file can be found under PATH environment
-set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/../Antlr4/antlr-4.7.2-complete.jar)
-# add macros to generate ANTLR Cpp code from grammar
-find_package(ANTLR REQUIRED)
+# Add ANTLR runtime and macros to generate ANTLR Cpp code from grammar.
+find_package(antlr4-runtime REQUIRED)
+find_package(antlr4-generator REQUIRED)
+
 
 function(SetCompilerOptionsMinimal targetName)
 
@@ -127,10 +124,10 @@ endfunction()
 add_subdirectory(OutlawsLib)
 add_subdirectory(OutlawsLabLib)
 add_subdirectory(OutlawsPlugin)
-add_subdirectory(LabFuse)
 add_subdirectory(OutlawsHelper)
 add_subdirectory(GluTesselator)
 
-if(WIN32)
+if(WIN32 AND BUILD_LAB_FUSE)
+    add_subdirectory(LabFuse)
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT lab-fuse)
 endif()

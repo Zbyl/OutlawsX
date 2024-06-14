@@ -12,8 +12,8 @@ find_package(Boost 1.68 REQUIRED COMPONENTS exception)
 
 add_executable(${TARGET_NAME} ${TARGET_SOURCES})
 target_link_libraries(${TARGET_NAME} PRIVATE OutlawsLabLib)
-target_link_libraries(${TARGET_NAME} PRIVATE "C:/Program Files/Dokan/Dokan Library-1.2.1/lib/dokanfuse1.lib")
-target_include_directories(${TARGET_NAME} PRIVATE "C:/Program Files/Dokan/Dokan Library-1.2.1/include")
+target_link_libraries(${TARGET_NAME} PRIVATE "${DOKAN_HOME}/lib/dokanfuse2.lib")
+target_include_directories(${TARGET_NAME} PRIVATE "${DOKAN_HOME}/include")
 target_include_directories(${TARGET_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/../ArbitraryFormatSerializer")
 target_include_directories(${TARGET_NAME} PRIVATE "${Boost_INCLUDE_DIRS}")
 
