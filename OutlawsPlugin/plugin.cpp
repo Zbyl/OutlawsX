@@ -14,6 +14,7 @@ using namespace outlaws;
 
 RuntimeLevel level;
 TexInfos texInfos;
+std::string errorMessage;
 
 extern "C" {
 
@@ -23,6 +24,12 @@ const char* returnString(const std::string& str){
     strcpy(pszStringToReturn, str.c_str());
 
     return pszStringToReturn;
+}
+
+/// @note Free result using FreeCStrMarshaler custom marshaller on C# side.
+OUTLAWSX_API const char* getErrorMessage()
+{
+    return returnString(errorMessage);
 }
 
 /// @note Free result using FreeCStrMarshaler custom marshaller on C# side.
@@ -83,17 +90,26 @@ OUTLAWSX_API int func(int a)
     return a + 3;
 }
 
-OUTLAWSX_API int loadLevel()
+// @todo Unicode stuff? Currently everything is ANSI.
+// @todo Add proper error handling everywhere.
+OUTLAWSX_API int loadLevel(const char* levelFile, const char* textureFile)
 {
     try {
-        auto lvt = loadLvt(R"(F:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT)");
-        texInfos = loadTexInfos(R"(F:\VSProjects\OutlawsXDir\UnityProj0\UnityProj0\Assets\Textures\pack.json)");
+        auto lvt = loadLvt(levelFile);
+        texInfos = loadTexInfos(textureFile);
         level = RuntimeLevel(std::move(lvt), texInfos);
         level.computeMeshes();
         return static_cast<int>(level.runtimeSectors.size());
     }
-    catch (...) {
-        return 0;
+    catch (const std::exception& exc)
+    {
+        errorMessage = std::string("error=") + exc.what() + " levelFile=" + levelFile + " textureFile=" + textureFile;
+        return -1;
+    }
+    catch (...)
+    {
+        errorMessage = "Unknown error.";
+        return -1;
     }
 }
 

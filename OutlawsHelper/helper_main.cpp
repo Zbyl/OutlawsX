@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 #endif
 
         auto lvt = loadLvt(R"(F:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT)");
-        auto texInfos = loadTexInfos(R"(F:\VSProjects\OutlawsXDir\UnityProj0\UnityProj0\Assets\Textures\pack.json)");
+        auto texInfos = loadTexInfos(R"(S:\VSProjects\OutlawsXDir\OutlawsX\OutlawsXUnity\Assets\Textures\pack.json)");
 
         RuntimeLevel level(std::move(lvt), texInfos);
         level.computeMeshes();

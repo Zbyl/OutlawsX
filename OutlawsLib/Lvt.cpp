@@ -244,12 +244,12 @@ public:
 
         for (auto element : ctx->vertices()->vertex()) {
             antlrcpp::Any el = visitVertex(element);
-            sector.vertices.push_back(el); 
+            sector.vertices.push_back(std::any_cast<Vertex2>(el)); 
         }    
 
         for (auto element : ctx->walls()->wall()) {
             antlrcpp::Any el = visitWall(element);
-            sector.walls.push_back(el); 
+            sector.walls.push_back(std::any_cast<Wall>(el)); 
         }    
 
         level.sectors.push_back(sector);
