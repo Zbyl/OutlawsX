@@ -40,7 +40,7 @@ public static class Native
         func.DynamicInvoke(pars);
     }
 
-    public static T InvokeSimple<T>(IntPtr library, params object[] pars)
+    public static T InvokeSimple<T>(IntPtr library)
         where T : class
     {
         IntPtr funcPtr = GetProcAddress(library, typeof(T).Name);

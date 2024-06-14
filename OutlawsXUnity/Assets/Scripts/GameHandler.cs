@@ -51,18 +51,28 @@ public class GameHandler : MonoBehaviour {
         int texHeight;
     }
 
+    delegate IntPtr getErrorMessage();
     delegate IntPtr sectorFlag1ToString(int isector);
     delegate IntPtr wallFlag1ToString(int isector, int iwall);
     delegate IntPtr wallFlag2ToString(int isector, int iwall);
 
     delegate int func(int a);
-    delegate int loadLevel();
+    delegate int loadLevel(IntPtr levelFile, IntPtr textureFile);
     delegate int overlappingSector2d(Vector2 point);
     delegate int overlappingSector3d(Vector3 point);
     unsafe delegate void fetchTexInfos(TextureUvs* texInfos, int* numTexInfos);
     unsafe delegate void fetchData(Vector3* vertices, Vector4* uvs, int* numVertices, int* triangles, int* numTriangles, int sectorNum);
     delegate int getWallForTriangle(int isector, int triangleIndex);
 
+
+    public static string getErrorMessage_()
+    {
+        var func = Native.InvokeSimple<getErrorMessage>(nativeLibraryPtr);
+        var cstr = func();
+        var str = (string)FreeCStrMarshaler.GetInstance("").MarshalNativeToManaged(cstr);
+        FreeCStrMarshaler.GetInstance("").CleanUpNativeData(cstr);
+        return str;
+    }
 
     public static string sectorFlag1ToString_(int isector)
     {
@@ -104,10 +114,20 @@ public class GameHandler : MonoBehaviour {
         return func(isector, triangleIndex);
     }
 
-    static int loadLevel_()
+    static int loadLevel_(string levelFile, string textureFile)
     {
         var func = Native.InvokeSimple<loadLevel>(nativeLibraryPtr);
-        return func();
+        var levelFilePtr = FreeCStrMarshaler.GetInstance("").MarshalManagedToNative(levelFile);
+        var textureFilePtr = FreeCStrMarshaler.GetInstance("").MarshalManagedToNative(textureFile); 
+        var result = func(levelFilePtr, textureFilePtr);
+        FreeCStrMarshaler.GetInstance("").CleanUpNativeData(levelFilePtr);
+        FreeCStrMarshaler.GetInstance("").CleanUpNativeData(textureFilePtr);
+        if (result == -1)
+        {
+            var errorMessage = getErrorMessage_();
+            Debug.LogError(string.Format("Error while loading level: {0}", errorMessage));
+        }
+        return result;
     }
 
     static int overlappingSector2d_(Vector2 point)
@@ -175,7 +195,7 @@ public class GameHandler : MonoBehaviour {
         var b = func_(4);
         Debug.Log(string.Format("Hello: {0}", b));
 
-        var numSectors = loadLevel_();
+        var numSectors = loadLevel_(@"S:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT", @"S:\VSProjects\OutlawsXDir\OutlawsX\OutlawsXUnity\Assets\Textures\pack.json");
         Debug.Log(string.Format("numSectors: {0}", numSectors));
 
         var texInfosArray = new TextureUvs[1000];
@@ -184,11 +204,12 @@ public class GameHandler : MonoBehaviour {
         {
             fetchTexInfos_(texInfosPtr, &numTexInfos);
         }
+        Debug.Log(string.Format("numTexInfos: {0}", numTexInfos));
         if (numTexInfos == 0)
             Debug.LogErrorFormat("Error loading texInfos.");
 
         texInfos = new ComputeBuffer(numTexInfos, 6 * 4);
-        texInfos.SetData(texInfosArray);
+        texInfos.SetData(texInfosArray, 0, 0, numTexInfos);
         material.SetBuffer("texInfos", texInfos);
 
         for (int i = 0; i < numSectors; ++i)
