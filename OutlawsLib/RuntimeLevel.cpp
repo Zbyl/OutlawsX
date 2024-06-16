@@ -116,7 +116,11 @@ bool RuntimeSector::isPointInSector(Vector3 point) const {
 /// Floor/ceiling height should be added also.
 Plane computeSlopePlane(const LvtLevel& level, SlopeParams slopeParams) {
     if (slopeParams.angle == 0)
-        return { Vector3::up, 0 };
+        return { Vector3::up, 0.0f };
+
+    // @note Happens in Canyon for sector #109, and this seems to be fine.
+    if (slopeParams.sector == -1)
+        return { Vector3::up, 0.0f };
 
     const Sector& referenceSector = level.sectors.at(slopeParams.sector);
     const Wall& wall = referenceSector.walls.at(slopeParams.wall);
