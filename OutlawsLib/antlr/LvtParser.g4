@@ -64,7 +64,7 @@ wall        : WALL_COLON wallId=ID
 sectors     : NUMSECTORS numSectors=INT
               (sector)*;
 textureParamsSmall : textureId=INT offsX=float_ offsY=float_;
-textureParams : textureParamsSmall unused=float_;
+textureParams : textureParamsSmall angle=float_;
 
 slopeParams : sectorId=INT wallId=INT angle=INT ;
 

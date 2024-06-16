@@ -160,7 +160,7 @@ TextureParamsSmall parseTextureParamsSmall(lvtgrammar::LvtParser::TextureParamsS
 TextureParams parseTextureParams(lvtgrammar::LvtParser::TextureParamsContext* ctx) {
     TextureParams textureParams;
     static_cast<TextureParamsSmall&>(textureParams) = parseTextureParamsSmall(ctx->textureParamsSmall());
-    textureParams.unused = boost::lexical_cast<float>(ctx->unused->getText());
+    textureParams.angle = boost::lexical_cast<float>(ctx->angle->getText());
     return textureParams;
 }
 

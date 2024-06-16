@@ -128,8 +128,8 @@ std::vector<LvbItemDesc> lvbItemDescs = {
     { LvbItemKind::VELOCITY, "VELOCITY", 0, 2, { LvbFieldType::INT, LvbFieldType::INT, LvbFieldType::INT } }, // @todo 3 floats???
     { LvbItemKind::VADJOIN, "VADJOIN", 0, 2, { LvbFieldType::INT } }, // Signed int.
     { LvbItemKind::FLOOR_SOUND, "FLOOR SOUND", 0, 2, { LvbFieldType::STRING } }, // Can be string "NULL".
-    { LvbItemKind::FLOOR_Y, "FLOOR Y", 0, 2, { LvbFieldType::FLOAT, LvbFieldType::INT, LvbFieldType::FLOAT, LvbFieldType::FLOAT, LvbFieldType::INT } }, // Last one is float???
-    { LvbItemKind::CEILING_Y, "CEILING Y", 0, 2, { LvbFieldType::FLOAT, LvbFieldType::INT, LvbFieldType::FLOAT, LvbFieldType::FLOAT, LvbFieldType::INT } }, // Last one is float???
+    { LvbItemKind::FLOOR_Y, "FLOOR Y", 0, 2, { LvbFieldType::FLOAT, LvbFieldType::INT, LvbFieldType::FLOAT, LvbFieldType::FLOAT, LvbFieldType::FLOAT } },
+    { LvbItemKind::CEILING_Y, "CEILING Y", 0, 2, { LvbFieldType::FLOAT, LvbFieldType::INT, LvbFieldType::FLOAT, LvbFieldType::FLOAT, LvbFieldType::FLOAT } },
     { LvbItemKind::F_OVERLAY, "F_OVERLAY", 0, 2, { LvbFieldType::INT, LvbFieldType::FLOAT, LvbFieldType::FLOAT, LvbFieldType::INT } }, // Last one is float???
     { LvbItemKind::C_OVERLAY, "C_OVERLAY", 0, 2, { LvbFieldType::INT, LvbFieldType::FLOAT, LvbFieldType::FLOAT, LvbFieldType::INT } }, // Last one is float???
     { LvbItemKind::FLOOR_OFFSETS, "FLOOR OFFSETS", 0, 2, { LvbFieldType::INT } },

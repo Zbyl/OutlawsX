@@ -557,11 +557,26 @@ void computeSectorFloorCeiling(const RuntimeLevel& level, int isector, SectorMes
 
         int zero = 0;
         auto refv = wv;
+        // Rotating the floor/ceiling texture.
+        const float pi = 3.14159265358979323846f;
+
+        Vertex2 ceilt { refv.x - sector.ceilingTexture.offsX, refv.z - sector.ceilingTexture.offsY };
+        auto ceilAngleInDeg = - sector.ceilingTexture.angle;
+        auto ceilAngleInRad = ceilAngleInDeg * pi / 180.0f;
+        Vertex2 ceilv { ceilt.x * cos(ceilAngleInRad) - ceilt.z * sin(ceilAngleInRad),
+                        ceilt.x * sin(ceilAngleInRad) + ceilt.z * cos(ceilAngleInRad) };
+
+        Vertex2 floort { refv.x - sector.floorTexture.offsX, refv.z - sector.floorTexture.offsY };
+        auto floorAngleInDeg = - sector.floorTexture.angle;
+        auto floorAngleInRad = floorAngleInDeg * pi / 180.0f;
+        Vertex2 floorv { floort.x * cos(floorAngleInRad) - floort.z * sin(floorAngleInRad),
+                         floort.x * sin(floorAngleInRad) + floort.z * cos(floorAngleInRad) };
+
         //auto refv = sector.vertices.front();
-        Vector4 floorUv = { refv.x - sector.floorTexture.offsX, refv.z - sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
-        Vector4 floorOverlayUv = { refv.x - sector.floorTexture.offsX, refv.z - sector.floorTexture.offsY, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
-        Vector4 ceilingUv = { refv.x - sector.ceilingTexture.offsX, refv.z - sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
-        Vector4 ceilingOverlayUv = { refv.x - sector.ceilingTexture.offsX, refv.z - sector.ceilingTexture.offsY, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 floorUv = { -floorv.x, floorv.z, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 floorOverlayUv = { -floorv.x, floorv.z, static_cast<float>(sector.floorTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 ceilingUv = { -ceilv.x, ceilv.z, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
+        Vector4 ceilingOverlayUv = { -ceilv.x, ceilv.z, static_cast<float>(sector.ceilingTexture.textureId), *reinterpret_cast<const float*>(&zero) };
 
         mesh.uvs.push_back(floorUv);
         mesh.uvs.push_back(floorOverlayUv);
