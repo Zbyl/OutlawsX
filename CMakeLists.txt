@@ -2,8 +2,12 @@ cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
 project(OutlawsX LANGUAGES C CXX)
 
-option(BUILD_LAB_FUSE "Builds lab-fuse. Requires Dokan." ON)
-option(ANTLR4_JAR_LOCATION "Location of the ANTLR4 jar." "${CMAKE_SOURCE_DIR}/../Antlr4/antlr-4.13.1-complete")
+set(DOKAN_HOME "" CACHE PATH "Path to Dokan Library directory.")
+set(ANTLR4_JAR_LOCATION "" CACHE FILEPATH "Location of the ANTLR4 jar.")
+
+if(ANTLR4_JAR_LOCATION STREQUAL "")
+    message(FATAL "ANTLR4_JAR_LOCATION was not provided. It is required to build this project.")
+endif()
 
 # compiler must be 17 or higher.
 SET(CMAKE_CXX_STANDARD 17)
@@ -127,7 +131,13 @@ add_subdirectory(OutlawsPlugin)
 add_subdirectory(OutlawsHelper)
 add_subdirectory(GluTesselator)
 
-if(WIN32 AND BUILD_LAB_FUSE)
-    add_subdirectory(LabFuse)
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT lab-fuse)
+if(WIN32)
+    if(DOKAN_HOME STREQUAL "")
+        message(STATUS "DOKAN_HOME was not provided. LabFuse will not be built.")
+    else()
+        add_subdirectory(LabFuse)
+        set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT lab-fuse)
+    endif()
+else()
+    message(STATUS "LabFuse will not be built. It is a Windows-only tool.")
 endif()
