@@ -146,8 +146,8 @@ std::string flagToString(WallFlag2 value);
 
 struct TextureParamsSmall {
     int textureId;
-    float offsX;
-    float offsY;
+    float offsX;    ///< 1.0 is 8 pixels.
+    float offsY;    ///< 1.0 is 8 pixels.
 };
 
 struct TextureParams : TextureParamsSmall {

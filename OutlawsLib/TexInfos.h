@@ -11,13 +11,13 @@ struct Uv {
 };
 
 struct TextureUvs {
-    /// Position in texture atlas.
-    Uv start;
-    Uv end;
+    /// Position in texture atlas. (0.0, 0.0) is top left of the texture atlas, (1.0, 1.0) is bottom right of the texture atlas.
+    Uv start;   ///< Top left corner of the sub-texture. 
+    Uv end;     ///< Bottom right corner of the sub-texture. 
 
     /// Dimensions of the textures. Needed to map Outlaws texture coordinates to 0.0 - 1.0 range.
-    int width;
-    int height;
+    int width;  ///< Sub-texture width in pixels.
+    int height; ///< Sub-texture height in pixels.
 };
 
 using TexInfos = std::unordered_map<std::string, TextureUvs>;

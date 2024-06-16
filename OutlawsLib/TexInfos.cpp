@@ -9,13 +9,13 @@
 namespace outlaws {
 
 struct TexRect {
-    int x, y, width, height;
+    int x, y, width, height;    ///< Position of the sub-texture inside texture atlas, in pixels.
 };
 
 struct TexInfo {
     std::unordered_map<std::string, TexRect> textureRects;
-    int width;
-    int height;
+    int width;  ///< Width of the whole texture atlas, in pixels.
+    int height; ///< Heights of the whole texture atlas, in pixels.
 };
 
 void from_json(const nlohmann::json& json, TexInfo& texInfo) {
