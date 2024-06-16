@@ -181,6 +181,8 @@ public class GameHandler : MonoBehaviour {
     }
 #endif
 
+    public string levelFile = @"S:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT"; // Can be LVT or LVB.
+    public string texturesPackFile = @"S:\VSProjects\OutlawsXDir\OutlawsX\OutlawsXUnity\Assets\Textures\pack.json"; 
     public Transform marker;
     private Dictionary<int, GameObject> sectorObjects = new Dictionary<int, GameObject>();
     private Dictionary<int, Mesh> meshes = new Dictionary<int, Mesh>();
@@ -195,7 +197,7 @@ public class GameHandler : MonoBehaviour {
         var b = func_(4);
         Debug.Log(string.Format("Hello: {0}", b));
 
-        var numSectors = loadLevel_(@"S:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT", @"S:\VSProjects\OutlawsXDir\OutlawsX\OutlawsXUnity\Assets\Textures\pack.json");
+        var numSectors = loadLevel_(levelFile, texturesPackFile);
         Debug.Log(string.Format("numSectors: {0}", numSectors));
 
         var texInfosArray = new TextureUvs[1000];

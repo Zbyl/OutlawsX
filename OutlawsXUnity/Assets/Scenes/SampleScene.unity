@@ -323,6 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotSpeed: 1.5
   moveSpeed: 2
+  upDownSpeed: 0.5
 --- !u!1 &1111155839
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 231f8f5d6a021144096dec047ed43d73, type: 2}
-  lvtLevelFile: S:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT
+  levelFile: S:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT
   texturesPackFile: S:\VSProjects\OutlawsXDir\OutlawsX\OutlawsXUnity\Assets\Textures\pack.json
   marker: {fileID: 1111155843}
   sectorNum: -1
