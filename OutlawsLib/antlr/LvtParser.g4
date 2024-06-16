@@ -43,7 +43,7 @@ vertices    : VERTICES numVertices=INT (vertex)* ;
 vertex      : X COLON x=float_ Z COLON z=float_;
 
 floorOffsets    : FLOOR OFFSETS numFloorOffsets=INT (floorOffset)* ;
-floorOffset     : OFFSET COLON FLOAT INT FLOAT FLOAT FLAGS COLON flag1=INT flag2=INT;
+floorOffset     : OFFSET COLON float_ INT float_ float_ FLAGS COLON flag1=INT flag2=INT;
 
 walls       : WALLS numWalls=INT (wall)* ;
 wall        : WALL_COLON wallId=ID

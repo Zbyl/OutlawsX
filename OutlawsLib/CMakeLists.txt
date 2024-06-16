@@ -29,6 +29,10 @@ set(TARGET_SOURCES
     antlr/InfLexer.g4
     antlr/InfParser.g4
 
+    ../OutlawsLabLib/FileSerializer.h
+    Lvb.h
+    Lvb.cpp
+
     Lvt.h
     Lvt.cpp
     RuntimeLevel.h

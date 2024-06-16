@@ -170,8 +170,8 @@ SlopeParams parseSlopeParams(lvtgrammar::LvtParser::SlopeParamsContext* ctx) {
     if (ctx == nullptr)
         return slopeParams;
 
-    slopeParams.sector = boost::lexical_cast<int>(ctx->sectorId->getText());
-    slopeParams.wall = boost::lexical_cast<int>(ctx->wallId->getText());
+    slopeParams.sector = (ctx->sectorId->getText() == "4294967295") ? -1 : boost::lexical_cast<int>(ctx->sectorId->getText());
+    slopeParams.wall = (ctx->wallId->getText() == "4294967295") ? -1 : boost::lexical_cast<int>(ctx->wallId->getText());
     slopeParams.angle = boost::lexical_cast<int>(ctx->angle->getText());
 
     return slopeParams;
@@ -262,6 +262,10 @@ LvtLevel loadLvt(const std::string& filePath) {
     std::ifstream stream;
     stream.open(filePath);
 
+    return loadLvt(stream);
+}
+
+LvtLevel loadLvt(std::istream& stream) {
     antlr4::ANTLRInputStream input(stream);
     lvtgrammar::LvtLexer lexer(&input);
     antlr4::CommonTokenStream tokens(&lexer);

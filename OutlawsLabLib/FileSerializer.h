@@ -89,9 +89,14 @@ public:
         fclose(file);
     }
 
-    size_t position()
+    size_t position() const
     {
         return filePosition;
+    }
+
+    bool isAtEnd() const
+    {
+        return filePosition == fileSize;
     }
 
     void seek(size_t pos)

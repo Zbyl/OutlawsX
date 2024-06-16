@@ -79,6 +79,9 @@ struct TextureParams : TextureParamsSmall {
 };
 
 /// Parameter of a sloped floor or ceiling.
+/// @note Sometimes sector and wall will be 4294967295 (so 0xFFFFFFFF).
+///       Don't know what that means yet...
+///       But we'll parse it as -1.
 struct SlopeParams {
     int sector;     ///< Reference sector.
     int wall;       ///< Reference wall in reference sector. This will be start of the slope.
@@ -149,5 +152,6 @@ struct LvtLevel {
 };
 
 LvtLevel loadLvt(const std::string& filePath);
+LvtLevel loadLvt(std::istream& stream);
 
 } // namespace outlaws
