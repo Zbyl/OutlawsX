@@ -1,11 +1,14 @@
 
 
+#include "Lvb.h"
 #include "Lab.h"
 #include "RuntimeLevel.h"
 #include "Inf.h"
 #include "Atx.h"
 
 #include <iostream>
+#include <sstream>
+#include <fstream>
 #include <boost/exception/all.hpp>
 
 std::string labFilePath;
@@ -32,7 +35,13 @@ int main(int argc, char *argv[])
         loadInf(R"(F:\GOG Games\Outlaws\hideoutz.INF)");
 #endif
 
-        auto lvt = loadLvt(R"(F:\VSProjects\OutlawsXDir\trash\HIDEOUT.LVT)");
+        auto lvtString = lvb::loadLvbFile(R"(S:\VSProjects\OutlawsXDir\trash\CANYON.LVB)");
+        std::ofstream lvtFile("y.LVT");
+        lvtFile << lvtString;
+        lvtFile.close();
+        std::stringstream lvtStream(lvtString);
+        auto lvt = loadLvt(lvtStream);
+        //auto lvt = loadLvt(R"(S:\VSProjects\OutlawsXDir\trash\CANYON.LVT)");
         auto texInfos = loadTexInfos(R"(S:\VSProjects\OutlawsXDir\OutlawsX\OutlawsXUnity\Assets\Textures\pack.json)");
 
         RuntimeLevel level(std::move(lvt), texInfos);
