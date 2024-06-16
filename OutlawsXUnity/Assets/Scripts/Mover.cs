@@ -18,11 +18,13 @@ public class Mover : MonoBehaviour {
     float rY = 0.0f;
     public float rotSpeed = 1.5f;
     public float moveSpeed = 0.5f;
+    public float upDownSpeed = 0.5f;
 
     void FixedUpdate()
     {
         float moveH = Input.GetAxis("Horizontal") * moveSpeed;
         float moveV = Input.GetAxis("Vertical") * moveSpeed;
+        float moveUpDown = Input.GetAxis("UpDown") * upDownSpeed;
         float rotX = Input.GetAxis("RotX") * rotSpeed;
         float rotY = Input.GetAxis("RotY") * rotSpeed;
         rX += rotX;
@@ -30,6 +32,7 @@ public class Mover : MonoBehaviour {
 
         transform.position += moveV * transform.forward;
         transform.position += moveH * transform.right;
+        transform.position += moveUpDown * transform.up;
 
         transform.rotation = Quaternion.AngleAxis(rX, Vector3.up) * Quaternion.AngleAxis(-rY, Vector3.right);
 
