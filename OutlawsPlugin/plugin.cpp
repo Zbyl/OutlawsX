@@ -4,17 +4,32 @@
 #define OUTLAWSX_API __declspec(dllexport)
 
 #include "RuntimeLevel.h"
+#include "Lvb.h"
 
 #include <algorithm>
 #include <cstring>
 
 #include <Objbase.h>
 
+#include <string_view>
+#include <sstream>
+
+
 using namespace outlaws;
 
 RuntimeLevel level;
 TexInfos texInfos;
 std::string errorMessage;
+
+static bool ends_with(std::string_view str, std::string_view suffix)
+{
+    return (str.size() >= suffix.size()) && (str.compare(str.size()-suffix.size(), suffix.size(), suffix) == 0);
+}
+
+static bool starts_with(std::string_view str, std::string_view prefix)
+{
+    return (str.size() >= prefix.size()) && (str.compare(0, prefix.size(), prefix) == 0);
+}
 
 extern "C" {
 
@@ -95,9 +110,19 @@ OUTLAWSX_API int func(int a)
 OUTLAWSX_API int loadLevel(const char* levelFile, const char* textureFile)
 {
     try {
-        auto lvt = loadLvt(levelFile);
         texInfos = loadTexInfos(textureFile);
-        level = RuntimeLevel(std::move(lvt), texInfos);
+
+        std::string levelPath = levelFile;
+        if (ends_with(levelPath, ".LVB") || ends_with(levelPath, ".lvb")) {
+            auto lvtString = lvb::loadLvbFile(levelFile);
+            std::stringstream lvtStream(lvtString);
+            auto lvt = loadLvt(lvtStream);
+            level = RuntimeLevel(std::move(lvt), texInfos);
+        } else {
+            auto lvt = loadLvt(levelFile);
+            level = RuntimeLevel(std::move(lvt), texInfos);
+        }
+
         level.computeMeshes();
         return static_cast<int>(level.runtimeSectors.size());
     }
