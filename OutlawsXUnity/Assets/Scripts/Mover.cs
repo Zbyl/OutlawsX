@@ -18,6 +18,7 @@ public class Mover : MonoBehaviour {
     float rY = 0.0f;
     public float rotSpeed = 1.5f;
     public float moveSpeed = 0.5f;
+    public float mouseScale = 10.0f;
     public float upDownSpeed = 0.5f;
 
     void FixedUpdate()
@@ -25,8 +26,8 @@ public class Mover : MonoBehaviour {
         float moveH = Input.GetAxis("Horizontal") * moveSpeed;
         float moveV = Input.GetAxis("Vertical") * moveSpeed;
         float moveUpDown = Input.GetAxis("UpDown") * upDownSpeed;
-        float rotX = Input.GetAxis("RotX") * rotSpeed;
-        float rotY = Input.GetAxis("RotY") * rotSpeed;
+        float rotX = (Input.GetAxis("RotX") + Input.GetAxis("Mouse X") * mouseScale) * rotSpeed;
+        float rotY = (Input.GetAxis("RotY") + Input.GetAxis("Mouse Y") * mouseScale) * rotSpeed;
         rX += rotX;
         rY += rotY;
 
