@@ -9,6 +9,8 @@ MIT, with exception of third-party code (on their own licenses).
 
 # Status
 
+![Screenshot](./Screenshot.jpg)
+
 ## Working
 
 - Level geometry is correctly interpreted and generated, including slopes.  
