@@ -388,9 +388,10 @@ void computeWall(const RuntimeLevel& level, int isector, int iwall, SectorMeshUV
             }
             if ( (wallKind == BOT) && hasFlag(wall, WallFlag1::ELEV_CAN_SCROLL_BOT_TX) ) wb = wallBase;
 
-            int flag = wall.flag1;
+            const uint32_t HACK_SIGN_FLAG = (1u << 31);  // This is a hacky flag for pixel shader, that says this texture should not be tiled.
+            uint32_t flag = static_cast<uint32_t>(wall.flag1);
             if (isSign)
-                flag |= (1u << 31); // @todo This is a hacky flag for pixel shader.
+                flag |= HACK_SIGN_FLAG;
             mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (high - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&flag) });
             mesh.uvs.push_back({ i * wallLength + textureParams.offsX, (low - wb) + textureParams.offsY, static_cast<float>(textureParams.textureId), *reinterpret_cast<const float*>(&flag) });
         }

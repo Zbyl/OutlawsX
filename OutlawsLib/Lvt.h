@@ -180,8 +180,8 @@ struct Wall {
     int dadjoin;
     int dmirror;
 
-    int flag1;
-    int flag2;
+    WallFlag1 flag1;
+    WallFlag2 flag2;
 
     int light;
 };
@@ -200,9 +200,9 @@ struct Sector {
     std::vector<Vertex2> vertices;
     std::vector<Wall> walls;
 
-    int flag1;
-    int flag2;
-    int flag3;
+    SectorFlag1 flag1;
+    uint32_t flag2;
+    uint32_t flag3;
 
     SlopeParams floorSlope;
     SlopeParams ceilingSlope;
@@ -211,15 +211,15 @@ struct Sector {
 };
 
 inline bool hasFlag(const Wall& wall, WallFlag1 flag) {
-    return wall.flag1 & static_cast<uint32_t>(flag);
+    return static_cast<uint32_t>(wall.flag1) & static_cast<uint32_t>(flag);
 }
 
 inline bool hasFlag(const Wall& wall, WallFlag2 flag) {
-    return wall.flag2 & static_cast<uint32_t>(flag);
+    return static_cast<uint32_t>(wall.flag2) & static_cast<uint32_t>(flag);
 }
 
 inline bool hasFlag(const Sector& sector, SectorFlag1 flag) {
-    return sector.flag1 & static_cast<uint32_t>(flag);
+    return static_cast<uint32_t>(sector.flag1) & static_cast<uint32_t>(flag);
 }
 
 struct LvtLevel {

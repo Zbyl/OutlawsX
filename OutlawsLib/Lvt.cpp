@@ -211,8 +211,8 @@ public:
         wall.dadjoin = boost::lexical_cast<int>(ctx->dadjoin->getText());
         wall.dmirror = boost::lexical_cast<int>(ctx->dmirror->getText());
 
-        wall.flag1 = boost::lexical_cast<int>(ctx->flag1->getText());
-        wall.flag2 = boost::lexical_cast<int>(ctx->flag2->getText());
+        wall.flag1 = static_cast<WallFlag1>(boost::lexical_cast<int>(ctx->flag1->getText()));
+        wall.flag2 = static_cast<WallFlag2>(boost::lexical_cast<int>(ctx->flag2->getText()));
 
         wall.light = boost::lexical_cast<int>(ctx->light->getText());
 
@@ -233,9 +233,9 @@ public:
         sector.ceilingTexture = parseTextureParams(ctx->ceilingTexture);
         sector.ceilingOverlayTexture = parseTextureParams(ctx->ceilingOverlayTexture);
 
-        sector.flag1 = boost::lexical_cast<int>(ctx->flag1->getText());
-        sector.flag2 = boost::lexical_cast<int>(ctx->flag2->getText());
-        sector.flag3 = ctx->flag3 ? boost::lexical_cast<int>(ctx->flag3->getText()) : 0;
+        sector.flag1 = static_cast<SectorFlag1>(boost::lexical_cast<int>(ctx->flag1->getText()));
+        sector.flag2 = static_cast<uint32_t>(boost::lexical_cast<int>(ctx->flag2->getText()));
+        sector.flag3 = ctx->flag3 ? static_cast<uint32_t>(boost::lexical_cast<int>(ctx->flag3->getText())) : 0;
 
         sector.floorSlope = parseSlopeParams(ctx->floorSlope);
         sector.ceilingSlope = parseSlopeParams(ctx->ceilingSlope);

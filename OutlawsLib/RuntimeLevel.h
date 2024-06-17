@@ -15,12 +15,12 @@ namespace outlaws {
 class SectorMeshUV {
 public:
     std::vector<Vector3> vertices;  ///< Vertices.
-    std::vector<Vector4> uvs;       ///< Uvs for each vertex (texture coordinates in Outlaws space, plus texture id, plus WallFlag1 as float). Empty if mesh doesn't have uvs.
+    std::vector<Vector4> uvs;       ///< Uvs for each vertex (texture coordinates in Outlaws space, plus texture id, plus WallFlag1 (with HACK_SIGN_FLAG) as float). Empty if mesh doesn't have uvs.
     std::vector<int> triangles;     ///< Triangles.
 
-    static const int floorTriangle = -1;
-    static const int ceilingTriangle = -2;
-    std::vector<int> triangleToWall;   ///< Maps triangle number to sector wall index. floorTriangle and ceilingTriangle constants are used for ceiling and floor triangles.
+    static const int floorTriangle = -1;    ///< Marker value for triangleToWall below.
+    static const int ceilingTriangle = -2;  ///< Marker value for triangleToWall below.
+    std::vector<int> triangleToWall;        ///< Maps triangle number to sector wall index. floorTriangle and ceilingTriangle constants are used for ceiling and floor triangles.
 };
 
 class RuntimeLevel;
