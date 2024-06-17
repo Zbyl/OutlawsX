@@ -71,10 +71,10 @@ mode str_mode;
   STR: ~[\r\n]+ -> popMode;
 
 mode id_mode;
-  ID: [a-zA-Z0-9\-_.]+ -> popMode;
+  ID: [a-zA-Z0-9\-_.~]+ -> popMode;
   WHITESPACE2   : [ \t\r\n]+ -> channel(HIDDEN) ;
 
 mode idend_mode;
-  IDEND: [a-zA-Z0-9\-_.]+;
+  IDEND: [a-zA-Z0-9\-_.~]+;
   WHITESPACE3   : [ \t]+ -> channel(HIDDEN) ;
   WHITESPACEEND   : [\r\n]+ -> skip, popMode ;

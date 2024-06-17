@@ -15,6 +15,6 @@ WHITESPACE   : [ \t\r\n]+ -> channel(HIDDEN) ;
 LINE_COMMENT : '#' ~[\r\n]* -> skip ;
 
 mode idend_mode;
-  ID          : [a-zA-Z0-9\-+_.]+ ;
+  ID          : [a-zA-Z0-9\-+_.~]+ ;
   WHITESPACE2 : [ \t]+ -> skip ;
   WHITESPACEEND   : [\r\n]+ -> skip, popMode ;

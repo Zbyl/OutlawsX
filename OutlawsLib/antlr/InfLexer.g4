@@ -57,14 +57,14 @@ mode str_mode;
   STR: ~[\r\n]+ -> popMode;
 
 mode id_mode;
-  ID          : [a-zA-Z_.][a-zA-Z0-9\-+_.]* -> popMode ;
+  ID          : [a-zA-Z_.][a-zA-Z0-9\-+_.~]* -> popMode ;
   INT2        : [+-]?[0-9]+ -> type(INT) ;
   WALLID2       : '#' [a-zA-Z0-9\-+_.]* -> type(WALLID) ;
   WHITESPACE2 : [ \t]+ -> skip ;
   WHITESPACEEND   : [\r\n]+ -> skip, popMode ;
 
 mode recv_mode;
-  ID5         : [a-zA-Z_.][a-zA-Z0-9\-+_.]* -> type(ID), popMode, pushMode(recv_mode2) ;
+  ID5         : [a-zA-Z_.][a-zA-Z0-9\-+_.~]* -> type(ID), popMode, pushMode(recv_mode2) ;
   INT5        : [+-]?[0-9]+ -> type(INT), popMode, pushMode(recv_mode2) ;
   SYSTEM      : 'SYSTEM' -> popMode, pushMode(recv_mode2) ;
   WHITESPACE6 : [ \t]+ -> skip ;
