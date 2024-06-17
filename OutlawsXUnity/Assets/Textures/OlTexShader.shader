@@ -3,9 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _MulOffs ("Multiplier and Offset", Vector) = (1.0, 1.0, 0.0, 0.0)
-        _TexRect ("Texture Rect", Vector) = (0.0, 0.0, 1.0, 1.0)
-        _TexSize ("Texture Size", Vector) = (64.0, 64.0, 0.0, 0.0)
+        //_TexRect ("Texture Rect", Vector) = (0.0, 0.0, 1.0, 1.0) - Not used.
     }
     SubShader
     {
@@ -38,7 +36,7 @@
             struct v2f
             {
                 float3 uvf : TEXCOORD0;     // U, V, WallFlag1
-                uint f : TEXCOORD3;         // WallFlag1
+                uint f : TEXCOORD3;         // WallFlag1 as uint.
                 float4 texRect : TEXCOORD1;
                 int2 texSize : TEXCOORD2;
                 UNITY_FOG_COORDS(1)
@@ -52,10 +50,9 @@
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                //o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                //o.uv = TRANSFORM_TEX(v.uv, _MainTex); - Scaling/offsetting texture atlas doesn't make sense.
 
                 int textureId = (int)v.uvtf.z;
-                //int textureId = 54;
 
                 int2 texSize = texInfos[textureId].texSize; ///< Sub-texture size in pixels.
                 o.uvf.xy = v.uvtf.xy / texSize.xy; // 0.0 - 1.0 range now corresponds to full texture size.
@@ -68,7 +65,7 @@
                 //o.texRect = texRect;
                 o.texRect = float4(texRect.x, 1.0f - texRect.y, texRect.z, 1.0f - texRect.w);
 
-                const uint HACK_SIGN_FLAG = (1u << 31);
+                const uint HACK_SIGN_FLAG = (1u << 31); // See C++ code for details.
                 if (o.f & HACK_SIGN_FLAG) {
                     //o.vertex.z += 0.0001;
                 }
@@ -91,16 +88,10 @@
 
             PixelOut frag (v2f i) : SV_Target
             {
-                //float2 atlasSize(8192.0f, 8192.0f); 
                 // Here i.uvf.xy is in "Outlaws texture coordinates". i.uvf.z is wallFlag1.
-                uint wallFlag1 = i.f; //asuint(i.uvf.z);
+                uint wallFlag1 = i.f;
 
-                //float2 axc = float2(0.0f, 0.0f); //i.uvf.xy * i.texSize;
-                //float2 rxc = axc + float2(-axc.x, -axc.y);
-                //float4 texPixUV = float4(d.x, d.y, r.x, r.y);
                 float4 texPixUV = mymod(i.uvf.xy * i.texSize, i.texSize);
-                //int2 texPixUVi = int2(i.uvf.xy * i.texSize) % i.texSize;
-                //float4 texPixUV = float4(0.0f, 0.0f, texPixUVi.x, texPixUVi.y);
                 texPixUV.zw = floor(texPixUV.zw);
 
                 float2 uv = (texPixUV.zw + float2(0.5f, 0.5f)) / float2(i.texSize);  
@@ -113,29 +104,26 @@
                 uv = lerp(i.texRect.xy, i.texRect.zw, uv); // Transform to coordinates inside the sprite sheet.
                 fixed4 col = tex2Dgrad(_MainTex, uv, float2(0.0f, 0.0f), float2(0.0f, 0.0f)); // Gradients help avoid sampling texture beyond the texture extents. But breaks mipmapping.
                                                                                               // Fixing mip-mapping when using a texture atlas is not an easy task...
-                //col.a = trans;
-
                 if ((col.r == 0) && (col.g == 111.0f/255.0f) && (col.b == 127.0f/255.0f)) // transparent color
                     discard;
 
-                const uint HACK_SIGN_FLAG = (1u << 31);
+                const uint HACK_SIGN_FLAG = (1u << 31); // See C++ code for details.
                 float trans = 1.0f;
-                float2 t = texPixUV.xy;  ///< This should be texPixUV without mod / texSize. Signs should not be repeating.
-                //float2 t = float2(0.0f, 0.0f);  ///< This should be texPixUV without mod / texSize. Signs should not be repeating.
+                float2 tileCoords = texPixUV.xy;  ///< Signs should not be repeating, so keep them only in the first tile.
                 if (wallFlag1 & HACK_SIGN_FLAG) {
-                    if (t.x < -0.0) {
+                    if (tileCoords.x < -0.0) {
                         col = fixed4(1.0, 0.0, 0.0, 0.5);
                         discard;
                     }
-                    if (t.x > -0.0) {
+                    if (tileCoords.x > -0.0) {
                         col = fixed4(0.0, 1.0, 0.0, 0.5);
                         discard;
                     }
-                    if (t.y < 0.0) {
+                    if (tileCoords.y < 0.0) {
                         col = fixed4(1.0, 1.0, 0.0, 0.5);
                         discard;
                     }
-                    if (t.y > 0.0) {
+                    if (tileCoords.y > 0.0) {
                         col = fixed4(0.0, 0.0, 1.0, 0.5);
                         discard;
                     }
