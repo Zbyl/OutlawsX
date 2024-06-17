@@ -96,7 +96,7 @@ MIT, with exception of third-party code (on their own licenses).
 
 This plugin uses textures extracted from Outlaws and merged into one texture atlas.
 
-If you'd like to re-generate the texture atlas see documentation here: [oltex/README.md](./oltex/README.md)
+If you'd like to re-generate the texture atlas see documentation here: [Textures/oltex.md](./Textures/oltex.md)
 
 
 # LabFuse
